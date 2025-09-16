@@ -1,15 +1,15 @@
 # 配置
-net: ResNet50  # 网络模型选择(ResNet18, ResNet34, ResNet50, ResNet101, ResNet152)
+net: ResNet152  # 网络模型选择(ResNet18, ResNet34, ResNet50, ResNet101, ResNet152)
 class_path: /data/train5_data/ResNet/ori_data/classes.txt  # 标签文件路径
 width: 32
 height: 32
 train:
-  epoch: 135  # 遍历数据集次数
+  epoch: 20  # 遍历数据集次数
   pre_epoch: 0  # 定义已经遍历数据集的次数
   batch_size: 256  # 批处理尺寸(batch_size)
   lr: 0.001  # 学习率
   train_data: /data/train5_data/ResNet/ori_data  # 训练集路径
-  test_data:   # 训练集路径
+  test_data: /data/train5_data/ResNet/ori_data  # 训练集路径
   is_gpu: True  # 是否使用gpu
   num_workers: 8  # 并行处理数据进程数，根据显存大小自定义，显存越小work数越小
   out_model_path: /data/train5_data/ResNet/model  #  网络模型保存地址

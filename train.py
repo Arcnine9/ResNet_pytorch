@@ -94,12 +94,12 @@ with open(config["class_path"], 'w', encoding='utf-8') as f:
 classes = tuple(classes)
 
 # 生成训练集
-trainset = CNNNetworkDataset(base_dataset=train_dataset, should_invert=False, transform=transform_train)
-trainloader = DataLoader(dataset=trainset, batch_size=config["train"]["batch_size"], shuffle=True,
+# trainset = CNNNetworkDataset(base_dataset=train_dataset, should_invert=False, transform=transform_train)
+trainloader = DataLoader(dataset=train_dataset, batch_size=config["train"]["batch_size"], shuffle=True,
                          num_workers=config["train"]["num_workers"])
 # 生成测试集
-testset = CNNNetworkDataset(base_dataset=test_dataset, should_invert=False, transform=transform_test)
-testloader = DataLoader(dataset=trainset, batch_size=config["train"]["batch_size"], shuffle=True,
+# testset = CNNNetworkDataset(base_dataset=test_dataset, should_invert=False, transform=transform_test)
+testloader = DataLoader(dataset=test_dataset, batch_size=config["train"]["batch_size"], shuffle=True,
                         num_workers=config["train"]["num_workers"])
 
 # 模型定义-ResNet（ResNet18, ResNet34, ResNet50, ResNet101, ResNet152）
@@ -121,11 +121,47 @@ criterion = nn.CrossEntropyLoss()  # 损失函数为交叉熵，多用于多分�
 optimizer = optim.SGD(net.parameters(), lr=config["train"]["lr"], momentum=0.9,
                       weight_decay=5e-4)  # 优化方式为mini-batch momentum-SGD，并采用L2正则化（权重衰减）
 
+# ================== PROFILER 逻辑封装 ==================
+def start_npu_profiler(epoch, pre_epoch=0):
+    """
+    启动 NPU profiler
+    仅在 epoch == pre_epoch + 1 或 pre_epoch + 2 开启
+    返回 prof 对象，训练循环中调用 prof.step()
+    """
+    if epoch == pre_epoch + 1 or epoch == pre_epoch + 2:
+        experimental_config = torch_npu.profiler._ExperimentalConfig(
+            export_type=torch_npu.profiler.ExportType.Text,
+            profiler_level=torch_npu.profiler.ProfilerLevel.Level1,
+            msprof_tx=False,
+            aic_metrics=torch_npu.profiler.AiCMetrics.AiCoreNone,
+            l2_cache=False, op_attr=False,
+            data_simplification=False, record_op_args=False
+        )
+        prof = torch_npu.profiler.profile(
+            activities=[
+                torch_npu.profiler.ProfilerActivity.CPU,
+                torch_npu.profiler.ProfilerActivity.NPU
+            ],
+            record_shapes=True,
+            profile_memory=True,
+            with_stack=True,
+            experimental_config=experimental_config
+        )
+        prof.start()
+        return prof
+    else:
+        return None
+
+
+
 # 训练
 if __name__ == "__main__":
     best_acc = 90  # 2 初始化best test accuracy
     print("Start Training, %s !" % config["net"])  # 定义遍历数据集的次数
     for epoch in range(config["train"]["pre_epoch"], config["train"]["epoch"]):  # 从先前次数开始训练
+
+        prof = start_npu_profiler(epoch, config["train"]["pre_epoch"])
+
         print('\nEpoch: %d' % (epoch + 1))  # 输出当前次数
         net.train()  # 这两个函数只要适用于Dropout与BatchNormalization的网络，会影响到训练过程中这两者的参数
         # 运用net.train()时，训练时每个min - batch时都会根据情况进行上述两个参数的相应调整，所有BatchNormalization的训练和测试时的操作不同。
@@ -155,8 +191,13 @@ if __name__ == "__main__":
             correct += predicted.eq(labels.data).cpu().sum()
             print('[epoch:%d, iter:%d/%d] Loss: %.03f | Acc: %.3f%% '
                   % (epoch + 1, (i + 1), length, sum_loss / (i + 1), 100. * correct / total))
-
+            if prof:
+                prof.step()
         # 每训练完一个epoch测试一下准确率
+        if prof:
+            prof.stop()
+            prof.export_chrome_trace(f"/data/train5_data/ResNet/profiling_data/epoch_{epoch+1}_trace.json")
+            prof = None
         print("Waiting Test!")
         with torch.no_grad():  # 没有求导
             correct = 0
@@ -182,4 +223,6 @@ if __name__ == "__main__":
             if acc > best_acc:
                 best_acc = acc
                 torch.save(net.state_dict(), '%s/best_net_%03d.pth' % (config["train"]["out_model_path"], best_acc))
+
+            
     print("Training Finished, TotalEPOCH=%d" % config["train"]["epoch"])
