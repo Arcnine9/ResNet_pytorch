@@ -38,13 +38,14 @@ if not os.path.exists(config["train"]["out_model_path"]):
 
 
 class CNNNetworkDataset(Dataset):
-    def __init__(self, imageFolderDataset, transform=None, should_invert=True):
-        self.imageFolderDataset = imageFolderDataset
+    # use CIFAR-10 DATASET
+    def __init__(self, base_dataset, transform=None, should_invert=True):
+        self.base_dataset = base_dataset
         self.transform = transform
         self.should_invert = should_invert
 
     def __getitem__(self, index):
-        img, label = self.imageFolderDataset[index]  # 根据索引index获取该图片
+        img, label = self.base_dataset[index]  # 根据索引index获取该图片
         if self.should_invert:
             img = PIL.ImageOps.invert(img)
 
@@ -53,7 +54,7 @@ class CNNNetworkDataset(Dataset):
         return img, label
 
     def __len__(self):
-        return len(self.imageFolderDataset.imgs)
+        return len(self.base_dataset)
 
 
 # 准备数据集并预处理
@@ -69,23 +70,35 @@ transform_test = transforms.Compose([
 ])
 
 training_dir = config["train"]["train_data"]
-train_dataset = torchvision.datasets.ImageFolder(root=training_dir)
+# train_dataset = torchvision.datasets.ImageFolder(root=training_dir)
+train_dataset = torchvision.datasets.CIFAR10(
+    root=training_dir,  # 数据集存储路径
+    train=True,     # 是否加载训练集
+    download=True,  # 如果数据集不存在，自动下载
+    transform=transform_train
+)
+
 test_dir = config["train"]["test_data"]
-test_dataset = torchvision.datasets.ImageFolder(root=test_dir)
+# test_dataset = torchvision.datasets.ImageFolder(root=test_dir)
+test_dataset = torchvision.datasets.CIFAR10(
+    root=test_dir,  # 数据集存储路径
+    train=False,     # 是否加载训练集
+    download=True,  # 如果数据集不存在，自动下载
+    transform=transform_test
+)
 # 根据标签生成标签集文件
-classes = []
+classes = train_dataset.classes
 with open(config["class_path"], 'w', encoding='utf-8') as f:
-    for k in train_dataset.class_to_idx:
-        classes.append(k)
+    for k in classes:
         f.write("{}\n".format(k))
 classes = tuple(classes)
 
 # 生成训练集
-trainset = CNNNetworkDataset(imageFolderDataset=train_dataset, should_invert=False, transform=transform_train)
+trainset = CNNNetworkDataset(base_dataset=train_dataset, should_invert=False, transform=transform_train)
 trainloader = DataLoader(dataset=trainset, batch_size=config["train"]["batch_size"], shuffle=True,
                          num_workers=config["train"]["num_workers"])
 # 生成测试集
-testset = CNNNetworkDataset(imageFolderDataset=test_dataset, should_invert=False, transform=transform_test)
+testset = CNNNetworkDataset(base_dataset=test_dataset, should_invert=False, transform=transform_test)
 testloader = DataLoader(dataset=trainset, batch_size=config["train"]["batch_size"], shuffle=True,
                         num_workers=config["train"]["num_workers"])
 
