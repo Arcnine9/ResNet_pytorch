@@ -14,6 +14,11 @@ from torchvision.models import resnet as ResNet
 from torch.utils.data import DataLoader, Dataset
 import yaml
 
+# Auto transfer to NPU
+import torch_npu
+from torch_npu.contrib import transfer_to_npu
+
+
 with open('./config.yaml', 'r', encoding='utf-8') as f_config:
     config_result = f_config.read()
     config = yaml.load(config_result, Loader=yaml.FullLoader)

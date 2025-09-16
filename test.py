@@ -18,10 +18,10 @@ with open('./config.yaml', 'r', encoding='utf-8') as f_config:
 
 # 定义是否使用GPU
 if config["train"]["is_gpu"]:
-    if torch.cuda.is_available():
-        device = torch.device("cuda")
+    if torch.npu.is_available():
+        device = torch.device("npu:0")
     else:
-        raise Exception("本运行服务器未发现GPU，请确认配置文件")
+        raise Exception("本运行服务器未发现NPU，请确认配置文件")
 else:
     device = torch.device("cpu")
 
@@ -52,7 +52,7 @@ else:
 
 if __name__ == "__main__":
     if config["train"]["is_gpu"]:
-        if torch.cuda.is_available():
+        if torch.npu.is_available():
             net.load_state_dict(torch.load(config["test"]["model_path"]))
         else:
             raise Exception("本运行服务器未发现GPU，请确认配置文件")
