@@ -131,7 +131,7 @@ def start_npu_profiler(epoch, pre_epoch=0):
     if epoch == pre_epoch + 1 or epoch == pre_epoch + 2:
         experimental_config = torch_npu.profiler._ExperimentalConfig(
             export_type=torch_npu.profiler.ExportType.Text,
-            profiler_level=torch_npu.profiler.ProfilerLevel.Level1,
+            profiler_level=torch_npu.profiler.ProfilerLevel.Level2,
             msprof_tx=False,
             aic_metrics=torch_npu.profiler.AiCMetrics.AiCoreNone,
             l2_cache=False, op_attr=False,
@@ -142,6 +142,7 @@ def start_npu_profiler(epoch, pre_epoch=0):
                 torch_npu.profiler.ProfilerActivity.CPU,
                 torch_npu.profiler.ProfilerActivity.NPU
             ],
+            schedule=torch_npu.profiler.schedule(wait=2, warmup=1, active=20, repeat=1, skip_first=1),
             record_shapes=True,
             profile_memory=True,
             with_stack=True,
