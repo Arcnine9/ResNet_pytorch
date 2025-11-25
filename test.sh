@@ -1,0 +1,1 @@
+export ASCEND_WORK_PATH=/data/train5_data/ResNet/profiling_data/
