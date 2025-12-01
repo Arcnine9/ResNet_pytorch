@@ -119,6 +119,9 @@ elif config["net"] == "InceptionV3":
 else:
     raise Exception("网络模型配置存在问题，请确认配置文件")
 
+import swap_manager.hook as hook_manager
+hook_manager.register_all_hooks(net, verbose=True)
+
 model_filename = f"{config['net']}_model.txt"
 with open("model_filename.txt", "w") as f:
     f.write(str(net))
@@ -168,7 +171,7 @@ if __name__ == "__main__":
     print("Start Training, %s !" % config["net"])  # 定义遍历数据集的次数
     for epoch in range(config["train"]["pre_epoch"], config["train"]["epoch"]):  # 从先前次数开始训练
 
-        prof = start_npu_profiler(epoch, config["train"]["pre_epoch"])
+        # prof = start_npu_profiler(epoch, config["train"]["pre_epoch"])
 
         print('\nEpoch: %d' % (epoch + 1))  # 输出当前次数
         net.train()  # 这两个函数只要适用于Dropout与BatchNormalization的网络，会影响到训练过程中这两者的参数
