@@ -167,6 +167,7 @@ def start_npu_profiler(epoch, pre_epoch=0):
 
 # 训练
 if __name__ == "__main__":
+    prof = None
     best_acc = 90  # 2 初始化best test accuracy
     print("Start Training, %s !" % config["net"])  # 定义遍历数据集的次数
     for epoch in range(config["train"]["pre_epoch"], config["train"]["epoch"]):  # 从先前次数开始训练
