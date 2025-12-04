@@ -120,7 +120,7 @@ else:
     raise Exception("网络模型配置存在问题，请确认配置文件")
 
 import swap_manager.hook as hook_manager
-hook_manager.register_all_hooks(net, verbose=True)
+hook_manager.register_all_hooks(net)
 
 model_filename = f"{config['net']}_model.txt"
 with open("model_filename.txt", "w") as f:
