@@ -116,30 +116,12 @@ elif config["net"] == "ResNet152":
     net = ResNet.resnet152(num_classes=classes.__len__()).to(device)
 # ========== 原脚本位置：模型定义完、hook 注册前 ==========
 elif config["net"] == "InceptionV3":
-    net = inception_v3(num_classes=classes.__len__(), aux_logits=False).to(device)
+    net = inception_v3(num_classes=classes.__len__(), aux_logits=False)
+    import swap_manager.module_transfer as module_transfer
+    net = module_transfer.replace_functional(net)
+    net = net.to(device)
 else:
     raise Exception("网络模型配置存在问题，请确认配置文件")
-
-
-# >>>>>>  新增：把 InceptionV3 里所有 F.relu 替换成 nn.ReLU <<<<<<
-def replace_func_relu(module, name=""):
-    """递归地扫描 Sequential，把 F.relu 换成 nn.ReLU(inplace=False)"""
-    for child_name, child in module.named_children():
-        if isinstance(child, nn.Sequential):
-            new_seq = []
-            for k, sub in child.named_children():
-                new_seq.append(sub)
-                # 只要 key 里带 relu 且当前不是 nn.ReLU 模块，就插一个 ReLU
-                if "relu" in k.lower() and not isinstance(sub, (nn.ReLU, nn.ReLU6)):
-                    new_seq.append(nn.ReLU(inplace=False))
-            setattr(module, child_name, nn.Sequential(*new_seq))
-        else:
-            replace_func_relu(child, child_name)
-
-# 仅对 InceptionV3 做替换
-if config["net"] == "InceptionV3":
-    replace_func_relu(net)
-# >>>>>>  替换结束  <<<<<<
 
 import swap_manager.hook as hook_manager
 hook_manager.register_all_hooks(net)
