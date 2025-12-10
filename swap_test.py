@@ -1,74 +1,147 @@
-# test_swap_public_api.py
-import sys, torch, torch.nn as nn
+# swap_event_engine.py
+import torch
+import torch.nn as nn
+from typing import List, Tuple
 import torch_npu
 from torch_npu.contrib import transfer_to_npu
+import acl
 
-# ----------- 1. NPU 环境 ----------
-try:
-    import acl
-except ImportError:
-    raise SystemExit("❌ 未安装 PyACL，请 source set_env.sh")
-acl.rt.set_device(0)
-acl.init()
+# ========== 全局向量对象 ==========
+class GlobalVectorEvent:
+    def __init__(self):
+        self.events: List[Tuple[torch.Tensor, torch.Tensor]] = []  # (tensor, cpu_buf)
 
-# ----------- 2. 公开 API 路径：D→H → free → malloc → H→D → 换壳 ----------
-def replace_npu_storage(tensor):
-    size    = tensor.numel() * tensor.element_size()
-    old_ptr = tensor.data_ptr()
-    print(f"[REPLACE-0] 开始 | old_ptr={old_ptr:#x}")
+    def clear(self):
+        self.events.clear()
 
-    # 1. D→H：字节容器 → reinterpret → reshape → copy
-    host_bytes  = torch.empty(size, dtype=torch.uint8, pin_memory=True)
-    host_tensor = host_bytes.view(tensor.dtype).reshape(tensor.shape)   # ← 关键修复
-    host_tensor.copy_(tensor)
-    print(f"[REPLACE-1] D→H 完成 | host={host_tensor.data_ptr():#x}")
+GLOBAL_EVENT = GlobalVectorEvent()
 
-    # 2. free 旧 NPU
-    acl.rt.free(old_ptr)
-    print(f"[REPLACE-2] 已 free 旧 NPU | {old_ptr:#x}")
+class SwapTensor:
+    def __init__(self, tensor, layer_name):
+        self.tensor = tensor
+        self.size = tensor.size()
+        self.storage_size = tensor.storage().size()
+        self.tensor_cpu = torch.empty(tensor.shape, dtype=tensor.dtype, pin_memory=True, device='cpu')
 
-    # 3. PyTorch malloc 新 NPU
-    new_tensor = torch.empty(tensor.shape, dtype=tensor.dtype, device='npu')
-    new_ptr = new_tensor.data_ptr()
-    print(f"[REPLACE-3] PyTorch malloc 新块 | new_ptr={new_ptr:#x}")
+        self.d2h_event = None
+        self.h2d_event = torch.npu.Event()
 
-    # 4. H→D：同样 reinterpret/reshape
-    new_tensor.copy_(host_tensor)        # ← 同样修复
-    print(f"[REPLACE-4] H→D 完成 | 数据已拷回 {new_ptr:#x}")
+        self.stat = "device"
+        self.layer_name = layer_name
 
-    # 5. 公开 API 换壳
-    tensor.set_(new_tensor.storage(), tensor.storage_offset(), tensor.size(), tensor.stride())
-    print(f"[REPLACE-5] tensor 换壳完成 | tensor.data_ptr()={tensor.data_ptr():#x}")
-    return new_ptr
+        self.prefetch_data_ptr = tensor.data_ptr()
+        self.storage_data_ptr = tensor.storage().data_ptr()
+        self.layer_id = None
+        self.first_tensor = False
+        self.last_tensor = False
+        self.is_slice_tensor = tensor.storage().size() != tensor.numel()
+        self.stream = None
+        self.layer_index = 0
 
-# ----------- 3. 钩子：先跑原 D→H→D，再跑「换壳」 ----------
-def make_hook(name):
+    # device to host
+    def launch_d2h(self, stream):
+        if self.stat != "device":
+            return
+        forward_event = torch.npu.Event()
+        forward_event.record()
+        with torch.no_grad():
+            with torch_npu.npu.stream(stream):
+                stream.wait_event(forward_event)
+                if self.is_slice_tensor:
+                    self.tensor_cpu.copy_(self.tensor, non_blocking=True)
+                else:
+                    self.tensor_cpu.storage().copy_(self.tensor.storage(), non_blocking=True)
+                self.stat = "d2h"
+
+    # synchronize d2h and resize 0
+    def wait_d2h_finished(self, stream, need_wait=False):
+        if self.stat != "d2h":
+            return
+        if need_wait:
+            torch.npu.current_stream().wait_stream(stream)
+            torch.npu.default_stream().wait_stream(stream)
+        self.tensor.storage().resize_(0)
+        self.stat = "host"
+
+    # resize storage_size and host to device
+    def launch_h2d(self, stream, flag):
+        if self.stat != "host":
+            return
+        backward_event = torch.npu.Event()
+        backward_event.record()
+        if flag:
+            self.tensor.storage().resize_(self.storage_size)
+        with torch.no_grad():
+            with torch_npu.npu.stream(stream):
+                stream.wait_event(backward_event)
+                if self.is_slice_tensor:
+                    self.tensor.copy_(self.tensor_cpu, non_blocking=True)
+                else:
+                    self.tensor.storage().copy_(self.tensor_cpu.storage(), non_blocking=True)
+                self.h2d_event.record()
+                self.stat = "h2d"
+
+    # synchronize h2d
+    def wait_h2d_finished(self, stream, need_wait=False):
+        if self.stat != "h2d":
+            return
+        if need_wait:
+            torch.npu.current_stream().wait_stream(stream)
+            torch.npu.default_stream().wait_stream(stream)
+        self.stat = "device"
+
+
+# ========== Hook：根据计数器触发 D→H 或 H→D ==========
+hook_count = 0  # 全局钩子计数器
+
+def make_swap_event_hook():
+    """Hook 根据计数器触发事件：先卸载，再预取"""
     def post_hook(m, inp, out):
-        t = out[0] if isinstance(out, tuple) else out
-        ptr  = t.data_ptr()
-        size = t.numel() * t.element_size()
-        mean_b = t.mean().item()
+        global hook_count
+        hook_count += 1
 
-        # 3.2 公开 API 换壳
-        replace_npu_storage(t)
-        print(f"[PyACL-REPLACE] {name} 现在用新 ptr={t.data_ptr():#x} 训练线程自动可见")
+        if hook_count == 1:
+            # 第一个卷积结束后卸载输入 tensor
+            t = inp[0]  # 第一个卷积的输入 tensor
+            if isinstance(t, torch.Tensor) and t.is_cuda:
+                swap_tensor = SwapTensor(t, "Conv0")
+                swap_tensor.launch_d2h(torch.npu.current_stream())
+                swap_tensor.wait_d2h_finished(torch.npu.current_stream(), need_wait=True)
+                print(f"[EVENT] Conv#{hook_count-1} | 卸载完成")
+                # 记录到全局事件（句柄）
+                GLOBAL_EVENT.events.append((t, swap_tensor))
+        elif hook_count == 2:
+            # 第二个卷积结束后从 CPU 搬回第一个卷积的输入 tensor
+            if GLOBAL_EVENT.events:
+                t, swap_tensor = GLOBAL_EVENT.events.pop(0)
+                swap_tensor.launch_h2d(torch.npu.current_stream(), flag=True)
+                swap_tensor.wait_h2d_finished(torch.npu.current_stream(), need_wait=True)
+                print(f"[EVENT] Conv#{hook_count-1} | 预取完成")
+
     return post_hook
 
-def register_hook(model):
-    for name, m in model.named_modules():
-        if type(m) not in {nn.Conv2d, nn.Linear}: continue
-        m.register_forward_hook(make_hook(name))
-
-# ----------- 4. 最小前向 ----------
+# ========== 使用示例 ==========
 if __name__ == "__main__":
-    x = torch.randn(2, 3, 32, 32).npu()
-    model = nn.Sequential(
+    # 1. 模型（两个卷积）
+    net = nn.Sequential(
         nn.Conv2d(3, 16, 3, padding=1),
-        nn.ReLU(),
         nn.Conv2d(16, 32, 3, padding=1)
     ).npu()
 
-    register_hook(model)
-    with torch.no_grad():
-        out = model(x)
-    print("=== 公开 API 换壳 + 日志完成 ===")
+    # 2. 注册钩子
+    net[0].register_forward_hook(make_swap_event_hook())  # 为第一个卷积注册 hook
+    net[1].register_forward_hook(make_swap_event_hook())  # 为第二个卷积注册 hook
+
+    # 3. 训练循环（事件 = 函数调用）
+    x = torch.randn(2, 3, 8, 8).npu()
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
+    criterion = nn.MSELoss()
+
+    with torch.enable_grad():
+        out = net(x)
+        loss = criterion(out, torch.randn_like(out))
+        loss.backward()
+        optimizer.step()
+
+    print("---- 事件循环结束 ----")
+    print(f"[FINAL] 事件列表长度: {len(GLOBAL_EVENT.events)}")
