@@ -58,12 +58,16 @@ class Add(nn.Module):
 
 # ---------- 可 hook 的 Module ----------
 class MaxPool2d(nn.Module):
-    def __init__(self, kernel_size: Union[int, tuple], stride: Optional[Union[int, tuple]] = None):
+    def __init__(self, kernel_size: Union[int, tuple], stride: Optional[Union[int, tuple]] = None, padding: Union[int, tuple] = 0, dilation: Union[int, tuple] = 1, ceil_mode: bool = False):
         super().__init__()
-        self.maxpool = nn.MaxPool2d(kernel_size, stride)
+        self.kernel_size = kernel_size
+        self.stride = stride
+        self.padding = padding
+        self.dilation = dilation
+        self.ceil_mode = ceil_mode
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.maxpool(x)
+        return F.max_pool2d(x, self.kernel_size, self.stride, self.padding, self.dilation, self.ceil_mode)
 
 
 class AvgPool2d(nn.Module):
