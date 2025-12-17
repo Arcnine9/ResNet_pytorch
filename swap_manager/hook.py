@@ -18,7 +18,7 @@ OP_MAP = {
     nn.Linear,
     nn.Dropout, nn.Dropout2d,
     nn.BatchNorm2d,
-    fx.Cat, fx.Add, fx.ReLU,
+    fx.Cat, fx.Add, fx.ReLU, fx.AvgPool2d, fx.MaxPool2d,
 }
 
 def _get_log_f():
@@ -141,17 +141,52 @@ def make_probe_hook(name, mod):
                         return grad
 
                     # 注册两个钩子
-                    t.register_hook(grad_empty_hook)  # 空钩子
+                    # t.register_hook(grad_empty_hook)  # 空钩子
                     t.register_hook(grad_post_hook)  # 实际操作的钩子
 
 
     mod.register_forward_pre_hook(pre_hook)
     mod.register_forward_hook(post_hook)
 
-# ---------------- 对外接口 ----------------
-def register_all_hooks(model):
+##---------------- 对外接口 ----------------
+def register_all_hooks(model, config_file):
     """遍历模型，给所有 OP_MAP 里的模块挂探针"""
     for name, module in model.named_modules():
-        if type(module) not in OP_MAP or "downsample" in name:
+        if type(module) not in OP_MAP :
             continue
         make_probe_hook(name, module)
+
+# def load_hook_layers(config_file):
+#     hook_layers = []
+#     with open(config_file, 'r') as f:
+#         for line in f:
+#             line = line.strip()
+#             if line:
+#                 # 提取层的类型名称
+#                 layer_type = line.split(';')[1].strip().split(':')[1].split('(')[0].strip()
+#                 hook_layers.append(layer_type)
+#     return hook_layers
+
+# def register_all_hooks(model, config_file):
+#     """遍历模型，给所有 OP_MAP 里的模块挂探针"""
+#     hook_layers = load_hook_layers(config_file)
+#     current_hook_layer_index = 0
+
+#     for name, module in model.named_modules():
+#         if type(module) not in OP_MAP or "downsample" in name:
+#             continue
+
+#         # 提取模块的类型名称
+#         module_type = type(module).__name__
+
+#         # 检查当前模块是否匹配 hook_layers 中的层
+#         if current_hook_layer_index < len(hook_layers):
+#             current_hook_layer = hook_layers[current_hook_layer_index]
+#             if module_type == current_hook_layer:
+#                 print(module_type,"==", current_hook_layer, "match")
+#                 make_probe_hook(name, module)
+#                 current_hook_layer_index += 1
+#                 if current_hook_layer_index >= len(hook_layers):
+#                     break  # 所有需要的层都已挂载钩子，退出循环
+#             else:
+#                 print(module_type,"!=", current_hook_layer, "not match")

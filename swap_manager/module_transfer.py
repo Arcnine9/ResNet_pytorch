@@ -56,21 +56,36 @@ class Add(nn.Module):
     def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
         return x + y
 
+# ---------- 可 hook 的 Module ----------
+class MaxPool2d(nn.Module):
+    def __init__(self, kernel_size: Union[int, tuple], stride: Optional[Union[int, tuple]] = None):
+        super().__init__()
+        self.maxpool = nn.MaxPool2d(kernel_size, stride)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.maxpool(x)
+
+
+class AvgPool2d(nn.Module):
+    def __init__(self, kernel_size: Union[int, tuple], stride: Optional[Union[int, tuple]] = None, padding: Union[int, tuple] = 0):
+        super().__init__()
+        self.avgpool = nn.AvgPool2d(kernel_size, stride, padding)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.avgpool(x)
+
 
 # ---------- FX 替换核心 ----------
 def replace_functional(model: nn.Module, verbose: bool = False) -> nn.Module:
     """
     返回：GraphModule（也是 nn.Module），所有 F.relu/torch.cat/torch.add 已被 Module 替换
     """
-    print("[DBG] replace_functional 被调用")   # 函数入口
     model.eval()
     traced = fx.symbolic_trace(model)
-    print(f"[DBG] 图节点总数: {len(traced.graph.nodes)}")
     for node in list(traced.graph.nodes):
         if node.op != "call_function":
             continue
         if node.target in (F.relu, torch.relu):
-            print(f"[DBG] 进入 relu 分支 → {node.name} | target={node.target}")
             relu, name = ReLU(), f"relu_{node.name}"
             traced.add_module(name, relu)
             with traced.graph.inserting_before(node):
@@ -82,7 +97,6 @@ def replace_functional(model: nn.Module, verbose: bool = False) -> nn.Module:
 
         elif node.target == torch.cat:
             # 支持位置参数或关键字参数
-            print(f"[DBG] 进入 cat 分支 → {node.name} | target={node.target}")
             if node.args and len(node.args) >= 2 and "dim" not in node.kwargs:
                 dim = node.args[1]
             else:
@@ -100,7 +114,6 @@ def replace_functional(model: nn.Module, verbose: bool = False) -> nn.Module:
             # 确保参数是 tensor（排除 int/float）
             if all(isinstance(arg, fx.Node) for arg in node.args):
                 # ===== 立即调试：确认进入分支 =====
-                print(f"[DBG] 进入 add 分支 → {node.name} | target={node.target}")
                 add, name = Add(), f"add_{node.name}"
                 traced.add_module(name, add)
                 with traced.graph.inserting_before(node):
@@ -109,6 +122,41 @@ def replace_functional(model: nn.Module, verbose: bool = False) -> nn.Module:
                 traced.graph.erase_node(node)
                 if verbose:
                     print(f"[FX] Replaced built-in add at {node.name}")
+        
+        elif node.target == F.max_pool2d:
+            # 获取 max_pool2d 的参数
+            kernel_size = node.args[1] if len(node.args) > 1 else node.kwargs.get("kernel_size")
+            stride = node.args[2] if len(node.args) > 2 else node.kwargs.get("stride")
+            # 打印调试信息
+            print(f"[FX] Replaced F.max_pool2d at {node.name} with args: kernel_size={kernel_size}, stride={stride}")
+
+            # 创建 MaxPool2d 模块
+            maxpool, name = MaxPool2d(kernel_size, stride), f"maxpool_{node.name}"
+            traced.add_module(name, maxpool)
+
+            # 替换节点
+            with traced.graph.inserting_before(node):
+                new_node = traced.graph.call_module(name, args=(node.args[0],))
+            node.replace_all_uses_with(new_node)
+            traced.graph.erase_node(node)
+
+
+            if verbose:
+                print(f"[FX] Replaced F.max_pool2d at {node.name}")
+
+        elif node.target == F.avg_pool2d:
+            # 获取 avg_pool2d 的参数
+            kernel_size = node.args[1] if len(node.args) > 1 else node.kwargs.get("kernel_size")
+            stride = node.args[2] if len(node.args) > 2 else node.kwargs.get("stride")
+            padding = node.args[3] if len(node.args) > 3 else node.kwargs.get("padding", 0)
+            avgpool, name = AvgPool2d(kernel_size, stride, padding), f"avgpool_{node.name}"
+            traced.add_module(name, avgpool)
+            with traced.graph.inserting_before(node):
+                new_node = traced.graph.call_module(name, args=node.args)
+            node.replace_all_uses_with(new_node)
+            traced.graph.erase_node(node)
+            if verbose:
+                print(f"[FX] Replaced F.avg_pool2d at {node.name}")
 
     traced.recompile()
 
@@ -121,13 +169,7 @@ def replace_functional(model: nn.Module, verbose: bool = False) -> nn.Module:
     add_cnt = sum(1 for m in traced.modules() if m.__class__.__name__ == 'Add')
     cat_cnt = sum(1 for m in traced.modules() if m.__class__.__name__ == 'Cat')
     relu_cnt = sum(1 for m in traced.modules() if m.__class__.__name__ == 'ReLU')
-    print("=== FX 替换统计 ===")
-    print(f"Add  模块数: {add_cnt}")
-    print(f"Cat  模块数: {cat_cnt}")
-    print(f"ReLU 模块数: {relu_cnt}")
-    if add_cnt == 0:
-        print("⚠️  未捕捉到任何 Add → 确认模型是否使用 torch.add 或 +")
-    else:
-        print("✅ Add 替换成功，钩子可抓到它们！")
-
+    maxpool_cnt = sum(1 for m in traced.modules() if m.__class__.__name__ == 'MaxPool2d')
+    avgpool_cnt = sum(1 for m in traced.modules() if m.__class__.__name__ == 'AvgPool2d')
+    print(f"[FX] 替换完成：Add={add_cnt}, Cat={cat_cnt}, ReLU={relu_cnt}, MaxPool2d={maxpool_cnt}, AvgPool2d={avgpool_cnt}")
     return traced

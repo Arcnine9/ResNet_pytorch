@@ -17,10 +17,10 @@ from torch_npu.contrib import transfer_to_npu   # 自动把 cuda 接口 remap
 device = torch.device("npu" if torch.npu.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 
 # ---------- 模型 ----------
-# net = inception_v3(aux_logits=False, init_weights=True)
-net = ResNet.resnet152(num_classes=10)
+net = inception_v3(aux_logits=False, init_weights=True)
+# net = ResNet.resnet152(num_classes=10)
 example = torch.randn(1, 3, 224, 224)          # 任意尺寸
-net = module_transfer.replace_functional(net, verbose=True)
+net = module_transfer.replace_functional(net, verbose=False)
 net = net.to(device)
 
 # ---------- 损失 & 优化 ----------
@@ -30,7 +30,7 @@ optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
 # ---------- 只跑 2 个 batch ----------
 BATCH_SIZE = 4
 NUM_BATCH  = 2
-hook.register_all_hooks(net)
+hook.register_all_hooks(net, config_file="layers_hook.config")
 
 for batch_idx in range(NUM_BATCH):
     # ===== 每 batch 重置执行序号 =====
