@@ -30,6 +30,7 @@ optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
 # ---------- 只跑 2 个 batch ----------
 BATCH_SIZE = 4
 NUM_BATCH  = 2
+hook.register_all_hooks(net)
 
 for batch_idx in range(NUM_BATCH):
     # ===== 每 batch 重置执行序号 =====
@@ -39,10 +40,6 @@ for batch_idx in range(NUM_BATCH):
     # 随机输入 & 标签
     inputs = torch.randn(BATCH_SIZE, 3, 224, 224, device=device)
     labels = torch.randint(0, 10, (BATCH_SIZE,), device=device)
-
-    # 挂钩子（可选：只打前几个模块）
-    # hook.debug_cat_inputs(net)
-    hook.register_all_hooks(net)
 
     # ===== 前向 =====
     net.train()
