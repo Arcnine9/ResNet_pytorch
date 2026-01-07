@@ -32,6 +32,7 @@ hook_manager = hook.register_all_hooks(net)
 for batch_idx in range(NUM_BATCH):
     # ===== 每 batch 重置执行序号 =====
     # hook._LAYER_ID = 0          # 全局序号归零
+    hook_manager.reset_issued_time()
     print(f"\n========== BATCH {batch_idx + 1} ==========")
 
     # 随机输入 & 标签
