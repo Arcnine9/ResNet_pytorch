@@ -41,6 +41,10 @@ class HookManager:
         with self.issued_time_lock:
             self.issued_time += 1
             return self.issued_time
+    
+    def reset_issued_time(self):
+        with self.issued_time_lock:
+            self.issued_time = 0
 
     def _make_forward_hook(self, name, module):
         def forward_hook(module, input, output):
