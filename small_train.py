@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding:utf-8 -*-
-"""
-只跑 2 个 batch 的完整前后向 demo
-每 batch 开始时 exec_id 归零，方便按 batch 切分日志
-"""
+
 import os
 import torch
 import torch.nn as nn
@@ -19,7 +16,7 @@ device = torch.device("npu" if torch.npu.is_available() else "cuda" if torch.cud
 # ---------- 模型 ----------
 net = inception_v3(aux_logits=False, init_weights=True)
 # net = ResNet.resnet152(num_classes=10)
-example = torch.randn(1, 3, 224, 224)          # 任意尺寸
+# example = torch.randn(1, 3, 224, 224)          # 任意尺寸
 net = module_transfer.replace_functional(net, verbose=False)
 net = net.to(device)
 
@@ -29,8 +26,8 @@ optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
 
 # ---------- 只跑 2 个 batch ----------
 BATCH_SIZE = 4
-NUM_BATCH  = 2
-hook.register_all_hooks(net, config_file="layers_hook.config")
+NUM_BATCH  = 1
+hook_manager = hook.register_all_hooks(net)
 
 for batch_idx in range(NUM_BATCH):
     # ===== 每 batch 重置执行序号 =====
@@ -52,4 +49,7 @@ for batch_idx in range(NUM_BATCH):
     optimizer.step()
 
 
-print("✅ 2-batch demo finished.")
+
+
+hook_manager.remove_hooks()
+print("✅ ")

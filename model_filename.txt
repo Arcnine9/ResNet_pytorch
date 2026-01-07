@@ -413,6 +413,9 @@ Inception3(
   (relu_relu_8): ReLU()
   (relu_relu_9): ReLU()
   (relu_relu_10): ReLU()
+  (avgpool_avg_pool2d): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_11): ReLU()
   (cat_cat): Cat()
   (relu_relu_12): ReLU()
@@ -421,6 +424,9 @@ Inception3(
   (relu_relu_15): ReLU()
   (relu_relu_16): ReLU()
   (relu_relu_17): ReLU()
+  (avgpool_avg_pool2d_1): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_18): ReLU()
   (cat_cat_1): Cat()
   (relu_relu_19): ReLU()
@@ -429,12 +435,16 @@ Inception3(
   (relu_relu_22): ReLU()
   (relu_relu_23): ReLU()
   (relu_relu_24): ReLU()
+  (avgpool_avg_pool2d_2): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_25): ReLU()
   (cat_cat_2): Cat()
   (relu_relu_26): ReLU()
   (relu_relu_27): ReLU()
   (relu_relu_28): ReLU()
   (relu_relu_29): ReLU()
+  (maxpool_max_pool2d): MaxPool2d()
   (cat_cat_3): Cat()
   (relu_relu_30): ReLU()
   (relu_relu_31): ReLU()
@@ -445,6 +455,9 @@ Inception3(
   (relu_relu_36): ReLU()
   (relu_relu_37): ReLU()
   (relu_relu_38): ReLU()
+  (avgpool_avg_pool2d_3): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_39): ReLU()
   (cat_cat_4): Cat()
   (relu_relu_40): ReLU()
@@ -456,6 +469,9 @@ Inception3(
   (relu_relu_46): ReLU()
   (relu_relu_47): ReLU()
   (relu_relu_48): ReLU()
+  (avgpool_avg_pool2d_4): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_49): ReLU()
   (cat_cat_5): Cat()
   (relu_relu_50): ReLU()
@@ -467,6 +483,9 @@ Inception3(
   (relu_relu_56): ReLU()
   (relu_relu_57): ReLU()
   (relu_relu_58): ReLU()
+  (avgpool_avg_pool2d_5): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_59): ReLU()
   (cat_cat_6): Cat()
   (relu_relu_60): ReLU()
@@ -478,6 +497,9 @@ Inception3(
   (relu_relu_66): ReLU()
   (relu_relu_67): ReLU()
   (relu_relu_68): ReLU()
+  (avgpool_avg_pool2d_6): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_69): ReLU()
   (cat_cat_7): Cat()
   (relu_relu_70): ReLU()
@@ -486,6 +508,7 @@ Inception3(
   (relu_relu_73): ReLU()
   (relu_relu_74): ReLU()
   (relu_relu_75): ReLU()
+  (maxpool_max_pool2d_1): MaxPool2d()
   (cat_cat_8): Cat()
   (relu_relu_76): ReLU()
   (relu_relu_77): ReLU()
@@ -497,6 +520,9 @@ Inception3(
   (relu_relu_82): ReLU()
   (relu_relu_83): ReLU()
   (cat_cat_10): Cat()
+  (avgpool_avg_pool2d_7): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_84): ReLU()
   (cat_cat_11): Cat()
   (relu_relu_85): ReLU()
@@ -509,6 +535,9 @@ Inception3(
   (relu_relu_91): ReLU()
   (relu_relu_92): ReLU()
   (cat_cat_13): Cat()
+  (avgpool_avg_pool2d_8): AvgPool2d(
+    (avgpool): AvgPool2d(kernel_size=3, stride=1, padding=1)
+  )
   (relu_relu_93): ReLU()
   (cat_cat_14): Cat()
 )
@@ -551,8 +580,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_5b_branch3x3dbl_3_conv = self.Mixed_5b.branch3x3dbl_3.conv(relu_relu_9);  relu_relu_9 = None
     mixed_5b_branch3x3dbl_3_bn = self.Mixed_5b.branch3x3dbl_3.bn(mixed_5b_branch3x3dbl_3_conv);  mixed_5b_branch3x3dbl_3_conv = None
     relu_relu_10 = self.relu_relu_10(mixed_5b_branch3x3dbl_3_bn);  mixed_5b_branch3x3dbl_3_bn = None
-    avg_pool2d = torch._C._nn.avg_pool2d(maxpool2, kernel_size = 3, stride = 1, padding = 1);  maxpool2 = None
-    mixed_5b_branch_pool_conv = self.Mixed_5b.branch_pool.conv(avg_pool2d);  avg_pool2d = None
+    avgpool_avg_pool2d = self.avgpool_avg_pool2d(maxpool2);  maxpool2 = None
+    mixed_5b_branch_pool_conv = self.Mixed_5b.branch_pool.conv(avgpool_avg_pool2d);  avgpool_avg_pool2d = None
     mixed_5b_branch_pool_bn = self.Mixed_5b.branch_pool.bn(mixed_5b_branch_pool_conv);  mixed_5b_branch_pool_conv = None
     relu_relu_11 = self.relu_relu_11(mixed_5b_branch_pool_bn);  mixed_5b_branch_pool_bn = None
     cat_cat = self.cat_cat([relu_relu_5, relu_relu_7, relu_relu_10, relu_relu_11], 1);  relu_relu_5 = relu_relu_7 = relu_relu_10 = relu_relu_11 = None
@@ -574,8 +603,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_5c_branch3x3dbl_3_conv = self.Mixed_5c.branch3x3dbl_3.conv(relu_relu_16);  relu_relu_16 = None
     mixed_5c_branch3x3dbl_3_bn = self.Mixed_5c.branch3x3dbl_3.bn(mixed_5c_branch3x3dbl_3_conv);  mixed_5c_branch3x3dbl_3_conv = None
     relu_relu_17 = self.relu_relu_17(mixed_5c_branch3x3dbl_3_bn);  mixed_5c_branch3x3dbl_3_bn = None
-    avg_pool2d_1 = torch._C._nn.avg_pool2d(cat_cat, kernel_size = 3, stride = 1, padding = 1);  cat_cat = None
-    mixed_5c_branch_pool_conv = self.Mixed_5c.branch_pool.conv(avg_pool2d_1);  avg_pool2d_1 = None
+    avgpool_avg_pool2d_1 = self.avgpool_avg_pool2d_1(cat_cat);  cat_cat = None
+    mixed_5c_branch_pool_conv = self.Mixed_5c.branch_pool.conv(avgpool_avg_pool2d_1);  avgpool_avg_pool2d_1 = None
     mixed_5c_branch_pool_bn = self.Mixed_5c.branch_pool.bn(mixed_5c_branch_pool_conv);  mixed_5c_branch_pool_conv = None
     relu_relu_18 = self.relu_relu_18(mixed_5c_branch_pool_bn);  mixed_5c_branch_pool_bn = None
     cat_cat_1 = self.cat_cat_1([relu_relu_12, relu_relu_14, relu_relu_17, relu_relu_18], 1);  relu_relu_12 = relu_relu_14 = relu_relu_17 = relu_relu_18 = None
@@ -597,8 +626,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_5d_branch3x3dbl_3_conv = self.Mixed_5d.branch3x3dbl_3.conv(relu_relu_23);  relu_relu_23 = None
     mixed_5d_branch3x3dbl_3_bn = self.Mixed_5d.branch3x3dbl_3.bn(mixed_5d_branch3x3dbl_3_conv);  mixed_5d_branch3x3dbl_3_conv = None
     relu_relu_24 = self.relu_relu_24(mixed_5d_branch3x3dbl_3_bn);  mixed_5d_branch3x3dbl_3_bn = None
-    avg_pool2d_2 = torch._C._nn.avg_pool2d(cat_cat_1, kernel_size = 3, stride = 1, padding = 1);  cat_cat_1 = None
-    mixed_5d_branch_pool_conv = self.Mixed_5d.branch_pool.conv(avg_pool2d_2);  avg_pool2d_2 = None
+    avgpool_avg_pool2d_2 = self.avgpool_avg_pool2d_2(cat_cat_1);  cat_cat_1 = None
+    mixed_5d_branch_pool_conv = self.Mixed_5d.branch_pool.conv(avgpool_avg_pool2d_2);  avgpool_avg_pool2d_2 = None
     mixed_5d_branch_pool_bn = self.Mixed_5d.branch_pool.bn(mixed_5d_branch_pool_conv);  mixed_5d_branch_pool_conv = None
     relu_relu_25 = self.relu_relu_25(mixed_5d_branch_pool_bn);  mixed_5d_branch_pool_bn = None
     cat_cat_2 = self.cat_cat_2([relu_relu_19, relu_relu_21, relu_relu_24, relu_relu_25], 1);  relu_relu_19 = relu_relu_21 = relu_relu_24 = relu_relu_25 = None
@@ -614,8 +643,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_6a_branch3x3dbl_3_conv = self.Mixed_6a.branch3x3dbl_3.conv(relu_relu_28);  relu_relu_28 = None
     mixed_6a_branch3x3dbl_3_bn = self.Mixed_6a.branch3x3dbl_3.bn(mixed_6a_branch3x3dbl_3_conv);  mixed_6a_branch3x3dbl_3_conv = None
     relu_relu_29 = self.relu_relu_29(mixed_6a_branch3x3dbl_3_bn);  mixed_6a_branch3x3dbl_3_bn = None
-    max_pool2d = torch.nn.functional.max_pool2d(cat_cat_2, 3, stride = 2, padding = 0, dilation = 1, ceil_mode = False, return_indices = False);  cat_cat_2 = None
-    cat_cat_3 = self.cat_cat_3([relu_relu_26, relu_relu_29, max_pool2d], 1);  relu_relu_26 = relu_relu_29 = max_pool2d = None
+    maxpool_max_pool2d = self.maxpool_max_pool2d(cat_cat_2);  cat_cat_2 = None
+    cat_cat_3 = self.cat_cat_3([relu_relu_26, relu_relu_29, maxpool_max_pool2d], 1);  relu_relu_26 = relu_relu_29 = maxpool_max_pool2d = None
     mixed_6b_branch1x1_conv = self.Mixed_6b.branch1x1.conv(cat_cat_3)
     mixed_6b_branch1x1_bn = self.Mixed_6b.branch1x1.bn(mixed_6b_branch1x1_conv);  mixed_6b_branch1x1_conv = None
     relu_relu_30 = self.relu_relu_30(mixed_6b_branch1x1_bn);  mixed_6b_branch1x1_bn = None
@@ -643,8 +672,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_6b_branch7x7dbl_5_conv = self.Mixed_6b.branch7x7dbl_5.conv(relu_relu_37);  relu_relu_37 = None
     mixed_6b_branch7x7dbl_5_bn = self.Mixed_6b.branch7x7dbl_5.bn(mixed_6b_branch7x7dbl_5_conv);  mixed_6b_branch7x7dbl_5_conv = None
     relu_relu_38 = self.relu_relu_38(mixed_6b_branch7x7dbl_5_bn);  mixed_6b_branch7x7dbl_5_bn = None
-    avg_pool2d_3 = torch._C._nn.avg_pool2d(cat_cat_3, kernel_size = 3, stride = 1, padding = 1);  cat_cat_3 = None
-    mixed_6b_branch_pool_conv = self.Mixed_6b.branch_pool.conv(avg_pool2d_3);  avg_pool2d_3 = None
+    avgpool_avg_pool2d_3 = self.avgpool_avg_pool2d_3(cat_cat_3);  cat_cat_3 = None
+    mixed_6b_branch_pool_conv = self.Mixed_6b.branch_pool.conv(avgpool_avg_pool2d_3);  avgpool_avg_pool2d_3 = None
     mixed_6b_branch_pool_bn = self.Mixed_6b.branch_pool.bn(mixed_6b_branch_pool_conv);  mixed_6b_branch_pool_conv = None
     relu_relu_39 = self.relu_relu_39(mixed_6b_branch_pool_bn);  mixed_6b_branch_pool_bn = None
     cat_cat_4 = self.cat_cat_4([relu_relu_30, relu_relu_33, relu_relu_38, relu_relu_39], 1);  relu_relu_30 = relu_relu_33 = relu_relu_38 = relu_relu_39 = None
@@ -675,8 +704,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_6c_branch7x7dbl_5_conv = self.Mixed_6c.branch7x7dbl_5.conv(relu_relu_47);  relu_relu_47 = None
     mixed_6c_branch7x7dbl_5_bn = self.Mixed_6c.branch7x7dbl_5.bn(mixed_6c_branch7x7dbl_5_conv);  mixed_6c_branch7x7dbl_5_conv = None
     relu_relu_48 = self.relu_relu_48(mixed_6c_branch7x7dbl_5_bn);  mixed_6c_branch7x7dbl_5_bn = None
-    avg_pool2d_4 = torch._C._nn.avg_pool2d(cat_cat_4, kernel_size = 3, stride = 1, padding = 1);  cat_cat_4 = None
-    mixed_6c_branch_pool_conv = self.Mixed_6c.branch_pool.conv(avg_pool2d_4);  avg_pool2d_4 = None
+    avgpool_avg_pool2d_4 = self.avgpool_avg_pool2d_4(cat_cat_4);  cat_cat_4 = None
+    mixed_6c_branch_pool_conv = self.Mixed_6c.branch_pool.conv(avgpool_avg_pool2d_4);  avgpool_avg_pool2d_4 = None
     mixed_6c_branch_pool_bn = self.Mixed_6c.branch_pool.bn(mixed_6c_branch_pool_conv);  mixed_6c_branch_pool_conv = None
     relu_relu_49 = self.relu_relu_49(mixed_6c_branch_pool_bn);  mixed_6c_branch_pool_bn = None
     cat_cat_5 = self.cat_cat_5([relu_relu_40, relu_relu_43, relu_relu_48, relu_relu_49], 1);  relu_relu_40 = relu_relu_43 = relu_relu_48 = relu_relu_49 = None
@@ -707,8 +736,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_6d_branch7x7dbl_5_conv = self.Mixed_6d.branch7x7dbl_5.conv(relu_relu_57);  relu_relu_57 = None
     mixed_6d_branch7x7dbl_5_bn = self.Mixed_6d.branch7x7dbl_5.bn(mixed_6d_branch7x7dbl_5_conv);  mixed_6d_branch7x7dbl_5_conv = None
     relu_relu_58 = self.relu_relu_58(mixed_6d_branch7x7dbl_5_bn);  mixed_6d_branch7x7dbl_5_bn = None
-    avg_pool2d_5 = torch._C._nn.avg_pool2d(cat_cat_5, kernel_size = 3, stride = 1, padding = 1);  cat_cat_5 = None
-    mixed_6d_branch_pool_conv = self.Mixed_6d.branch_pool.conv(avg_pool2d_5);  avg_pool2d_5 = None
+    avgpool_avg_pool2d_5 = self.avgpool_avg_pool2d_5(cat_cat_5);  cat_cat_5 = None
+    mixed_6d_branch_pool_conv = self.Mixed_6d.branch_pool.conv(avgpool_avg_pool2d_5);  avgpool_avg_pool2d_5 = None
     mixed_6d_branch_pool_bn = self.Mixed_6d.branch_pool.bn(mixed_6d_branch_pool_conv);  mixed_6d_branch_pool_conv = None
     relu_relu_59 = self.relu_relu_59(mixed_6d_branch_pool_bn);  mixed_6d_branch_pool_bn = None
     cat_cat_6 = self.cat_cat_6([relu_relu_50, relu_relu_53, relu_relu_58, relu_relu_59], 1);  relu_relu_50 = relu_relu_53 = relu_relu_58 = relu_relu_59 = None
@@ -739,8 +768,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_6e_branch7x7dbl_5_conv = self.Mixed_6e.branch7x7dbl_5.conv(relu_relu_67);  relu_relu_67 = None
     mixed_6e_branch7x7dbl_5_bn = self.Mixed_6e.branch7x7dbl_5.bn(mixed_6e_branch7x7dbl_5_conv);  mixed_6e_branch7x7dbl_5_conv = None
     relu_relu_68 = self.relu_relu_68(mixed_6e_branch7x7dbl_5_bn);  mixed_6e_branch7x7dbl_5_bn = None
-    avg_pool2d_6 = torch._C._nn.avg_pool2d(cat_cat_6, kernel_size = 3, stride = 1, padding = 1);  cat_cat_6 = None
-    mixed_6e_branch_pool_conv = self.Mixed_6e.branch_pool.conv(avg_pool2d_6);  avg_pool2d_6 = None
+    avgpool_avg_pool2d_6 = self.avgpool_avg_pool2d_6(cat_cat_6);  cat_cat_6 = None
+    mixed_6e_branch_pool_conv = self.Mixed_6e.branch_pool.conv(avgpool_avg_pool2d_6);  avgpool_avg_pool2d_6 = None
     mixed_6e_branch_pool_bn = self.Mixed_6e.branch_pool.bn(mixed_6e_branch_pool_conv);  mixed_6e_branch_pool_conv = None
     relu_relu_69 = self.relu_relu_69(mixed_6e_branch_pool_bn);  mixed_6e_branch_pool_bn = None
     cat_cat_7 = self.cat_cat_7([relu_relu_60, relu_relu_63, relu_relu_68, relu_relu_69], 1);  relu_relu_60 = relu_relu_63 = relu_relu_68 = relu_relu_69 = None
@@ -762,8 +791,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_7a_branch7x7x3_4_conv = self.Mixed_7a.branch7x7x3_4.conv(relu_relu_74);  relu_relu_74 = None
     mixed_7a_branch7x7x3_4_bn = self.Mixed_7a.branch7x7x3_4.bn(mixed_7a_branch7x7x3_4_conv);  mixed_7a_branch7x7x3_4_conv = None
     relu_relu_75 = self.relu_relu_75(mixed_7a_branch7x7x3_4_bn);  mixed_7a_branch7x7x3_4_bn = None
-    max_pool2d_1 = torch.nn.functional.max_pool2d(cat_cat_7, 3, stride = 2, padding = 0, dilation = 1, ceil_mode = False, return_indices = False);  cat_cat_7 = None
-    cat_cat_8 = self.cat_cat_8([relu_relu_71, relu_relu_75, max_pool2d_1], 1);  relu_relu_71 = relu_relu_75 = max_pool2d_1 = None
+    maxpool_max_pool2d_1 = self.maxpool_max_pool2d_1(cat_cat_7);  cat_cat_7 = None
+    cat_cat_8 = self.cat_cat_8([relu_relu_71, relu_relu_75, maxpool_max_pool2d_1], 1);  relu_relu_71 = relu_relu_75 = maxpool_max_pool2d_1 = None
     mixed_7b_branch1x1_conv = self.Mixed_7b.branch1x1.conv(cat_cat_8)
     mixed_7b_branch1x1_bn = self.Mixed_7b.branch1x1.bn(mixed_7b_branch1x1_conv);  mixed_7b_branch1x1_conv = None
     relu_relu_76 = self.relu_relu_76(mixed_7b_branch1x1_bn);  mixed_7b_branch1x1_bn = None
@@ -790,8 +819,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_7b_branch3x3dbl_3b_bn = self.Mixed_7b.branch3x3dbl_3b.bn(mixed_7b_branch3x3dbl_3b_conv);  mixed_7b_branch3x3dbl_3b_conv = None
     relu_relu_83 = self.relu_relu_83(mixed_7b_branch3x3dbl_3b_bn);  mixed_7b_branch3x3dbl_3b_bn = None
     cat_cat_10 = self.cat_cat_10([relu_relu_82, relu_relu_83], 1);  relu_relu_82 = relu_relu_83 = None
-    avg_pool2d_7 = torch._C._nn.avg_pool2d(cat_cat_8, kernel_size = 3, stride = 1, padding = 1);  cat_cat_8 = None
-    mixed_7b_branch_pool_conv = self.Mixed_7b.branch_pool.conv(avg_pool2d_7);  avg_pool2d_7 = None
+    avgpool_avg_pool2d_7 = self.avgpool_avg_pool2d_7(cat_cat_8);  cat_cat_8 = None
+    mixed_7b_branch_pool_conv = self.Mixed_7b.branch_pool.conv(avgpool_avg_pool2d_7);  avgpool_avg_pool2d_7 = None
     mixed_7b_branch_pool_bn = self.Mixed_7b.branch_pool.bn(mixed_7b_branch_pool_conv);  mixed_7b_branch_pool_conv = None
     relu_relu_84 = self.relu_relu_84(mixed_7b_branch_pool_bn);  mixed_7b_branch_pool_bn = None
     cat_cat_11 = self.cat_cat_11([relu_relu_76, cat_cat_9, cat_cat_10, relu_relu_84], 1);  relu_relu_76 = cat_cat_9 = cat_cat_10 = relu_relu_84 = None
@@ -821,8 +850,8 @@ def forward(self, x : torch.Tensor) -> torchvision_models_inception_InceptionOut
     mixed_7c_branch3x3dbl_3b_bn = self.Mixed_7c.branch3x3dbl_3b.bn(mixed_7c_branch3x3dbl_3b_conv);  mixed_7c_branch3x3dbl_3b_conv = None
     relu_relu_92 = self.relu_relu_92(mixed_7c_branch3x3dbl_3b_bn);  mixed_7c_branch3x3dbl_3b_bn = None
     cat_cat_13 = self.cat_cat_13([relu_relu_91, relu_relu_92], 1);  relu_relu_91 = relu_relu_92 = None
-    avg_pool2d_8 = torch._C._nn.avg_pool2d(cat_cat_11, kernel_size = 3, stride = 1, padding = 1);  cat_cat_11 = None
-    mixed_7c_branch_pool_conv = self.Mixed_7c.branch_pool.conv(avg_pool2d_8);  avg_pool2d_8 = None
+    avgpool_avg_pool2d_8 = self.avgpool_avg_pool2d_8(cat_cat_11);  cat_cat_11 = None
+    mixed_7c_branch_pool_conv = self.Mixed_7c.branch_pool.conv(avgpool_avg_pool2d_8);  avgpool_avg_pool2d_8 = None
     mixed_7c_branch_pool_bn = self.Mixed_7c.branch_pool.bn(mixed_7c_branch_pool_conv);  mixed_7c_branch_pool_conv = None
     relu_relu_93 = self.relu_relu_93(mixed_7c_branch_pool_bn);  mixed_7c_branch_pool_bn = None
     cat_cat_14 = self.cat_cat_14([relu_relu_85, cat_cat_12, cat_cat_13, relu_relu_93], 1);  relu_relu_85 = cat_cat_12 = cat_cat_13 = relu_relu_93 = None

@@ -1,12 +1,12 @@
 # 配置
 net: InceptionV3  # 网络模型选择(ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, InceptionV3)
 class_path: /data/train5_data/ResNet/ori_data/classes.txt  # 标签文件路径
-width: 75
-height: 75
+width: 299
+height: 299
 train:
   epoch: 1  # 遍历数据集次数
   pre_epoch: 0  # 定义已经遍历数据集的次数
-  batch_size: 256  # 批处理尺寸(batch_size)
+  batch_size: 128  # 批处理尺寸(batch_size)
   lr: 0.001  # 学习率
   train_data: /data/train5_data/ResNet/ori_data  # 训练集路径
   test_data: /data/train5_data/ResNet/ori_data  # 训练集路径
