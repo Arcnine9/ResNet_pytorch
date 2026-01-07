@@ -117,14 +117,14 @@ elif config["net"] == "ResNet152":
 # ========== 原脚本位置：模型定义完、hook 注册前 ==========
 elif config["net"] == "InceptionV3":
     net = inception_v3(num_classes=classes.__len__(), aux_logits=False)
-    import swap_manager.module_transfer as module_transfer
-    net = module_transfer.replace_functional(net)
+    # import swap_manager.module_transfer as module_transfer
+    # net = module_transfer.replace_functional(net)
     net = net.to(device)
 else:
     raise Exception("网络模型配置存在问题，请确认配置文件")
 
-import swap_manager.hook as hook_manager
-hook_manager = hook_manager.register_all_hooks(net)
+# import swap_manager.hook as hook_manager
+# hook_manager = hook_manager.register_all_hooks(net)
 
 model_filename = f"{config['net']}_model.txt"
 with open("model_filename.txt", "w") as f:
