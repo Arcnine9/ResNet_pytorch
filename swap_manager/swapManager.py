@@ -1,12 +1,26 @@
 import torch
 import torch.nn as nn
-from typing import List, Tuple, Dict
+from typing import List, Dict
 import torch_npu
 from torch_npu.contrib import transfer_to_npu
-import acl
 
+# Event 类
+class Event:
+    def __init__(self, issued_time: int, tensor_id: int, from_location: str, to_location: str, tag: str):
+        self.issued_time = issued_time
+        self.tensor_id = tensor_id
+        self.from_location = from_location
+        self.to_location = to_location
+        self.tag = tag
+
+    def __repr__(self):
+        return (f"Issued Time: {self.issued_time}, Tensor: {self.tensor_id}, "
+                f"From: {self.from_location}, To: {self.to_location}, Tag: {self.tag}")
+
+
+# SwapTensor 类
 class SwapTensor:
-    def __init__(self, tensor, layer_name):
+    def __init__(self, tensor):
         self.tensor = tensor
         self.size = tensor.size()
         self.storage_size = tensor.storage().size()
@@ -16,7 +30,6 @@ class SwapTensor:
         self.h2d_event = torch.npu.Event()
 
         self.stat = "device"
-        self.layer_name = layer_name
 
         self.prefetch_data_ptr = tensor.data_ptr()
         self.storage_data_ptr = tensor.storage().data_ptr()
@@ -27,7 +40,6 @@ class SwapTensor:
         self.stream = None
         self.layer_index = 0
 
-    # device to host
     def launch_d2h(self, stream):
         if self.stat != "device":
             return
@@ -42,7 +54,6 @@ class SwapTensor:
                     self.tensor_cpu.storage().copy_(self.tensor.storage(), non_blocking=True)
                 self.stat = "d2h"
 
-    # synchronize d2h and resize 0
     def wait_d2h_finished(self, stream, need_wait=False):
         if self.stat != "d2h":
             return
@@ -52,7 +63,6 @@ class SwapTensor:
         self.tensor.storage().resize_(0)
         self.stat = "host"
 
-    # resize storage_size and host to device
     def launch_h2d(self, stream, flag):
         if self.stat != "host":
             return
@@ -70,7 +80,6 @@ class SwapTensor:
                 self.h2d_event.record()
                 self.stat = "h2d"
 
-    # synchronize h2d
     def wait_h2d_finished(self, stream, need_wait=False):
         if self.stat != "h2d":
             return
@@ -79,16 +88,17 @@ class SwapTensor:
             torch.npu.default_stream().wait_stream(stream)
         self.stat = "device"
 
-# ========== SwapManager 类 ==========
+
+# SwapManager 类
 class SwapManager:
     def __init__(self):
         self.swap_tensors: Dict[int, SwapTensor] = {}  # key: tensor_id, value: SwapTensor
         self.issued_time = 0  # 当前已处理的事件时间戳
 
-    def add_swap_tensor(self, tensor_id: int, tensor: torch.Tensor, layer_name: str):
+    def add_swap_tensor(self, tensor_id: int, tensor: torch.Tensor):
         """添加一个新的 SwapTensor 对象"""
         if tensor_id not in self.swap_tensors:
-            self.swap_tensors[tensor_id] = SwapTensor(tensor, layer_name)
+            self.swap_tensors[tensor_id] = SwapTensor(tensor)
         else:
             raise ValueError(f"Tensor ID {tensor_id} already exists in SwapManager.")
 
