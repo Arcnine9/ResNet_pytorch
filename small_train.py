@@ -26,7 +26,7 @@ optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
 
 # ---------- 只跑 2 个 batch ----------
 BATCH_SIZE = 4
-NUM_BATCH  = 1
+NUM_BATCH  = 2
 swapManager = swapManager.SwapManager()
 hook_manager = hook.HookManager(swapManager, "prefetch.config", net)
 
