@@ -38,6 +38,11 @@ def log_message(message):
     with _LOG_F_LOCK:
         print(message, file=_get_log_f())
 
+def log_lifecycle(action: str, tensor_id: int, time: int = 0):
+    """action: extract / d2h / h2d"""
+    with _LOG_F_LOCK:
+        print(f"[SWAP-LIFE] {action:5} | Tensor: {tensor_id:4} Current_Issue_time: {time:4}", file=_get_log_f())
+
 # 钩子管理器
 class HookManager:
     def __init__(self, swap_manager: SwapManager, event_file: str, model: nn.Module):
@@ -46,9 +51,11 @@ class HookManager:
         self.hooks = []
         self.swap_manager = swap_manager
         self.events = self.load_events(event_file)
+        log_message(f"[HOOK-INIT] 事件文件加载完成，共 {len(self.events)} 条事件，起始 event_index=0")
         self.event_index = 0
         self.model = model
         self.current_module_name = None
+        self.register_hooks(model)
 
     def _increment_issued_time(self):
         with self.issued_time_lock:
@@ -80,7 +87,7 @@ class HookManager:
     def _make_forward_hook(self, name, module):
         def forward_hook(module, input, output):
             issued_time = self._increment_issued_time()
-            log_message(f"[FWD-END] Issued Time: {issued_time}, Layer: {name}")
+            # log_message(f"[FWD-END] Issued Time: {issued_time}, Layer: {name}")
             # 设置当前模块名称
             self.current_module_name = name
             # 检查并触发事件
@@ -90,7 +97,7 @@ class HookManager:
     def _make_backward_hook(self, name, module):
         def backward_hook(module, grad_input, grad_output):
             issued_time = self._increment_issued_time()
-            log_message(f"[BWD-BEGIN] Issued Time: {issued_time}, Layer: {name}")
+            # log_message(f"[BWD-BEGIN] Issued Time: {issued_time}, Layer: {name}")
             # 检查并触发事件
             self.process_events(issued_time)
         return backward_hook
@@ -135,14 +142,17 @@ class HookManager:
                 if tensor is not None:
                     # 初始化 SwapTensor
                     self.swap_manager.add_swap_tensor(tensor_id, tensor)
+                    log_lifecycle("extract", tensor_id, current_time)
 
             elif from_location == "In_gpu" and to_location == "In_cpu":
                 # 触发 device to host 操作
                 self.swap_manager.launch_d2h(tensor_id, torch_npu.npu.current_stream())
+                log_lifecycle("d2h", tensor_id, current_time)
 
             elif from_location == "In_cpu" and to_location == "In_gpu":
                 # 触发 host to device 操作
                 self.swap_manager.launch_h2d(tensor_id, torch_npu.npu.current_stream(), flag=True)
+                log_lifecycle("h2d", tensor_id, current_time)
 
             self.event_index += 1
 

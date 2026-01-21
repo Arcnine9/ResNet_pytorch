@@ -1,627 +1,937 @@
-[FWD-END] Issued Time: 1, Layer: Conv2d_1a_3x3.conv
-[FWD-END] Issued Time: 2, Layer: Conv2d_1a_3x3.bn
-[FWD-END] Issued Time: 3, Layer: relu_relu
-[FWD-END] Issued Time: 4, Layer: Conv2d_2a_3x3.conv
-[FWD-END] Issued Time: 5, Layer: Conv2d_2a_3x3.bn
-[FWD-END] Issued Time: 6, Layer: relu_relu_1
-[FWD-END] Issued Time: 7, Layer: Conv2d_2b_3x3.conv
-[FWD-END] Issued Time: 8, Layer: Conv2d_2b_3x3.bn
-[FWD-END] Issued Time: 9, Layer: relu_relu_2
-[FWD-END] Issued Time: 10, Layer: maxpool1
-[FWD-END] Issued Time: 11, Layer: Conv2d_3b_1x1.conv
-[FWD-END] Issued Time: 12, Layer: Conv2d_3b_1x1.bn
-[FWD-END] Issued Time: 13, Layer: relu_relu_3
-[FWD-END] Issued Time: 14, Layer: Conv2d_4a_3x3.conv
-[FWD-END] Issued Time: 15, Layer: Conv2d_4a_3x3.bn
-[FWD-END] Issued Time: 16, Layer: relu_relu_4
-[FWD-END] Issued Time: 17, Layer: maxpool2
-[FWD-END] Issued Time: 18, Layer: Mixed_5b.branch1x1.conv
-[FWD-END] Issued Time: 19, Layer: Mixed_5b.branch1x1.bn
-[FWD-END] Issued Time: 20, Layer: relu_relu_5
-[FWD-END] Issued Time: 21, Layer: Mixed_5b.branch5x5_1.conv
-[FWD-END] Issued Time: 22, Layer: Mixed_5b.branch5x5_1.bn
-[FWD-END] Issued Time: 23, Layer: relu_relu_6
-[FWD-END] Issued Time: 24, Layer: Mixed_5b.branch5x5_2.conv
-[FWD-END] Issued Time: 25, Layer: Mixed_5b.branch5x5_2.bn
-[FWD-END] Issued Time: 26, Layer: relu_relu_7
-[FWD-END] Issued Time: 27, Layer: Mixed_5b.branch3x3dbl_1.conv
-[FWD-END] Issued Time: 28, Layer: Mixed_5b.branch3x3dbl_1.bn
-[FWD-END] Issued Time: 29, Layer: relu_relu_8
-[FWD-END] Issued Time: 30, Layer: Mixed_5b.branch3x3dbl_2.conv
-[FWD-END] Issued Time: 31, Layer: Mixed_5b.branch3x3dbl_2.bn
-[FWD-END] Issued Time: 32, Layer: relu_relu_9
-[FWD-END] Issued Time: 33, Layer: Mixed_5b.branch3x3dbl_3.conv
-[FWD-END] Issued Time: 34, Layer: Mixed_5b.branch3x3dbl_3.bn
-[FWD-END] Issued Time: 35, Layer: relu_relu_10
-[FWD-END] Issued Time: 36, Layer: avgpool_avg_pool2d
-[FWD-END] Issued Time: 37, Layer: Mixed_5b.branch_pool.conv
-[FWD-END] Issued Time: 38, Layer: Mixed_5b.branch_pool.bn
-[FWD-END] Issued Time: 39, Layer: relu_relu_11
-[FWD-END] Issued Time: 40, Layer: cat_cat
-[FWD-END] Issued Time: 41, Layer: Mixed_5c.branch1x1.conv
-[FWD-END] Issued Time: 42, Layer: Mixed_5c.branch1x1.bn
-[FWD-END] Issued Time: 43, Layer: relu_relu_12
-[FWD-END] Issued Time: 44, Layer: Mixed_5c.branch5x5_1.conv
-[FWD-END] Issued Time: 45, Layer: Mixed_5c.branch5x5_1.bn
-[FWD-END] Issued Time: 46, Layer: relu_relu_13
-[FWD-END] Issued Time: 47, Layer: Mixed_5c.branch5x5_2.conv
-[FWD-END] Issued Time: 48, Layer: Mixed_5c.branch5x5_2.bn
-[FWD-END] Issued Time: 49, Layer: relu_relu_14
-[FWD-END] Issued Time: 50, Layer: Mixed_5c.branch3x3dbl_1.conv
-[FWD-END] Issued Time: 51, Layer: Mixed_5c.branch3x3dbl_1.bn
-[FWD-END] Issued Time: 52, Layer: relu_relu_15
-[FWD-END] Issued Time: 53, Layer: Mixed_5c.branch3x3dbl_2.conv
-[FWD-END] Issued Time: 54, Layer: Mixed_5c.branch3x3dbl_2.bn
-[FWD-END] Issued Time: 55, Layer: relu_relu_16
-[FWD-END] Issued Time: 56, Layer: Mixed_5c.branch3x3dbl_3.conv
-[FWD-END] Issued Time: 57, Layer: Mixed_5c.branch3x3dbl_3.bn
-[FWD-END] Issued Time: 58, Layer: relu_relu_17
-[FWD-END] Issued Time: 59, Layer: avgpool_avg_pool2d_1
-[FWD-END] Issued Time: 60, Layer: Mixed_5c.branch_pool.conv
-[FWD-END] Issued Time: 61, Layer: Mixed_5c.branch_pool.bn
-[FWD-END] Issued Time: 62, Layer: relu_relu_18
-[FWD-END] Issued Time: 63, Layer: cat_cat_1
-[FWD-END] Issued Time: 64, Layer: Mixed_5d.branch1x1.conv
-[FWD-END] Issued Time: 65, Layer: Mixed_5d.branch1x1.bn
-[FWD-END] Issued Time: 66, Layer: relu_relu_19
-[FWD-END] Issued Time: 67, Layer: Mixed_5d.branch5x5_1.conv
-[FWD-END] Issued Time: 68, Layer: Mixed_5d.branch5x5_1.bn
-[FWD-END] Issued Time: 69, Layer: relu_relu_20
-[FWD-END] Issued Time: 70, Layer: Mixed_5d.branch5x5_2.conv
-[FWD-END] Issued Time: 71, Layer: Mixed_5d.branch5x5_2.bn
-[FWD-END] Issued Time: 72, Layer: relu_relu_21
-[FWD-END] Issued Time: 73, Layer: Mixed_5d.branch3x3dbl_1.conv
-[FWD-END] Issued Time: 74, Layer: Mixed_5d.branch3x3dbl_1.bn
-[FWD-END] Issued Time: 75, Layer: relu_relu_22
-[FWD-END] Issued Time: 76, Layer: Mixed_5d.branch3x3dbl_2.conv
-[FWD-END] Issued Time: 77, Layer: Mixed_5d.branch3x3dbl_2.bn
-[FWD-END] Issued Time: 78, Layer: relu_relu_23
-[FWD-END] Issued Time: 79, Layer: Mixed_5d.branch3x3dbl_3.conv
-[FWD-END] Issued Time: 80, Layer: Mixed_5d.branch3x3dbl_3.bn
-[FWD-END] Issued Time: 81, Layer: relu_relu_24
-[FWD-END] Issued Time: 82, Layer: avgpool_avg_pool2d_2
-[FWD-END] Issued Time: 83, Layer: Mixed_5d.branch_pool.conv
-[FWD-END] Issued Time: 84, Layer: Mixed_5d.branch_pool.bn
-[FWD-END] Issued Time: 85, Layer: relu_relu_25
-[FWD-END] Issued Time: 86, Layer: cat_cat_2
-[FWD-END] Issued Time: 87, Layer: Mixed_6a.branch3x3.conv
-[FWD-END] Issued Time: 88, Layer: Mixed_6a.branch3x3.bn
-[FWD-END] Issued Time: 89, Layer: relu_relu_26
-[FWD-END] Issued Time: 90, Layer: Mixed_6a.branch3x3dbl_1.conv
-[FWD-END] Issued Time: 91, Layer: Mixed_6a.branch3x3dbl_1.bn
-[FWD-END] Issued Time: 92, Layer: relu_relu_27
-[FWD-END] Issued Time: 93, Layer: Mixed_6a.branch3x3dbl_2.conv
-[FWD-END] Issued Time: 94, Layer: Mixed_6a.branch3x3dbl_2.bn
-[FWD-END] Issued Time: 95, Layer: relu_relu_28
-[FWD-END] Issued Time: 96, Layer: Mixed_6a.branch3x3dbl_3.conv
-[FWD-END] Issued Time: 97, Layer: Mixed_6a.branch3x3dbl_3.bn
-[FWD-END] Issued Time: 98, Layer: relu_relu_29
-[FWD-END] Issued Time: 99, Layer: maxpool_max_pool2d
-[FWD-END] Issued Time: 100, Layer: cat_cat_3
-[FWD-END] Issued Time: 101, Layer: Mixed_6b.branch1x1.conv
-[FWD-END] Issued Time: 102, Layer: Mixed_6b.branch1x1.bn
-[FWD-END] Issued Time: 103, Layer: relu_relu_30
-[FWD-END] Issued Time: 104, Layer: Mixed_6b.branch7x7_1.conv
-[FWD-END] Issued Time: 105, Layer: Mixed_6b.branch7x7_1.bn
-[FWD-END] Issued Time: 106, Layer: relu_relu_31
-[FWD-END] Issued Time: 107, Layer: Mixed_6b.branch7x7_2.conv
-[FWD-END] Issued Time: 108, Layer: Mixed_6b.branch7x7_2.bn
-[FWD-END] Issued Time: 109, Layer: relu_relu_32
-[FWD-END] Issued Time: 110, Layer: Mixed_6b.branch7x7_3.conv
-[FWD-END] Issued Time: 111, Layer: Mixed_6b.branch7x7_3.bn
-[FWD-END] Issued Time: 112, Layer: relu_relu_33
-[FWD-END] Issued Time: 113, Layer: Mixed_6b.branch7x7dbl_1.conv
-[FWD-END] Issued Time: 114, Layer: Mixed_6b.branch7x7dbl_1.bn
-[FWD-END] Issued Time: 115, Layer: relu_relu_34
-[FWD-END] Issued Time: 116, Layer: Mixed_6b.branch7x7dbl_2.conv
-[FWD-END] Issued Time: 117, Layer: Mixed_6b.branch7x7dbl_2.bn
-[FWD-END] Issued Time: 118, Layer: relu_relu_35
-[FWD-END] Issued Time: 119, Layer: Mixed_6b.branch7x7dbl_3.conv
-[FWD-END] Issued Time: 120, Layer: Mixed_6b.branch7x7dbl_3.bn
-[FWD-END] Issued Time: 121, Layer: relu_relu_36
-[FWD-END] Issued Time: 122, Layer: Mixed_6b.branch7x7dbl_4.conv
-[FWD-END] Issued Time: 123, Layer: Mixed_6b.branch7x7dbl_4.bn
-[FWD-END] Issued Time: 124, Layer: relu_relu_37
-[FWD-END] Issued Time: 125, Layer: Mixed_6b.branch7x7dbl_5.conv
-[FWD-END] Issued Time: 126, Layer: Mixed_6b.branch7x7dbl_5.bn
-[FWD-END] Issued Time: 127, Layer: relu_relu_38
-[FWD-END] Issued Time: 128, Layer: avgpool_avg_pool2d_3
-[FWD-END] Issued Time: 129, Layer: Mixed_6b.branch_pool.conv
-[FWD-END] Issued Time: 130, Layer: Mixed_6b.branch_pool.bn
-[FWD-END] Issued Time: 131, Layer: relu_relu_39
-[FWD-END] Issued Time: 132, Layer: cat_cat_4
-[FWD-END] Issued Time: 133, Layer: Mixed_6c.branch1x1.conv
-[FWD-END] Issued Time: 134, Layer: Mixed_6c.branch1x1.bn
-[FWD-END] Issued Time: 135, Layer: relu_relu_40
-[FWD-END] Issued Time: 136, Layer: Mixed_6c.branch7x7_1.conv
-[FWD-END] Issued Time: 137, Layer: Mixed_6c.branch7x7_1.bn
-[FWD-END] Issued Time: 138, Layer: relu_relu_41
-[FWD-END] Issued Time: 139, Layer: Mixed_6c.branch7x7_2.conv
-[FWD-END] Issued Time: 140, Layer: Mixed_6c.branch7x7_2.bn
-[FWD-END] Issued Time: 141, Layer: relu_relu_42
-[FWD-END] Issued Time: 142, Layer: Mixed_6c.branch7x7_3.conv
-[FWD-END] Issued Time: 143, Layer: Mixed_6c.branch7x7_3.bn
-[FWD-END] Issued Time: 144, Layer: relu_relu_43
-[FWD-END] Issued Time: 145, Layer: Mixed_6c.branch7x7dbl_1.conv
-[FWD-END] Issued Time: 146, Layer: Mixed_6c.branch7x7dbl_1.bn
-[FWD-END] Issued Time: 147, Layer: relu_relu_44
-[FWD-END] Issued Time: 148, Layer: Mixed_6c.branch7x7dbl_2.conv
-[FWD-END] Issued Time: 149, Layer: Mixed_6c.branch7x7dbl_2.bn
-[FWD-END] Issued Time: 150, Layer: relu_relu_45
-[FWD-END] Issued Time: 151, Layer: Mixed_6c.branch7x7dbl_3.conv
-[FWD-END] Issued Time: 152, Layer: Mixed_6c.branch7x7dbl_3.bn
-[FWD-END] Issued Time: 153, Layer: relu_relu_46
-[FWD-END] Issued Time: 154, Layer: Mixed_6c.branch7x7dbl_4.conv
-[FWD-END] Issued Time: 155, Layer: Mixed_6c.branch7x7dbl_4.bn
-[FWD-END] Issued Time: 156, Layer: relu_relu_47
-[FWD-END] Issued Time: 157, Layer: Mixed_6c.branch7x7dbl_5.conv
-[FWD-END] Issued Time: 158, Layer: Mixed_6c.branch7x7dbl_5.bn
-[FWD-END] Issued Time: 159, Layer: relu_relu_48
-[FWD-END] Issued Time: 160, Layer: avgpool_avg_pool2d_4
-[FWD-END] Issued Time: 161, Layer: Mixed_6c.branch_pool.conv
-[FWD-END] Issued Time: 162, Layer: Mixed_6c.branch_pool.bn
-[FWD-END] Issued Time: 163, Layer: relu_relu_49
-[FWD-END] Issued Time: 164, Layer: cat_cat_5
-[FWD-END] Issued Time: 165, Layer: Mixed_6d.branch1x1.conv
-[FWD-END] Issued Time: 166, Layer: Mixed_6d.branch1x1.bn
-[FWD-END] Issued Time: 167, Layer: relu_relu_50
-[FWD-END] Issued Time: 168, Layer: Mixed_6d.branch7x7_1.conv
-[FWD-END] Issued Time: 169, Layer: Mixed_6d.branch7x7_1.bn
-[FWD-END] Issued Time: 170, Layer: relu_relu_51
-[FWD-END] Issued Time: 171, Layer: Mixed_6d.branch7x7_2.conv
-[FWD-END] Issued Time: 172, Layer: Mixed_6d.branch7x7_2.bn
-[FWD-END] Issued Time: 173, Layer: relu_relu_52
-[FWD-END] Issued Time: 174, Layer: Mixed_6d.branch7x7_3.conv
-[FWD-END] Issued Time: 175, Layer: Mixed_6d.branch7x7_3.bn
-[FWD-END] Issued Time: 176, Layer: relu_relu_53
-[FWD-END] Issued Time: 177, Layer: Mixed_6d.branch7x7dbl_1.conv
-[FWD-END] Issued Time: 178, Layer: Mixed_6d.branch7x7dbl_1.bn
-[FWD-END] Issued Time: 179, Layer: relu_relu_54
-[FWD-END] Issued Time: 180, Layer: Mixed_6d.branch7x7dbl_2.conv
-[FWD-END] Issued Time: 181, Layer: Mixed_6d.branch7x7dbl_2.bn
-[FWD-END] Issued Time: 182, Layer: relu_relu_55
-[FWD-END] Issued Time: 183, Layer: Mixed_6d.branch7x7dbl_3.conv
-[FWD-END] Issued Time: 184, Layer: Mixed_6d.branch7x7dbl_3.bn
-[FWD-END] Issued Time: 185, Layer: relu_relu_56
-[FWD-END] Issued Time: 186, Layer: Mixed_6d.branch7x7dbl_4.conv
-[FWD-END] Issued Time: 187, Layer: Mixed_6d.branch7x7dbl_4.bn
-[FWD-END] Issued Time: 188, Layer: relu_relu_57
-[FWD-END] Issued Time: 189, Layer: Mixed_6d.branch7x7dbl_5.conv
-[FWD-END] Issued Time: 190, Layer: Mixed_6d.branch7x7dbl_5.bn
-[FWD-END] Issued Time: 191, Layer: relu_relu_58
-[FWD-END] Issued Time: 192, Layer: avgpool_avg_pool2d_5
-[FWD-END] Issued Time: 193, Layer: Mixed_6d.branch_pool.conv
-[FWD-END] Issued Time: 194, Layer: Mixed_6d.branch_pool.bn
-[FWD-END] Issued Time: 195, Layer: relu_relu_59
-[FWD-END] Issued Time: 196, Layer: cat_cat_6
-[FWD-END] Issued Time: 197, Layer: Mixed_6e.branch1x1.conv
-[FWD-END] Issued Time: 198, Layer: Mixed_6e.branch1x1.bn
-[FWD-END] Issued Time: 199, Layer: relu_relu_60
-[FWD-END] Issued Time: 200, Layer: Mixed_6e.branch7x7_1.conv
-[FWD-END] Issued Time: 201, Layer: Mixed_6e.branch7x7_1.bn
-[FWD-END] Issued Time: 202, Layer: relu_relu_61
-[FWD-END] Issued Time: 203, Layer: Mixed_6e.branch7x7_2.conv
-[FWD-END] Issued Time: 204, Layer: Mixed_6e.branch7x7_2.bn
-[FWD-END] Issued Time: 205, Layer: relu_relu_62
-[FWD-END] Issued Time: 206, Layer: Mixed_6e.branch7x7_3.conv
-[FWD-END] Issued Time: 207, Layer: Mixed_6e.branch7x7_3.bn
-[FWD-END] Issued Time: 208, Layer: relu_relu_63
-[FWD-END] Issued Time: 209, Layer: Mixed_6e.branch7x7dbl_1.conv
-[FWD-END] Issued Time: 210, Layer: Mixed_6e.branch7x7dbl_1.bn
-[FWD-END] Issued Time: 211, Layer: relu_relu_64
-[FWD-END] Issued Time: 212, Layer: Mixed_6e.branch7x7dbl_2.conv
-[FWD-END] Issued Time: 213, Layer: Mixed_6e.branch7x7dbl_2.bn
-[FWD-END] Issued Time: 214, Layer: relu_relu_65
-[FWD-END] Issued Time: 215, Layer: Mixed_6e.branch7x7dbl_3.conv
-[FWD-END] Issued Time: 216, Layer: Mixed_6e.branch7x7dbl_3.bn
-[FWD-END] Issued Time: 217, Layer: relu_relu_66
-[FWD-END] Issued Time: 218, Layer: Mixed_6e.branch7x7dbl_4.conv
-[FWD-END] Issued Time: 219, Layer: Mixed_6e.branch7x7dbl_4.bn
-[FWD-END] Issued Time: 220, Layer: relu_relu_67
-[FWD-END] Issued Time: 221, Layer: Mixed_6e.branch7x7dbl_5.conv
-[FWD-END] Issued Time: 222, Layer: Mixed_6e.branch7x7dbl_5.bn
-[FWD-END] Issued Time: 223, Layer: relu_relu_68
-[FWD-END] Issued Time: 224, Layer: avgpool_avg_pool2d_6
-[FWD-END] Issued Time: 225, Layer: Mixed_6e.branch_pool.conv
-[FWD-END] Issued Time: 226, Layer: Mixed_6e.branch_pool.bn
-[FWD-END] Issued Time: 227, Layer: relu_relu_69
-[FWD-END] Issued Time: 228, Layer: cat_cat_7
-[FWD-END] Issued Time: 229, Layer: Mixed_7a.branch3x3_1.conv
-[FWD-END] Issued Time: 230, Layer: Mixed_7a.branch3x3_1.bn
-[FWD-END] Issued Time: 231, Layer: relu_relu_70
-[FWD-END] Issued Time: 232, Layer: Mixed_7a.branch3x3_2.conv
-[FWD-END] Issued Time: 233, Layer: Mixed_7a.branch3x3_2.bn
-[FWD-END] Issued Time: 234, Layer: relu_relu_71
-[FWD-END] Issued Time: 235, Layer: Mixed_7a.branch7x7x3_1.conv
-[FWD-END] Issued Time: 236, Layer: Mixed_7a.branch7x7x3_1.bn
-[FWD-END] Issued Time: 237, Layer: relu_relu_72
-[FWD-END] Issued Time: 238, Layer: Mixed_7a.branch7x7x3_2.conv
-[FWD-END] Issued Time: 239, Layer: Mixed_7a.branch7x7x3_2.bn
-[FWD-END] Issued Time: 240, Layer: relu_relu_73
-[FWD-END] Issued Time: 241, Layer: Mixed_7a.branch7x7x3_3.conv
-[FWD-END] Issued Time: 242, Layer: Mixed_7a.branch7x7x3_3.bn
-[FWD-END] Issued Time: 243, Layer: relu_relu_74
-[FWD-END] Issued Time: 244, Layer: Mixed_7a.branch7x7x3_4.conv
-[FWD-END] Issued Time: 245, Layer: Mixed_7a.branch7x7x3_4.bn
-[FWD-END] Issued Time: 246, Layer: relu_relu_75
-[FWD-END] Issued Time: 247, Layer: maxpool_max_pool2d_1
-[FWD-END] Issued Time: 248, Layer: cat_cat_8
-[FWD-END] Issued Time: 249, Layer: Mixed_7b.branch1x1.conv
-[FWD-END] Issued Time: 250, Layer: Mixed_7b.branch1x1.bn
-[FWD-END] Issued Time: 251, Layer: relu_relu_76
-[FWD-END] Issued Time: 252, Layer: Mixed_7b.branch3x3_1.conv
-[FWD-END] Issued Time: 253, Layer: Mixed_7b.branch3x3_1.bn
-[FWD-END] Issued Time: 254, Layer: relu_relu_77
-[FWD-END] Issued Time: 255, Layer: Mixed_7b.branch3x3_2a.conv
-[FWD-END] Issued Time: 256, Layer: Mixed_7b.branch3x3_2a.bn
-[FWD-END] Issued Time: 257, Layer: relu_relu_78
-[FWD-END] Issued Time: 258, Layer: Mixed_7b.branch3x3_2b.conv
-[FWD-END] Issued Time: 259, Layer: Mixed_7b.branch3x3_2b.bn
-[FWD-END] Issued Time: 260, Layer: relu_relu_79
-[FWD-END] Issued Time: 261, Layer: cat_cat_9
-[FWD-END] Issued Time: 262, Layer: Mixed_7b.branch3x3dbl_1.conv
-[FWD-END] Issued Time: 263, Layer: Mixed_7b.branch3x3dbl_1.bn
-[FWD-END] Issued Time: 264, Layer: relu_relu_80
-[FWD-END] Issued Time: 265, Layer: Mixed_7b.branch3x3dbl_2.conv
-[FWD-END] Issued Time: 266, Layer: Mixed_7b.branch3x3dbl_2.bn
-[FWD-END] Issued Time: 267, Layer: relu_relu_81
-[FWD-END] Issued Time: 268, Layer: Mixed_7b.branch3x3dbl_3a.conv
-[FWD-END] Issued Time: 269, Layer: Mixed_7b.branch3x3dbl_3a.bn
-[FWD-END] Issued Time: 270, Layer: relu_relu_82
-[FWD-END] Issued Time: 271, Layer: Mixed_7b.branch3x3dbl_3b.conv
-[FWD-END] Issued Time: 272, Layer: Mixed_7b.branch3x3dbl_3b.bn
-[FWD-END] Issued Time: 273, Layer: relu_relu_83
-[FWD-END] Issued Time: 274, Layer: cat_cat_10
-[FWD-END] Issued Time: 275, Layer: avgpool_avg_pool2d_7
-[FWD-END] Issued Time: 276, Layer: Mixed_7b.branch_pool.conv
-[FWD-END] Issued Time: 277, Layer: Mixed_7b.branch_pool.bn
-[FWD-END] Issued Time: 278, Layer: relu_relu_84
-[FWD-END] Issued Time: 279, Layer: cat_cat_11
-[FWD-END] Issued Time: 280, Layer: Mixed_7c.branch1x1.conv
-[FWD-END] Issued Time: 281, Layer: Mixed_7c.branch1x1.bn
-[FWD-END] Issued Time: 282, Layer: relu_relu_85
-[FWD-END] Issued Time: 283, Layer: Mixed_7c.branch3x3_1.conv
-[FWD-END] Issued Time: 284, Layer: Mixed_7c.branch3x3_1.bn
-[FWD-END] Issued Time: 285, Layer: relu_relu_86
-[FWD-END] Issued Time: 286, Layer: Mixed_7c.branch3x3_2a.conv
-[FWD-END] Issued Time: 287, Layer: Mixed_7c.branch3x3_2a.bn
-[FWD-END] Issued Time: 288, Layer: relu_relu_87
-[FWD-END] Issued Time: 289, Layer: Mixed_7c.branch3x3_2b.conv
-[FWD-END] Issued Time: 290, Layer: Mixed_7c.branch3x3_2b.bn
-[FWD-END] Issued Time: 291, Layer: relu_relu_88
-[FWD-END] Issued Time: 292, Layer: cat_cat_12
-[FWD-END] Issued Time: 293, Layer: Mixed_7c.branch3x3dbl_1.conv
-[FWD-END] Issued Time: 294, Layer: Mixed_7c.branch3x3dbl_1.bn
-[FWD-END] Issued Time: 295, Layer: relu_relu_89
-[FWD-END] Issued Time: 296, Layer: Mixed_7c.branch3x3dbl_2.conv
-[FWD-END] Issued Time: 297, Layer: Mixed_7c.branch3x3dbl_2.bn
-[FWD-END] Issued Time: 298, Layer: relu_relu_90
-[FWD-END] Issued Time: 299, Layer: Mixed_7c.branch3x3dbl_3a.conv
-[FWD-END] Issued Time: 300, Layer: Mixed_7c.branch3x3dbl_3a.bn
-[FWD-END] Issued Time: 301, Layer: relu_relu_91
-[FWD-END] Issued Time: 302, Layer: Mixed_7c.branch3x3dbl_3b.conv
-[FWD-END] Issued Time: 303, Layer: Mixed_7c.branch3x3dbl_3b.bn
-[FWD-END] Issued Time: 304, Layer: relu_relu_92
-[FWD-END] Issued Time: 305, Layer: cat_cat_13
-[FWD-END] Issued Time: 306, Layer: avgpool_avg_pool2d_8
-[FWD-END] Issued Time: 307, Layer: Mixed_7c.branch_pool.conv
-[FWD-END] Issued Time: 308, Layer: Mixed_7c.branch_pool.bn
-[FWD-END] Issued Time: 309, Layer: relu_relu_93
-[FWD-END] Issued Time: 310, Layer: cat_cat_14
-[FWD-END] Issued Time: 311, Layer: avgpool
-[FWD-END] Issued Time: 312, Layer: dropout
-[FWD-END] Issued Time: 313, Layer: fc
-[BWD-BEGIN] Issued Time: 314, Layer: fc
-[BWD-BEGIN] Issued Time: 315, Layer: dropout
-[BWD-BEGIN] Issued Time: 316, Layer: avgpool
-[BWD-BEGIN] Issued Time: 317, Layer: cat_cat_14
-[BWD-BEGIN] Issued Time: 318, Layer: relu_relu_93
-[BWD-BEGIN] Issued Time: 319, Layer: Mixed_7c.branch_pool.bn
-[BWD-BEGIN] Issued Time: 320, Layer: Mixed_7c.branch_pool.conv
-[BWD-BEGIN] Issued Time: 321, Layer: avgpool_avg_pool2d_8
-[BWD-BEGIN] Issued Time: 322, Layer: cat_cat_13
-[BWD-BEGIN] Issued Time: 323, Layer: relu_relu_92
-[BWD-BEGIN] Issued Time: 324, Layer: Mixed_7c.branch3x3dbl_3b.bn
-[BWD-BEGIN] Issued Time: 325, Layer: Mixed_7c.branch3x3dbl_3b.conv
-[BWD-BEGIN] Issued Time: 326, Layer: relu_relu_91
-[BWD-BEGIN] Issued Time: 327, Layer: Mixed_7c.branch3x3dbl_3a.bn
-[BWD-BEGIN] Issued Time: 328, Layer: Mixed_7c.branch3x3dbl_3a.conv
-[BWD-BEGIN] Issued Time: 329, Layer: relu_relu_90
-[BWD-BEGIN] Issued Time: 330, Layer: Mixed_7c.branch3x3dbl_2.bn
-[BWD-BEGIN] Issued Time: 331, Layer: Mixed_7c.branch3x3dbl_2.conv
-[BWD-BEGIN] Issued Time: 332, Layer: relu_relu_89
-[BWD-BEGIN] Issued Time: 333, Layer: Mixed_7c.branch3x3dbl_1.bn
-[BWD-BEGIN] Issued Time: 334, Layer: Mixed_7c.branch3x3dbl_1.conv
-[BWD-BEGIN] Issued Time: 335, Layer: cat_cat_12
-[BWD-BEGIN] Issued Time: 336, Layer: relu_relu_88
-[BWD-BEGIN] Issued Time: 337, Layer: Mixed_7c.branch3x3_2b.bn
-[BWD-BEGIN] Issued Time: 338, Layer: Mixed_7c.branch3x3_2b.conv
-[BWD-BEGIN] Issued Time: 339, Layer: relu_relu_87
-[BWD-BEGIN] Issued Time: 340, Layer: Mixed_7c.branch3x3_2a.bn
-[BWD-BEGIN] Issued Time: 341, Layer: Mixed_7c.branch3x3_2a.conv
-[BWD-BEGIN] Issued Time: 342, Layer: relu_relu_86
-[BWD-BEGIN] Issued Time: 343, Layer: Mixed_7c.branch3x3_1.bn
-[BWD-BEGIN] Issued Time: 344, Layer: Mixed_7c.branch3x3_1.conv
-[BWD-BEGIN] Issued Time: 345, Layer: relu_relu_85
-[BWD-BEGIN] Issued Time: 346, Layer: Mixed_7c.branch1x1.bn
-[BWD-BEGIN] Issued Time: 347, Layer: Mixed_7c.branch1x1.conv
-[BWD-BEGIN] Issued Time: 348, Layer: cat_cat_11
-[BWD-BEGIN] Issued Time: 349, Layer: relu_relu_84
-[BWD-BEGIN] Issued Time: 350, Layer: Mixed_7b.branch_pool.bn
-[BWD-BEGIN] Issued Time: 351, Layer: Mixed_7b.branch_pool.conv
-[BWD-BEGIN] Issued Time: 352, Layer: avgpool_avg_pool2d_7
-[BWD-BEGIN] Issued Time: 353, Layer: cat_cat_10
-[BWD-BEGIN] Issued Time: 354, Layer: relu_relu_83
-[BWD-BEGIN] Issued Time: 355, Layer: Mixed_7b.branch3x3dbl_3b.bn
-[BWD-BEGIN] Issued Time: 356, Layer: Mixed_7b.branch3x3dbl_3b.conv
-[BWD-BEGIN] Issued Time: 357, Layer: relu_relu_82
-[BWD-BEGIN] Issued Time: 358, Layer: Mixed_7b.branch3x3dbl_3a.bn
-[BWD-BEGIN] Issued Time: 359, Layer: Mixed_7b.branch3x3dbl_3a.conv
-[BWD-BEGIN] Issued Time: 360, Layer: relu_relu_81
-[BWD-BEGIN] Issued Time: 361, Layer: Mixed_7b.branch3x3dbl_2.bn
-[BWD-BEGIN] Issued Time: 362, Layer: Mixed_7b.branch3x3dbl_2.conv
-[BWD-BEGIN] Issued Time: 363, Layer: relu_relu_80
-[BWD-BEGIN] Issued Time: 364, Layer: Mixed_7b.branch3x3dbl_1.bn
-[BWD-BEGIN] Issued Time: 365, Layer: Mixed_7b.branch3x3dbl_1.conv
-[BWD-BEGIN] Issued Time: 366, Layer: cat_cat_9
-[BWD-BEGIN] Issued Time: 367, Layer: relu_relu_79
-[BWD-BEGIN] Issued Time: 368, Layer: Mixed_7b.branch3x3_2b.bn
-[BWD-BEGIN] Issued Time: 369, Layer: Mixed_7b.branch3x3_2b.conv
-[BWD-BEGIN] Issued Time: 370, Layer: relu_relu_78
-[BWD-BEGIN] Issued Time: 371, Layer: Mixed_7b.branch3x3_2a.bn
-[BWD-BEGIN] Issued Time: 372, Layer: Mixed_7b.branch3x3_2a.conv
-[BWD-BEGIN] Issued Time: 373, Layer: relu_relu_77
-[BWD-BEGIN] Issued Time: 374, Layer: Mixed_7b.branch3x3_1.bn
-[BWD-BEGIN] Issued Time: 375, Layer: Mixed_7b.branch3x3_1.conv
-[BWD-BEGIN] Issued Time: 376, Layer: relu_relu_76
-[BWD-BEGIN] Issued Time: 377, Layer: Mixed_7b.branch1x1.bn
-[BWD-BEGIN] Issued Time: 378, Layer: Mixed_7b.branch1x1.conv
-[BWD-BEGIN] Issued Time: 379, Layer: cat_cat_8
-[BWD-BEGIN] Issued Time: 380, Layer: maxpool_max_pool2d_1
-[BWD-BEGIN] Issued Time: 381, Layer: relu_relu_75
-[BWD-BEGIN] Issued Time: 382, Layer: Mixed_7a.branch7x7x3_4.bn
-[BWD-BEGIN] Issued Time: 383, Layer: Mixed_7a.branch7x7x3_4.conv
-[BWD-BEGIN] Issued Time: 384, Layer: relu_relu_74
-[BWD-BEGIN] Issued Time: 385, Layer: Mixed_7a.branch7x7x3_3.bn
-[BWD-BEGIN] Issued Time: 386, Layer: Mixed_7a.branch7x7x3_3.conv
-[BWD-BEGIN] Issued Time: 387, Layer: relu_relu_73
-[BWD-BEGIN] Issued Time: 388, Layer: Mixed_7a.branch7x7x3_2.bn
-[BWD-BEGIN] Issued Time: 389, Layer: Mixed_7a.branch7x7x3_2.conv
-[BWD-BEGIN] Issued Time: 390, Layer: relu_relu_72
-[BWD-BEGIN] Issued Time: 391, Layer: Mixed_7a.branch7x7x3_1.bn
-[BWD-BEGIN] Issued Time: 392, Layer: Mixed_7a.branch7x7x3_1.conv
-[BWD-BEGIN] Issued Time: 393, Layer: relu_relu_71
-[BWD-BEGIN] Issued Time: 394, Layer: Mixed_7a.branch3x3_2.bn
-[BWD-BEGIN] Issued Time: 395, Layer: Mixed_7a.branch3x3_2.conv
-[BWD-BEGIN] Issued Time: 396, Layer: relu_relu_70
-[BWD-BEGIN] Issued Time: 397, Layer: Mixed_7a.branch3x3_1.bn
-[BWD-BEGIN] Issued Time: 398, Layer: Mixed_7a.branch3x3_1.conv
-[BWD-BEGIN] Issued Time: 399, Layer: cat_cat_7
-[BWD-BEGIN] Issued Time: 400, Layer: relu_relu_69
-[BWD-BEGIN] Issued Time: 401, Layer: Mixed_6e.branch_pool.bn
-[BWD-BEGIN] Issued Time: 402, Layer: Mixed_6e.branch_pool.conv
-[BWD-BEGIN] Issued Time: 403, Layer: avgpool_avg_pool2d_6
-[BWD-BEGIN] Issued Time: 404, Layer: relu_relu_68
-[BWD-BEGIN] Issued Time: 405, Layer: Mixed_6e.branch7x7dbl_5.bn
-[BWD-BEGIN] Issued Time: 406, Layer: Mixed_6e.branch7x7dbl_5.conv
-[BWD-BEGIN] Issued Time: 407, Layer: relu_relu_67
-[BWD-BEGIN] Issued Time: 408, Layer: Mixed_6e.branch7x7dbl_4.bn
-[BWD-BEGIN] Issued Time: 409, Layer: Mixed_6e.branch7x7dbl_4.conv
-[BWD-BEGIN] Issued Time: 410, Layer: relu_relu_66
-[BWD-BEGIN] Issued Time: 411, Layer: Mixed_6e.branch7x7dbl_3.bn
-[BWD-BEGIN] Issued Time: 412, Layer: Mixed_6e.branch7x7dbl_3.conv
-[BWD-BEGIN] Issued Time: 413, Layer: relu_relu_65
-[BWD-BEGIN] Issued Time: 414, Layer: Mixed_6e.branch7x7dbl_2.bn
-[BWD-BEGIN] Issued Time: 415, Layer: Mixed_6e.branch7x7dbl_2.conv
-[BWD-BEGIN] Issued Time: 416, Layer: relu_relu_64
-[BWD-BEGIN] Issued Time: 417, Layer: Mixed_6e.branch7x7dbl_1.bn
-[BWD-BEGIN] Issued Time: 418, Layer: Mixed_6e.branch7x7dbl_1.conv
-[BWD-BEGIN] Issued Time: 419, Layer: relu_relu_63
-[BWD-BEGIN] Issued Time: 420, Layer: Mixed_6e.branch7x7_3.bn
-[BWD-BEGIN] Issued Time: 421, Layer: Mixed_6e.branch7x7_3.conv
-[BWD-BEGIN] Issued Time: 422, Layer: relu_relu_62
-[BWD-BEGIN] Issued Time: 423, Layer: Mixed_6e.branch7x7_2.bn
-[BWD-BEGIN] Issued Time: 424, Layer: Mixed_6e.branch7x7_2.conv
-[BWD-BEGIN] Issued Time: 425, Layer: relu_relu_61
-[BWD-BEGIN] Issued Time: 426, Layer: Mixed_6e.branch7x7_1.bn
-[BWD-BEGIN] Issued Time: 427, Layer: Mixed_6e.branch7x7_1.conv
-[BWD-BEGIN] Issued Time: 428, Layer: relu_relu_60
-[BWD-BEGIN] Issued Time: 429, Layer: Mixed_6e.branch1x1.bn
-[BWD-BEGIN] Issued Time: 430, Layer: Mixed_6e.branch1x1.conv
-[BWD-BEGIN] Issued Time: 431, Layer: cat_cat_6
-[BWD-BEGIN] Issued Time: 432, Layer: relu_relu_59
-[BWD-BEGIN] Issued Time: 433, Layer: Mixed_6d.branch_pool.bn
-[BWD-BEGIN] Issued Time: 434, Layer: Mixed_6d.branch_pool.conv
-[BWD-BEGIN] Issued Time: 435, Layer: avgpool_avg_pool2d_5
-[BWD-BEGIN] Issued Time: 436, Layer: relu_relu_58
-[BWD-BEGIN] Issued Time: 437, Layer: Mixed_6d.branch7x7dbl_5.bn
-[BWD-BEGIN] Issued Time: 438, Layer: Mixed_6d.branch7x7dbl_5.conv
-[BWD-BEGIN] Issued Time: 439, Layer: relu_relu_57
-[BWD-BEGIN] Issued Time: 440, Layer: Mixed_6d.branch7x7dbl_4.bn
-[BWD-BEGIN] Issued Time: 441, Layer: Mixed_6d.branch7x7dbl_4.conv
-[BWD-BEGIN] Issued Time: 442, Layer: relu_relu_56
-[BWD-BEGIN] Issued Time: 443, Layer: Mixed_6d.branch7x7dbl_3.bn
-[BWD-BEGIN] Issued Time: 444, Layer: Mixed_6d.branch7x7dbl_3.conv
-[BWD-BEGIN] Issued Time: 445, Layer: relu_relu_55
-[BWD-BEGIN] Issued Time: 446, Layer: Mixed_6d.branch7x7dbl_2.bn
-[BWD-BEGIN] Issued Time: 447, Layer: Mixed_6d.branch7x7dbl_2.conv
-[BWD-BEGIN] Issued Time: 448, Layer: relu_relu_54
-[BWD-BEGIN] Issued Time: 449, Layer: Mixed_6d.branch7x7dbl_1.bn
-[BWD-BEGIN] Issued Time: 450, Layer: Mixed_6d.branch7x7dbl_1.conv
-[BWD-BEGIN] Issued Time: 451, Layer: relu_relu_53
-[BWD-BEGIN] Issued Time: 452, Layer: Mixed_6d.branch7x7_3.bn
-[BWD-BEGIN] Issued Time: 453, Layer: Mixed_6d.branch7x7_3.conv
-[BWD-BEGIN] Issued Time: 454, Layer: relu_relu_52
-[BWD-BEGIN] Issued Time: 455, Layer: Mixed_6d.branch7x7_2.bn
-[BWD-BEGIN] Issued Time: 456, Layer: Mixed_6d.branch7x7_2.conv
-[BWD-BEGIN] Issued Time: 457, Layer: relu_relu_51
-[BWD-BEGIN] Issued Time: 458, Layer: Mixed_6d.branch7x7_1.bn
-[BWD-BEGIN] Issued Time: 459, Layer: Mixed_6d.branch7x7_1.conv
-[BWD-BEGIN] Issued Time: 460, Layer: relu_relu_50
-[BWD-BEGIN] Issued Time: 461, Layer: Mixed_6d.branch1x1.bn
-[BWD-BEGIN] Issued Time: 462, Layer: Mixed_6d.branch1x1.conv
-[BWD-BEGIN] Issued Time: 463, Layer: cat_cat_5
-[BWD-BEGIN] Issued Time: 464, Layer: relu_relu_49
-[BWD-BEGIN] Issued Time: 465, Layer: Mixed_6c.branch_pool.bn
-[BWD-BEGIN] Issued Time: 466, Layer: Mixed_6c.branch_pool.conv
-[BWD-BEGIN] Issued Time: 467, Layer: avgpool_avg_pool2d_4
-[BWD-BEGIN] Issued Time: 468, Layer: relu_relu_48
-[BWD-BEGIN] Issued Time: 469, Layer: Mixed_6c.branch7x7dbl_5.bn
-[BWD-BEGIN] Issued Time: 470, Layer: Mixed_6c.branch7x7dbl_5.conv
-[BWD-BEGIN] Issued Time: 471, Layer: relu_relu_47
-[BWD-BEGIN] Issued Time: 472, Layer: Mixed_6c.branch7x7dbl_4.bn
-[BWD-BEGIN] Issued Time: 473, Layer: Mixed_6c.branch7x7dbl_4.conv
-[BWD-BEGIN] Issued Time: 474, Layer: relu_relu_46
-[BWD-BEGIN] Issued Time: 475, Layer: Mixed_6c.branch7x7dbl_3.bn
-[BWD-BEGIN] Issued Time: 476, Layer: Mixed_6c.branch7x7dbl_3.conv
-[BWD-BEGIN] Issued Time: 477, Layer: relu_relu_45
-[BWD-BEGIN] Issued Time: 478, Layer: Mixed_6c.branch7x7dbl_2.bn
-[BWD-BEGIN] Issued Time: 479, Layer: Mixed_6c.branch7x7dbl_2.conv
-[BWD-BEGIN] Issued Time: 480, Layer: relu_relu_44
-[BWD-BEGIN] Issued Time: 481, Layer: Mixed_6c.branch7x7dbl_1.bn
-[BWD-BEGIN] Issued Time: 482, Layer: Mixed_6c.branch7x7dbl_1.conv
-[BWD-BEGIN] Issued Time: 483, Layer: relu_relu_43
-[BWD-BEGIN] Issued Time: 484, Layer: Mixed_6c.branch7x7_3.bn
-[BWD-BEGIN] Issued Time: 485, Layer: Mixed_6c.branch7x7_3.conv
-[BWD-BEGIN] Issued Time: 486, Layer: relu_relu_42
-[BWD-BEGIN] Issued Time: 487, Layer: Mixed_6c.branch7x7_2.bn
-[BWD-BEGIN] Issued Time: 488, Layer: Mixed_6c.branch7x7_2.conv
-[BWD-BEGIN] Issued Time: 489, Layer: relu_relu_41
-[BWD-BEGIN] Issued Time: 490, Layer: Mixed_6c.branch7x7_1.bn
-[BWD-BEGIN] Issued Time: 491, Layer: Mixed_6c.branch7x7_1.conv
-[BWD-BEGIN] Issued Time: 492, Layer: relu_relu_40
-[BWD-BEGIN] Issued Time: 493, Layer: Mixed_6c.branch1x1.bn
-[BWD-BEGIN] Issued Time: 494, Layer: Mixed_6c.branch1x1.conv
-[BWD-BEGIN] Issued Time: 495, Layer: cat_cat_4
-[BWD-BEGIN] Issued Time: 496, Layer: relu_relu_39
-[BWD-BEGIN] Issued Time: 497, Layer: Mixed_6b.branch_pool.bn
-[BWD-BEGIN] Issued Time: 498, Layer: Mixed_6b.branch_pool.conv
-[BWD-BEGIN] Issued Time: 499, Layer: avgpool_avg_pool2d_3
-[BWD-BEGIN] Issued Time: 500, Layer: relu_relu_38
-[BWD-BEGIN] Issued Time: 501, Layer: Mixed_6b.branch7x7dbl_5.bn
-[BWD-BEGIN] Issued Time: 502, Layer: Mixed_6b.branch7x7dbl_5.conv
-[BWD-BEGIN] Issued Time: 503, Layer: relu_relu_37
-[BWD-BEGIN] Issued Time: 504, Layer: Mixed_6b.branch7x7dbl_4.bn
-[BWD-BEGIN] Issued Time: 505, Layer: Mixed_6b.branch7x7dbl_4.conv
-[BWD-BEGIN] Issued Time: 506, Layer: relu_relu_36
-[BWD-BEGIN] Issued Time: 507, Layer: Mixed_6b.branch7x7dbl_3.bn
-[BWD-BEGIN] Issued Time: 508, Layer: Mixed_6b.branch7x7dbl_3.conv
-[BWD-BEGIN] Issued Time: 509, Layer: relu_relu_35
-[BWD-BEGIN] Issued Time: 510, Layer: Mixed_6b.branch7x7dbl_2.bn
-[BWD-BEGIN] Issued Time: 511, Layer: Mixed_6b.branch7x7dbl_2.conv
-[BWD-BEGIN] Issued Time: 512, Layer: relu_relu_34
-[BWD-BEGIN] Issued Time: 513, Layer: Mixed_6b.branch7x7dbl_1.bn
-[BWD-BEGIN] Issued Time: 514, Layer: Mixed_6b.branch7x7dbl_1.conv
-[BWD-BEGIN] Issued Time: 515, Layer: relu_relu_33
-[BWD-BEGIN] Issued Time: 516, Layer: Mixed_6b.branch7x7_3.bn
-[BWD-BEGIN] Issued Time: 517, Layer: Mixed_6b.branch7x7_3.conv
-[BWD-BEGIN] Issued Time: 518, Layer: relu_relu_32
-[BWD-BEGIN] Issued Time: 519, Layer: Mixed_6b.branch7x7_2.bn
-[BWD-BEGIN] Issued Time: 520, Layer: Mixed_6b.branch7x7_2.conv
-[BWD-BEGIN] Issued Time: 521, Layer: relu_relu_31
-[BWD-BEGIN] Issued Time: 522, Layer: Mixed_6b.branch7x7_1.bn
-[BWD-BEGIN] Issued Time: 523, Layer: Mixed_6b.branch7x7_1.conv
-[BWD-BEGIN] Issued Time: 524, Layer: relu_relu_30
-[BWD-BEGIN] Issued Time: 525, Layer: Mixed_6b.branch1x1.bn
-[BWD-BEGIN] Issued Time: 526, Layer: Mixed_6b.branch1x1.conv
-[BWD-BEGIN] Issued Time: 527, Layer: cat_cat_3
-[BWD-BEGIN] Issued Time: 528, Layer: maxpool_max_pool2d
-[BWD-BEGIN] Issued Time: 529, Layer: relu_relu_29
-[BWD-BEGIN] Issued Time: 530, Layer: Mixed_6a.branch3x3dbl_3.bn
-[BWD-BEGIN] Issued Time: 531, Layer: Mixed_6a.branch3x3dbl_3.conv
-[BWD-BEGIN] Issued Time: 532, Layer: relu_relu_28
-[BWD-BEGIN] Issued Time: 533, Layer: Mixed_6a.branch3x3dbl_2.bn
-[BWD-BEGIN] Issued Time: 534, Layer: Mixed_6a.branch3x3dbl_2.conv
-[BWD-BEGIN] Issued Time: 535, Layer: relu_relu_27
-[BWD-BEGIN] Issued Time: 536, Layer: Mixed_6a.branch3x3dbl_1.bn
-[BWD-BEGIN] Issued Time: 537, Layer: Mixed_6a.branch3x3dbl_1.conv
-[BWD-BEGIN] Issued Time: 538, Layer: relu_relu_26
-[BWD-BEGIN] Issued Time: 539, Layer: Mixed_6a.branch3x3.bn
-[BWD-BEGIN] Issued Time: 540, Layer: Mixed_6a.branch3x3.conv
-[BWD-BEGIN] Issued Time: 541, Layer: cat_cat_2
-[BWD-BEGIN] Issued Time: 542, Layer: relu_relu_25
-[BWD-BEGIN] Issued Time: 543, Layer: Mixed_5d.branch_pool.bn
-[BWD-BEGIN] Issued Time: 544, Layer: Mixed_5d.branch_pool.conv
-[BWD-BEGIN] Issued Time: 545, Layer: avgpool_avg_pool2d_2
-[BWD-BEGIN] Issued Time: 546, Layer: relu_relu_24
-[BWD-BEGIN] Issued Time: 547, Layer: Mixed_5d.branch3x3dbl_3.bn
-[BWD-BEGIN] Issued Time: 548, Layer: Mixed_5d.branch3x3dbl_3.conv
-[BWD-BEGIN] Issued Time: 549, Layer: relu_relu_23
-[BWD-BEGIN] Issued Time: 550, Layer: Mixed_5d.branch3x3dbl_2.bn
-[BWD-BEGIN] Issued Time: 551, Layer: Mixed_5d.branch3x3dbl_2.conv
-[BWD-BEGIN] Issued Time: 552, Layer: relu_relu_22
-[BWD-BEGIN] Issued Time: 553, Layer: Mixed_5d.branch3x3dbl_1.bn
-[BWD-BEGIN] Issued Time: 554, Layer: Mixed_5d.branch3x3dbl_1.conv
-[BWD-BEGIN] Issued Time: 555, Layer: relu_relu_21
-[BWD-BEGIN] Issued Time: 556, Layer: Mixed_5d.branch5x5_2.bn
-[BWD-BEGIN] Issued Time: 557, Layer: Mixed_5d.branch5x5_2.conv
-[BWD-BEGIN] Issued Time: 558, Layer: relu_relu_20
-[BWD-BEGIN] Issued Time: 559, Layer: Mixed_5d.branch5x5_1.bn
-[BWD-BEGIN] Issued Time: 560, Layer: Mixed_5d.branch5x5_1.conv
-[BWD-BEGIN] Issued Time: 561, Layer: relu_relu_19
-[BWD-BEGIN] Issued Time: 562, Layer: Mixed_5d.branch1x1.bn
-[BWD-BEGIN] Issued Time: 563, Layer: Mixed_5d.branch1x1.conv
-[BWD-BEGIN] Issued Time: 564, Layer: cat_cat_1
-[BWD-BEGIN] Issued Time: 565, Layer: relu_relu_18
-[BWD-BEGIN] Issued Time: 566, Layer: Mixed_5c.branch_pool.bn
-[BWD-BEGIN] Issued Time: 567, Layer: Mixed_5c.branch_pool.conv
-[BWD-BEGIN] Issued Time: 568, Layer: avgpool_avg_pool2d_1
-[BWD-BEGIN] Issued Time: 569, Layer: relu_relu_17
-[BWD-BEGIN] Issued Time: 570, Layer: Mixed_5c.branch3x3dbl_3.bn
-[BWD-BEGIN] Issued Time: 571, Layer: Mixed_5c.branch3x3dbl_3.conv
-[BWD-BEGIN] Issued Time: 572, Layer: relu_relu_16
-[BWD-BEGIN] Issued Time: 573, Layer: Mixed_5c.branch3x3dbl_2.bn
-[BWD-BEGIN] Issued Time: 574, Layer: Mixed_5c.branch3x3dbl_2.conv
-[BWD-BEGIN] Issued Time: 575, Layer: relu_relu_15
-[BWD-BEGIN] Issued Time: 576, Layer: Mixed_5c.branch3x3dbl_1.bn
-[BWD-BEGIN] Issued Time: 577, Layer: Mixed_5c.branch3x3dbl_1.conv
-[BWD-BEGIN] Issued Time: 578, Layer: relu_relu_14
-[BWD-BEGIN] Issued Time: 579, Layer: Mixed_5c.branch5x5_2.bn
-[BWD-BEGIN] Issued Time: 580, Layer: Mixed_5c.branch5x5_2.conv
-[BWD-BEGIN] Issued Time: 581, Layer: relu_relu_13
-[BWD-BEGIN] Issued Time: 582, Layer: Mixed_5c.branch5x5_1.bn
-[BWD-BEGIN] Issued Time: 583, Layer: Mixed_5c.branch5x5_1.conv
-[BWD-BEGIN] Issued Time: 584, Layer: relu_relu_12
-[BWD-BEGIN] Issued Time: 585, Layer: Mixed_5c.branch1x1.bn
-[BWD-BEGIN] Issued Time: 586, Layer: Mixed_5c.branch1x1.conv
-[BWD-BEGIN] Issued Time: 587, Layer: cat_cat
-[BWD-BEGIN] Issued Time: 588, Layer: relu_relu_11
-[BWD-BEGIN] Issued Time: 589, Layer: Mixed_5b.branch_pool.bn
-[BWD-BEGIN] Issued Time: 590, Layer: Mixed_5b.branch_pool.conv
-[BWD-BEGIN] Issued Time: 591, Layer: avgpool_avg_pool2d
-[BWD-BEGIN] Issued Time: 592, Layer: relu_relu_10
-[BWD-BEGIN] Issued Time: 593, Layer: Mixed_5b.branch3x3dbl_3.bn
-[BWD-BEGIN] Issued Time: 594, Layer: Mixed_5b.branch3x3dbl_3.conv
-[BWD-BEGIN] Issued Time: 595, Layer: relu_relu_9
-[BWD-BEGIN] Issued Time: 596, Layer: Mixed_5b.branch3x3dbl_2.bn
-[BWD-BEGIN] Issued Time: 597, Layer: Mixed_5b.branch3x3dbl_2.conv
-[BWD-BEGIN] Issued Time: 598, Layer: relu_relu_8
-[BWD-BEGIN] Issued Time: 599, Layer: Mixed_5b.branch3x3dbl_1.bn
-[BWD-BEGIN] Issued Time: 600, Layer: Mixed_5b.branch3x3dbl_1.conv
-[BWD-BEGIN] Issued Time: 601, Layer: relu_relu_7
-[BWD-BEGIN] Issued Time: 602, Layer: Mixed_5b.branch5x5_2.bn
-[BWD-BEGIN] Issued Time: 603, Layer: Mixed_5b.branch5x5_2.conv
-[BWD-BEGIN] Issued Time: 604, Layer: relu_relu_6
-[BWD-BEGIN] Issued Time: 605, Layer: Mixed_5b.branch5x5_1.bn
-[BWD-BEGIN] Issued Time: 606, Layer: Mixed_5b.branch5x5_1.conv
-[BWD-BEGIN] Issued Time: 607, Layer: relu_relu_5
-[BWD-BEGIN] Issued Time: 608, Layer: Mixed_5b.branch1x1.bn
-[BWD-BEGIN] Issued Time: 609, Layer: Mixed_5b.branch1x1.conv
-[BWD-BEGIN] Issued Time: 610, Layer: maxpool2
-[BWD-BEGIN] Issued Time: 611, Layer: relu_relu_4
-[BWD-BEGIN] Issued Time: 612, Layer: Conv2d_4a_3x3.bn
-[BWD-BEGIN] Issued Time: 613, Layer: Conv2d_4a_3x3.conv
-[BWD-BEGIN] Issued Time: 614, Layer: relu_relu_3
-[BWD-BEGIN] Issued Time: 615, Layer: Conv2d_3b_1x1.bn
-[BWD-BEGIN] Issued Time: 616, Layer: Conv2d_3b_1x1.conv
-[BWD-BEGIN] Issued Time: 617, Layer: maxpool1
-[BWD-BEGIN] Issued Time: 618, Layer: relu_relu_2
-[BWD-BEGIN] Issued Time: 619, Layer: Conv2d_2b_3x3.bn
-[BWD-BEGIN] Issued Time: 620, Layer: Conv2d_2b_3x3.conv
-[BWD-BEGIN] Issued Time: 621, Layer: relu_relu_1
-[BWD-BEGIN] Issued Time: 622, Layer: Conv2d_2a_3x3.bn
-[BWD-BEGIN] Issued Time: 623, Layer: Conv2d_2a_3x3.conv
-[BWD-BEGIN] Issued Time: 624, Layer: relu_relu
-[BWD-BEGIN] Issued Time: 625, Layer: Conv2d_1a_3x3.bn
-[BWD-BEGIN] Issued Time: 626, Layer: Conv2d_1a_3x3.conv
-All hooks removed.
+[HOOK-INIT] 事件文件加载完成，共 18 条事件，起始 event_index=0
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432
+[SWAP-LIFE] extract | Tensor:    1 Current_Issue_time:    2
+[SWAP-LIFE] extract | Tensor:    5 Current_Issue_time:    3
+[SWAP-LIFE] d2h   | Tensor:    1 Current_Issue_time:    4
+[SWAP-LIFE] d2h   | Tensor:    5 Current_Issue_time:    6
+[SWAP-LIFE] extract | Tensor:   39 Current_Issue_time:    8
+[SWAP-LIFE] extract | Tensor:   43 Current_Issue_time:    9
+[SWAP-LIFE] d2h   | Tensor:   39 Current_Issue_time:   10
+[SWAP-LIFE] d2h   | Tensor:   43 Current_Issue_time:   12
+[SWAP-LIFE] extract | Tensor:   79 Current_Issue_time:   15
+[SWAP-LIFE] extract | Tensor:   83 Current_Issue_time:   16
+[SWAP-LIFE] d2h   | Tensor:   79 Current_Issue_time:   17
+[SWAP-LIFE] d2h   | Tensor:   83 Current_Issue_time:   19
+[SWAP-LIFE] h2d   | Tensor:    5 Current_Issue_time:  266
+[SWAP-LIFE] h2d   | Tensor:    1 Current_Issue_time:  348
+[SWAP-LIFE] h2d   | Tensor:   83 Current_Issue_time:  359
+[SWAP-LIFE] h2d   | Tensor:   79 Current_Issue_time:  400
+[SWAP-LIFE] h2d   | Tensor:   43 Current_Issue_time:  409
+[SWAP-LIFE] h2d   | Tensor:   39 Current_Issue_time:  432

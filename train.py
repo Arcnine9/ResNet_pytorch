@@ -15,6 +15,8 @@ from torchvision.models import inception_v3
 from torch.utils.data import DataLoader, Dataset
 import yaml
 
+from swap_manager import swapManager, hook, module_transfer
+
 # Auto transfer to NPU
 import torch_npu
 from torch_npu.contrib import transfer_to_npu
@@ -117,14 +119,14 @@ elif config["net"] == "ResNet152":
 # ========== 原脚本位置：模型定义完、hook 注册前 ==========
 elif config["net"] == "InceptionV3":
     net = inception_v3(num_classes=classes.__len__(), aux_logits=False)
-    # import swap_manager.module_transfer as module_transfer
-    # net = module_transfer.replace_functional(net)
+    import swap_manager.module_transfer as module_transfer
+    net = module_transfer.replace_functional(net, verbose=False)
     net = net.to(device)
 else:
     raise Exception("网络模型配置存在问题，请确认配置文件")
 
-# import swap_manager.hook as hook_manager
-# hook_manager = hook_manager.register_all_hooks(net)
+swapManager = swapManager.SwapManager()
+hook_manager = hook.HookManager(swapManager, "prefetch.config", net)
 
 model_filename = f"{config['net']}_model.txt"
 with open("model_filename.txt", "w") as f:
@@ -185,6 +187,8 @@ if __name__ == "__main__":
         correct = 0.0  # 准确数量
         total = 0.0  # 总共数量
         for i, data in enumerate(trainloader, 0):  # 训练集合enumerate(sequence, [start=0])用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标
+            hook_manager.reset_issued_time()  # 每个batch重置issued_time
+            swapManager.clear()  # 每个batch清空swapManager状态
             # 准备数据  i是序号 data是遍历的数据元素
             length = len(trainloader)  # 训练数量
             inputs, labels = data
@@ -240,5 +244,6 @@ if __name__ == "__main__":
                 best_acc = acc
                 torch.save(net.state_dict(), '%s/best_net_%03d.pth' % (config["train"]["out_model_path"], best_acc))
 
-            
+    
+    hook_manager.remove_hooks()        
     print("Training Finished, TotalEPOCH=%d" % config["train"]["epoch"])
