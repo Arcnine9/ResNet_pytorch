@@ -1,143 +1,217 @@
 import torch
-import torch.nn as nn
-from typing import List, Dict
 import torch_npu
-from torch_npu.contrib import transfer_to_npu
-
-# Event 类
-class Event:
-    def __init__(self, issued_time: int, tensor_id: int, from_location: str, to_location: str, tag: str):
-        self.issued_time = issued_time
-        self.tensor_id = tensor_id
-        self.from_location = from_location
-        self.to_location = to_location
-        self.tag = tag
-
-    def __repr__(self):
-        return (f"Issued Time: {self.issued_time}, Tensor: {self.tensor_id}, "
-                f"From: {self.from_location}, To: {self.to_location}, Tag: {self.tag}")
+from typing import Dict
 
 
-# SwapTensor 类
+# =========================
+# EventPool：Event 复用池
+# =========================
+class EventPool:
+    """
+    简单环形复用池：
+    - 不做引用计数
+    - 假设调用方保证：同一个 event 不会在未完成时被复用
+    """
+    def __init__(self, num_events=128, device=None):
+        self.device = device
+        self.pool = []
+        with torch.npu.device(device):
+            for _ in range(num_events):
+                self.pool.append(torch.npu.Event())
+        self.idx = 0
+
+    def acquire(self):
+        evt = self.pool[self.idx]
+        self.idx = (self.idx + 1) % len(self.pool)
+        return evt
+
+    def release(self, evt):
+        # no-op：复用池不做生命周期管理
+        pass
+
+
+# =========================
+# SwapTensor：纯状态对象
+# =========================
 class SwapTensor:
-    def __init__(self, tensor):
+    """
+    只保存状态，不保存 stream, 不做调度
+    """
+    def __init__(self, tensor: torch.Tensor):
         self.tensor = tensor
         self.size = tensor.size()
+
+        # 注意：TypedStorage 已 deprecated，但这里先保持最小改动
         self.storage_size = tensor.storage().size()
-        self.tensor_cpu = torch.empty(tensor.shape, dtype=tensor.dtype, pin_memory=False, device='cpu')
 
-        self.d2h_event = None
-        self.h2d_event = torch.npu.Event()
-
-        self.stat = "device"
-
-        self.d2h_done_event = torch.npu.Event()
-        self.h2d_done_event = torch.npu.Event()
-
-        # self.prefetch_data_ptr = tensor.data_ptr()
-        # self.storage_data_ptr = tensor.storage().data_ptr()
-        # self.layer_id = None
-        # self.first_tensor = False
-        # self.last_tensor = False
         self.is_slice_tensor = tensor.storage().size() != tensor.numel()
-        # self.stream = None
-        # self.layer_index = 0
 
-    def launch_d2h(self, stream):
-        if self.stat != "device":
-            return
+        if self.is_slice_tensor:
+            self.tensor_cpu = torch.empty(
+                tensor.shape,
+                dtype=tensor.dtype,
+                device="cpu"
+            )
+        else:
+            self.tensor_cpu = torch.empty(
+                self.storage_size,
+                dtype=tensor.dtype,
+                device="cpu"
+            ).view(tensor.shape)
 
-        with torch.no_grad():
-            with torch_npu.npu.stream(stream):
-                
-                if self.is_slice_tensor:
-                    self.tensor_cpu.copy_(self.tensor, non_blocking=True)
-                else:
-                    self.tensor_cpu.storage().copy_(self.tensor.storage(), non_blocking=True)
-                self.d2h_done_event.record(stream)
-        self.stat = "d2h_inflight"
-
-    def wait_d2h_finished(self):
-        if self.stat != "d2h_inflight":
-            return
-
-        torch_npu.current_stream().wait_event(self.d2h_done_event)
-
-        self.tensor.storage().resize_(0)
-        self.stat = "host"
-
-    def launch_h2d(self, stream):
-        if self.stat != "host":
-            return
-        
-        with torch.no_grad():
-            with torch_npu.npu.stream(stream):
-                stream.wait_event(backward_event)
-                if self.is_slice_tensor:
-                    self.tensor.copy_(self.tensor_cpu, non_blocking=True)
-                else:
-                    self.tensor.storage().copy_(self.tensor_cpu.storage(), non_blocking=True)
-                self.h2d_event.record()
-                self.stat = "h2d"
-
-    def wait_h2d_finished(self, stream, need_wait=False):
-        if self.stat != "h2d":
-            self.tensor_cpu = None
-            return
-        if need_wait:
-            torch.npu.current_stream().wait_stream(stream)
-            torch.npu.default_stream().wait_stream(stream)
+        # 状态机：
+        # device | d2h_inflight | host | h2d_inflight
         self.stat = "device"
 
+        # event 只是句柄
+        self.d2h_event = None
+        self.h2d_event = None
 
-# SwapManager 类
+
+# =========================
+# SwapManager：唯一调度者
+# =========================
 class SwapManager:
-    def __init__(self):
-        self.swap_tensors: Dict[int, SwapTensor] = {}  # key: tensor_id, value: SwapTensor
-        self.issued_time = 0  # 当前已处理的事件时间戳
+    def __init__(self, num_events: int = 128):
+        self.swap_tensors: Dict[int, SwapTensor] = {}
+        self.device = torch_npu.npu.current_device()
+        self.event_pool = EventPool(num_events=num_events, device=self.device)
 
+    # -------- tensor 注册 --------
     def add_swap_tensor(self, tensor_id: int, tensor: torch.Tensor):
-        """添加一个新的 SwapTensor 对象"""
-        if tensor_id not in self.swap_tensors:
-            self.swap_tensors[tensor_id] = SwapTensor(tensor)
-        else:
-            raise ValueError(f"Tensor ID {tensor_id} already exists in SwapManager.")
+        # if tensor_id in self.swap_tensors:
+        #     return
+        self.swap_tensors[tensor_id] = SwapTensor(tensor)
 
-    def get_swap_tensor(self, tensor_id: int) -> SwapTensor:
-        """根据 tensor_id 获取 SwapTensor 对象"""
+    def get_swap_tensor(self, tensor_id: int):
         return self.swap_tensors.get(tensor_id, None)
 
+    # -------- D2H --------
     def launch_d2h(self, tensor_id: int, stream):
-        """触发 device to host 操作"""
-        swap_tensor = self.get_swap_tensor(tensor_id)
-        if swap_tensor:
-            swap_tensor.launch_d2h(stream)
-            # print(f"[EVENT] Issued Time: {self.issued_time} | Tensor: {tensor_id} | From: In_gpu, To: In_cpu")
-            self.issued_time += 1
+        st = self.swap_tensors[tensor_id]
+        if st.stat != "device":
+            print(f"[DEBUG] Tensor {tensor_id} not in device state for D2H!")
+            return
 
-    def wait_d2h_finished(self, tensor_id: int, stream, need_wait=False):
-        """等待 device to host 操作完成"""
-        swap_tensor = self.get_swap_tensor(tensor_id)
-        if swap_tensor:
-            swap_tensor.wait_d2h_finished(stream, need_wait)
+        evt = self.event_pool.acquire()
+        st.d2h_event = evt
 
-    def launch_h2d(self, tensor_id: int, stream, flag):
-        """触发 host to device 操作"""
-        swap_tensor = self.get_swap_tensor(tensor_id)
-        if swap_tensor:
-            swap_tensor.launch_h2d(stream, flag)
-            # print(f"[EVENT] Issued Time: {self.issued_time} | Tensor: {tensor_id} | From: In_cpu, To: In_gpu")
-            self.issued_time += 1
+        with torch.no_grad():
+            with torch_npu.npu.stream(stream):
+                if st.is_slice_tensor:
+                    st.tensor_cpu.copy_(st.tensor, non_blocking=True)
+                else:
+                    st.tensor_cpu.storage().copy_(
+                        st.tensor.storage(), non_blocking=True
+                    )
+                evt.record(stream)
 
-    def wait_h2d_finished(self, tensor_id: int, stream, need_wait=False):
-        """等待 host to device 操作完成"""
-        swap_tensor = self.get_swap_tensor(tensor_id)
-        if swap_tensor:
-            swap_tensor.wait_h2d_finished(stream, need_wait)
+        st.stat = "d2h_inflight"
 
+    def wait_d2h_finished(self, tensor_id: int, compute_stream = None):
+        """
+        D2H 是 host 侧关心的问题：
+        - 必须确保 CPU buffer 写完
+        - 之后才能 resize device storage
+        """
+        st = self.swap_tensors[tensor_id]
+        if st.stat != "d2h_inflight":
+            print(f"[DEBUG] Tensor {tensor_id} not in d2h_inflight state for wait!")
+            return
+
+        # 关键修正点：host-side 同步
+        if compute_stream is not None and st.d2h_event is not None:
+           compute_stream.wait_event(st.d2h_event)
+        if st.d2h_event is not None:
+            self.event_pool.release(st.d2h_event)
+            st.d2h_event = None
+
+        # 释放 device storage（危险但受控）
+        st.tensor.storage().resize_(0)
+
+        st.stat = "host"
+
+    # -------- H2D --------
+    def launch_h2d(self, tensor_id: int, stream):
+        st = self.swap_tensors[tensor_id]
+        if st.stat != "host":
+            print(f"[DEBUG] Tensor {tensor_id} not in host state for H2D!")
+            return
+
+        # 先恢复 storage
+        st.tensor.storage().resize_(st.storage_size)
+
+        evt = self.event_pool.acquire()
+        st.h2d_event = evt
+
+        with torch.no_grad():
+            with torch_npu.npu.stream(stream):
+                if st.is_slice_tensor:
+                    st.tensor.copy_(st.tensor_cpu, non_blocking=True)
+                else:
+                    st.tensor.storage().copy_(
+                        st.tensor_cpu.storage(), non_blocking=True
+                    )
+                evt.record(stream)
+
+        st.stat = "h2d_inflight"
+
+    def wait_h2d_finished(self, tensor_id: int, compute_stream):
+        """
+        H2D 的 wait 必须发生在消费该 tensor 的 compute stream 上
+        """
+        st = self.swap_tensors[tensor_id]
+        if st.stat != "h2d_inflight":
+            print(f"[DEBUG] Tensor {tensor_id} not in h2d_inflight state for wait!")
+            return
+
+        if st.h2d_event is not None:
+            # 等待 compute stream 上事件
+            compute_stream.wait_event(st.h2d_event)
+
+            self.event_pool.release(st.h2d_event)
+            st.h2d_event = None
+
+        st.stat = "device"
+
+    # -------- batch / epoch 结束清理 --------
     def clear(self):
-        """清空所有 SwapTensor 对象"""
-        for t in self.swap_tensors.values():
-            t.tensor_cpu = None
+
+        # 清理 CPU buffer 和事件
+        for st in self.swap_tensors.values():
+            st.tensor_cpu = None
+            st.d2h_event = None
+            st.h2d_event = None
+
         self.swap_tensors.clear()
-        self.issued_time = 0
+
+    def is_h2d_finished(self, tensor_id: int):
+        """
+        检查 H2D 是否完成（非阻塞）
+        """
+        st = self.swap_tensors.get(tensor_id, None)
+        if st is None:
+            print(f"[DEBUG] Tensor {tensor_id} not registered")
+            return False
+
+        if st.stat != "h2d_inflight":
+            # 已经完成或不在 H2D 状态
+            return True
+
+        if st.h2d_event is None:
+            print(f"[DEBUG] Tensor {tensor_id} has no h2d_event!")
+            return False
+
+        finished = st.h2d_event.query()
+        if not finished:
+            print(f"[DEBUG] Tensor {tensor_id} H2D NOT finished yet!")
+        return finished
+
+    def debug_h2d_all(self):
+        """
+        打印所有 swap tensor H2D 状态
+        """
+        for tid, st in self.swap_tensors.items():
+            status = st.stat
+            finished = st.h2d_event.query() if st.h2d_event else True
+            print(f"[DEBUG] Tensor {tid}: stat={status}, h2d_finished={finished}")

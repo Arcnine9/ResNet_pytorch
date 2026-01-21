@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-# Created on 2020/11/3 13:38
-# Project: 
-# @Author: CaoYugang
+
 import os
 import PIL
 import torch
@@ -15,44 +13,38 @@ from torchvision.models import inception_v3
 from torch.utils.data import DataLoader, Dataset
 import yaml
 
-from swap_manager import swapManager, hook, module_transfer
+from swap_manager import swapManager as swap_manager_mod
+from swap_manager import hook, module_transfer
 
-# Auto transfer to NPU
 import torch_npu
 from torch_npu.contrib import transfer_to_npu
 
 
 with open('./config.yaml', 'r', encoding='utf-8') as f_config:
-    config_result = f_config.read()
-    config = yaml.load(config_result, Loader=yaml.FullLoader)
+    config = yaml.load(f_config.read(), Loader=yaml.FullLoader)
 
-# 定义是否使用GPU
-if config["train"]["is_gpu"]:
-    if torch.cuda.is_available():
-        device = torch.device("cuda")
-    else:
-        raise Exception("本运行服务器未发现GPU，请确认配置文件")
-else:
-    device = torch.device("cpu")
+device = torch.device(
+    "npu:1" if torch.npu.is_available()
+    else "cuda" if torch.cuda.is_available()
+    else "cpu"
+)
 
-# 检查模型保存地址
 if not os.path.exists(config["train"]["out_model_path"]):
-    raise Exception("检查模型保存地址不存在，请确认配置文件")
+    raise Exception("模型保存路径不存在")
 
 
+# ================= Dataset =================
 class CNNNetworkDataset(Dataset):
-    # use CIFAR-10 DATASET
     def __init__(self, base_dataset, transform=None, should_invert=True):
         self.base_dataset = base_dataset
         self.transform = transform
         self.should_invert = should_invert
 
     def __getitem__(self, index):
-        img, label = self.base_dataset[index]  # 根据索引index获取该图片
+        img, label = self.base_dataset[index]
         if self.should_invert:
             img = PIL.ImageOps.invert(img)
-
-        if self.transform is not None:
+        if self.transform:
             img = self.transform(img)
         return img, label
 
@@ -60,11 +52,10 @@ class CNNNetworkDataset(Dataset):
         return len(self.base_dataset)
 
 
-# 准备数据集并预处理
 transform_train = transforms.Compose([
     transforms.Resize((config["width"], config["height"])),
-    transforms.RandomHorizontalFlip(0.5 if config["train"]["rotating"] else 0),  # 0.5=>图像一半的概率翻转，一半的概率不翻转
-    transforms.ToTensor(),  # 维度转化
+    transforms.RandomHorizontalFlip(0.5 if config["train"]["rotating"] else 0),
+    transforms.ToTensor(),
 ])
 
 transform_test = transforms.Compose([
@@ -72,178 +63,136 @@ transform_test = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-training_dir = config["train"]["train_data"]
-# train_dataset = torchvision.datasets.ImageFolder(root=training_dir)
 train_dataset = torchvision.datasets.CIFAR10(
-    root=training_dir,  # 数据集存储路径
-    train=True,     # 是否加载训练集
-    download=True,  # 如果数据集不存在，自动下载
+    root=config["train"]["train_data"],
+    train=True,
+    download=True,
     transform=transform_train
 )
 
-test_dir = config["train"]["test_data"]
-# test_dataset = torchvision.datasets.ImageFolder(root=test_dir)
 test_dataset = torchvision.datasets.CIFAR10(
-    root=test_dir,  # 数据集存储路径
-    train=False,     # 是否加载训练集
-    download=True,  # 如果数据集不存在，自动下载
+    root=config["train"]["test_data"],
+    train=False,
+    download=True,
     transform=transform_test
 )
-# 根据标签生成标签集文件
+
+trainloader = DataLoader(
+    train_dataset,
+    batch_size=config["train"]["batch_size"],
+    shuffle=True,
+    num_workers=config["train"]["num_workers"]
+)
+
+testloader = DataLoader(
+    test_dataset,
+    batch_size=config["train"]["batch_size"],
+    shuffle=True,
+    num_workers=config["train"]["num_workers"]
+)
+
 classes = train_dataset.classes
-with open(config["class_path"], 'w', encoding='utf-8') as f:
-    for k in classes:
-        f.write("{}\n".format(k))
-classes = tuple(classes)
 
-# 生成训练集
-# trainset = CNNNetworkDataset(base_dataset=train_dataset, should_invert=False, transform=transform_train)
-trainloader = DataLoader(dataset=train_dataset, batch_size=config["train"]["batch_size"], shuffle=True,
-                         num_workers=config["train"]["num_workers"])
-# 生成测试集
-# testset = CNNNetworkDataset(base_dataset=test_dataset, should_invert=False, transform=transform_test)
-testloader = DataLoader(dataset=test_dataset, batch_size=config["train"]["batch_size"], shuffle=True,
-                        num_workers=config["train"]["num_workers"])
 
-# 模型定义-ResNet（ResNet18, ResNet34, ResNet50, ResNet101, ResNet152）and InceptionV3
+# ================= Model =================
 if config["net"] == "ResNet18":
-    net = ResNet.resnet18(num_classes=classes.__len__()).to(device)
+    net = ResNet.resnet18(num_classes=len(classes))
 elif config["net"] == "ResNet34":
-    net = ResNet.resnet34(num_classes=classes.__len__()).to(device)
+    net = ResNet.resnet34(num_classes=len(classes))
 elif config["net"] == "ResNet50":
-    net = ResNet.resnet50(num_classes=classes.__len__()).to(device)
+    net = ResNet.resnet50(num_classes=len(classes))
 elif config["net"] == "ResNet101":
-    net = ResNet.resnet101(num_classes=classes.__len__()).to(device)
+    net = ResNet.resnet101(num_classes=len(classes))
 elif config["net"] == "ResNet152":
-    net = ResNet.resnet152(num_classes=classes.__len__()).to(device)
-# ========== 原脚本位置：模型定义完、hook 注册前 ==========
+    net = ResNet.resnet152(num_classes=len(classes))
 elif config["net"] == "InceptionV3":
-    net = inception_v3(num_classes=classes.__len__(), aux_logits=False)
-    import swap_manager.module_transfer as module_transfer
+    net = inception_v3(num_classes=len(classes), aux_logits=False)
     net = module_transfer.replace_functional(net, verbose=False)
-    net = net.to(device)
 else:
-    raise Exception("网络模型配置存在问题，请确认配置文件")
+    raise Exception("Unknown network")
 
-swapManager = swapManager.SwapManager()
-hook_manager = hook.HookManager(swapManager, "prefetch.config", net)
-
-model_filename = f"{config['net']}_model.txt"
-with open("model_filename.txt", "w") as f:
-    f.write(str(net))
-
-# 定义损失函数和优化方式
-criterion = nn.CrossEntropyLoss()  # 损失函数为交叉熵，多用于多分类问题,此标准将LogSoftMax和NLLLoss集成到一个类中。
-optimizer = optim.SGD(net.parameters(), lr=config["train"]["lr"], momentum=0.9,
-                      weight_decay=5e-4)  # 优化方式为mini-batch momentum-SGD，并采用L2正则化（权重衰减）
-
-# ================== PROFILER 逻辑封装 ==================
-def start_npu_profiler(epoch, pre_epoch=0):
-    """
-    启动 NPU profiler
-    仅在 epoch == pre_epoch + 1 或 pre_epoch + 2 开启
-    返回 prof 对象，训练循环中调用 prof.step()
-    """
-    if epoch == pre_epoch + 10:
-        experimental_config = torch_npu.profiler._ExperimentalConfig(
-            export_type=torch_npu.profiler.ExportType.Text,
-            profiler_level=torch_npu.profiler.ProfilerLevel.Level2,
-            msprof_tx=False,
-            aic_metrics=torch_npu.profiler.AiCMetrics.AiCoreNone,
-            l2_cache=False, op_attr=False,
-            data_simplification=False, record_op_args=False
-        )
-        prof = torch_npu.profiler.profile(
-            activities=[
-                torch_npu.profiler.ProfilerActivity.CPU,
-                torch_npu.profiler.ProfilerActivity.NPU
-            ],
-            schedule=torch_npu.profiler.schedule(wait=2, warmup=1, active=20, repeat=1, skip_first=1),
-            record_shapes=True,
-            profile_memory=True,
-            with_stack=True,
-            experimental_config=experimental_config
-        )
-        prof.start()
-        return prof
-    else:
-        return None
+net = net.to(device)
 
 
+# ================= Swap / Hook =================
+swap_manager = swap_manager_mod.SwapManager()   # ★ 不再覆盖模块名
+hook_manager = hook.HookManager(
+    swap_manager,
+    "prefetch.config",
+    net
+)
 
-# 训练
+
+# criterion = nn.CrossEntropyLoss()
+# optimizer = optim.SGD(
+#     net.parameters(),
+#     lr=config["train"]["lr"],
+#     momentum=0.9,
+#     weight_decay=5e-4
+# )
+
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
+
+
+# ================= Training =================
 if __name__ == "__main__":
-    prof = None
-    best_acc = 90  # 2 初始化best test accuracy
-    print("Start Training, %s !" % config["net"])  # 定义遍历数据集的次数
-    for epoch in range(config["train"]["pre_epoch"], config["train"]["epoch"]):  # 从先前次数开始训练
+    print("Start Training:", config["net"])
 
-        # prof = start_npu_profiler(epoch, config["train"]["pre_epoch"])
+    for epoch in range(config["train"]["pre_epoch"], config["train"]["epoch"]):
+        print(f"\nEpoch: {epoch + 1}")
+        net.train()
 
-        print('\nEpoch: %d' % (epoch + 1))  # 输出当前次数
-        net.train()  # 这两个函数只要适用于Dropout与BatchNormalization的网络，会影响到训练过程中这两者的参数
-        # 运用net.train()时，训练时每个min - batch时都会根据情况进行上述两个参数的相应调整，所有BatchNormalization的训练和测试时的操作不同。
-        sum_loss = 0.0  # 损失数量
-        correct = 0.0  # 准确数量
-        total = 0.0  # 总共数量
-        for i, data in enumerate(trainloader, 0):  # 训练集合enumerate(sequence, [start=0])用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标
-            hook_manager.reset_issued_time()  # 每个batch重置issued_time
-            swapManager.clear()  # 每个batch清空swapManager状态
-            # 准备数据  i是序号 data是遍历的数据元素
-            length = len(trainloader)  # 训练数量
-            inputs, labels = data
-            # 假想： inputs是当前输入的图像，label是当前图像的标签，这个data中每一个sample对应一个label
-            inputs, labels = inputs.to(device), labels.to(device)
-            optimizer.zero_grad()  # 清空所有被优化过的Variable的梯度.
+        for i, (inputs, labels) in enumerate(trainloader):
 
-            # forward + backward
-            outputs = net(inputs)  # 得到训练后的一个输出
+            # ★ 再 reset issued_time
+            torch.npu.synchronize()
+            hook_manager.reset_issued_time()
+            torch.npu.synchronize()
+            inputs = inputs.to(device)
+            labels = labels.to(device)
 
+            optimizer.zero_grad()
+
+            outputs = net(inputs)
             loss = criterion(outputs, labels)
             loss.backward()
-            optimizer.step()  # 进行单次优化 (参数更新).
+            optimizer.step()
 
-            # 每训练1个batch打印一次loss和准确率
-            sum_loss += loss.item()
-            _, predicted = torch.max(outputs.data, 1)  # 返回输入张量所有元素的最大值。 将dim维设定为1，其它与输入形状保持一致。
-            # 这里采用torch.max。torch.max()的第一个输入是tensor格式，所以用outputs.data而不是outputs作为输入；第二个参数1是代表dim的意思，也就是取每一行的最大值，其实就是我们常见的取概率最大的那个index；第三个参数loss也是torch.autograd.Variable格式。
-            total += labels.size(0)
-            correct += predicted.eq(labels.data).cpu().sum()
-            print('[epoch:%d, iter:%d/%d] Loss: %.03f | Acc: %.3f%% '
-                  % (epoch + 1, (i + 1), length, sum_loss / (i + 1), 100. * correct / total))
-            if prof:
-                prof.step()
-        # 每训练完一个epoch测试一下准确率
-        if prof:
-            prof.stop()
-            # prof.export_chrome_trace(f"/data/train5_data/ResNet/profiling_data/epoch_{epoch+1}_trace.json")
-            prof = None
-        print("Waiting Test!")
-        with torch.no_grad():  # 没有求导
-            correct = 0
-            total = 0
-            for test_i, data in enumerate(testloader):
-                net.eval()  # 运用net.eval()时，由于网络已经训练完毕，参数都是固定的，因此每个min-batch的均值和方差都是不变的，因此直接运用所有batch的均值和方差。
-                images, labels = data
-                images, labels = images.to(device), labels.to(device)
+            # ★ 保证上一个 batch 的 swap 已完全结束
+            torch.npu.synchronize()
+            # swap_manager.clear()
+            torch.npu.synchronize()
+            # # 打印
+            _, predicted = torch.max(outputs.data, 1)
+            torch.npu.synchronize()
+            acc = (predicted == labels).float().mean() * 100
+            torch.npu.synchronize()
+            print(
+                f"[epoch:{epoch+1}, iter:{i+1}/{len(trainloader)}] "
+                f"Loss: {loss.item():.4f} | Acc: {acc:.2f}%"
+            )
+
+        # ===== test =====
+        net.eval()
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for images, labels in testloader:
+                images = images.to(device)
+                labels = labels.to(device)
                 outputs = net(images)
-                # 取得分最高的那个类 (outputs.data的索引号)
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-                if test_i == 100:
-                    break
-            print('测试分类准确率为：{}%'.format(round(100 * correct / total, 3)))
-            acc = 100. * correct / total
-            # 将每次测试结果实时写入acc.txt文件中
-            print('Saving model......')
-            torch.save(net.state_dict(), '%s/net_%d_%03d.pth' % (config["train"]["out_model_path"], epoch + 1, acc))
 
-            # 记录最佳测试分类准确率并写入best_acc.txt文件中
-            if acc > best_acc:
-                best_acc = acc
-                torch.save(net.state_dict(), '%s/best_net_%03d.pth' % (config["train"]["out_model_path"], best_acc))
+        acc = 100. * correct / total
+        print(f"Test Acc: {acc:.3f}%")
 
-    
-    hook_manager.remove_hooks()        
-    print("Training Finished, TotalEPOCH=%d" % config["train"]["epoch"])
+        torch.save(
+            net.state_dict(),
+            f"{config['train']['out_model_path']}/net_{epoch+1}_{acc:.3f}.pth"
+        )
+
+    # hook_manager.remove_hooks()
+    print("Training Finished")
