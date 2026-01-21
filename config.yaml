@@ -1,8 +1,8 @@
 # 配置
 net: InceptionV3  # 网络模型选择(ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, InceptionV3)
 class_path: /data/train5_data/ResNet/ori_data/classes.txt  # 标签文件路径
-width: 299
-height: 299
+width: 75
+height: 75
 train:
   epoch: 1  # 遍历数据集次数
   pre_epoch: 0  # 定义已经遍历数据集的次数
