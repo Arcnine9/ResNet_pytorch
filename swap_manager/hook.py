@@ -3,7 +3,7 @@ import atexit
 import threading
 import torch
 import torch.nn as nn
-from .swap_manager import SwapManager, Event
+from .swapManager import SwapManager, Event
 from .module_transfer import ReLU, Cat, Add, AvgPool2d, MaxPool2d
 import re
 from typing import List, Dict
@@ -58,6 +58,7 @@ class HookManager:
     def reset_issued_time(self):
         with self.issued_time_lock:
             self.issued_time = 0
+            self.event_index = 0
 
     def load_events(self, file_path: str) -> List[Event]:
         """从文件中加载事件列表"""
