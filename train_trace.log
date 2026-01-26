@@ -1,37 +1,24 @@
-[HOOK-INIT] Loaded 30 trace events
-[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
-[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
-[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
-[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
-[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
-[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
-[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
-[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
-[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
-[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
-[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
-[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
-[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   78
-[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:  142
-[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:  184
-[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:  221
-[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:  239
-[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:  265
-[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  265
-[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  347
-[SWAP-LIFE] h2d        | Tensor:   83 | Issued:  358
-[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  399
-[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  408
-[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  431
-[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
-[HOOK] H2D finished for Tensor 83 at time 610
-[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
-[HOOK] H2D finished for Tensor 79 at time 612
-[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
-[HOOK] H2D finished for Tensor 43 at time 617
-[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
-[HOOK] H2D finished for Tensor 39 at time 619
-[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
-[HOOK] H2D finished for Tensor 5 at time 623
-[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
-[HOOK] H2D finished for Tensor 1 at time 625
+[wrap        ] tensor=   1 time=   2
+[wrap        ] tensor=   5 time=   3
+[execute_d2h ] tensor=   1 time=   4
+[execute_d2h ] tensor=   5 time=   6
+[wrap        ] tensor=  39 time=   8
+[wrap        ] tensor=  43 time=   9
+[execute_d2h ] tensor=  39 time=  10
+[execute_d2h ] tensor=  43 time=  12
+[wrap        ] tensor=  79 time=  15
+[wrap        ] tensor=  83 time=  16
+[execute_d2h ] tensor=  79 time=  17
+[execute_d2h ] tensor=  83 time=  19
+[host check  ] tensor=  39 time=  78
+[host check  ] tensor=  43 time= 142
+[host check  ] tensor=  79 time= 184
+[host check  ] tensor=  83 time= 221
+[host check  ] tensor=   1 time= 239
+[host check  ] tensor=   5 time= 265
+[execute_h2d ] tensor=   5 time= 265
+[execute_h2d ] tensor=   1 time= 347
+[execute_h2d ] tensor=  83 time= 358
+[execute_h2d ] tensor=  79 time= 399
+[execute_h2d ] tensor=  43 time= 408
+[execute_h2d ] tensor=  39 time= 431
