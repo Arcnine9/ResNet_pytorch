@@ -13,7 +13,7 @@ from torchvision.models import inception_v3
 from torch.utils.data import DataLoader, Dataset
 import yaml
 
-from swap_manager import swapManager as swap_manager_mod
+from ResNet_pytorch.swap_manager import swap_Manager as swap_manager_mod
 from swap_manager import hook, module_transfer
 
 import torch_npu

@@ -1,31 +1,28 @@
+# hook.py
+# 简化版：移除层变化检测，直接按事件处理
+
 import os
 import atexit
 import threading
 import torch
 import torch.nn as nn
 import re
-from typing import List,Optional
+from typing import List, Optional
 
 import torch_npu
 
-from .swapManager import SwapManager
+from .swap_manager import SwapManager
 from .module_transfer import ReLU, Cat, Add, AvgPool2d, MaxPool2d
 
 
-# =========================
-# 日志
-# =========================
+# ========================= 日志 =========================
 _LOG_F = None
 _LOG_F_LOCK = threading.Lock()
 
 OP_MAP = (
-    nn.Conv2d,
-    nn.ReLU, nn.ReLU6, nn.LeakyReLU,
-    nn.MaxPool2d,
-    nn.AdaptiveAvgPool2d,
-    nn.Linear,
-    nn.Dropout, nn.Dropout2d,
-    nn.BatchNorm2d,
+    nn.Conv2d, nn.ReLU, nn.ReLU6, nn.LeakyReLU,
+    nn.MaxPool2d, nn.AdaptiveAvgPool2d, nn.Linear,
+    nn.Dropout, nn.Dropout2d, nn.BatchNorm2d,
     ReLU, Cat, Add, AvgPool2d, MaxPool2d,
 )
 
@@ -46,42 +43,34 @@ def log_message(message):
 
 def log_lifecycle(action: str, tensor_id: int, time: int = 0):
     with _LOG_F_LOCK:
-        print(
-            f"[SWAP-LIFE] {action:10} | Tensor: {tensor_id:4} | Issued: {time:4}",
-            file=_get_log_f()
-        )
+        print(f"[{action:12}] tensor={tensor_id:4} time={time:4}", file=_get_log_f())
 
 
-# =========================
-# Event 描述对象（纯数据）
-# =========================
 class TraceEvent:
-    def __init__(self, issued_time: int, tensor_id: int, from_location: str, to_location: str, tag: str):
+    def __init__(self, issued_time: int, tensor_id: int, from_loc: str, to_loc: str, tag: str):
         self.issued_time = issued_time
         self.tensor_id = tensor_id
-        self.from_location = from_location
-        self.to_location = to_location
+        self.from_location = from_loc
+        self.to_location = to_loc
         self.tag = tag
 
 
 class HookManager:
-    def __init__(self, swap_manager: SwapManager, event_file: str, model: nn.Module):
+    def __init__(self, swap_manager: SwapManager, event_file: str, model: nn.Module, device=None):
         self.swap_manager = swap_manager
         self.model = model
-
+        self.device = device if device is not None else torch_npu.npu.current_device()
+        
         self.issued_time = 0
         self.issued_time_lock = threading.Lock()
-
         self.events: List[TraceEvent] = self.load_events(event_file)
         self.event_index = 0
-
         self.hooks = []
-        self.current_module_name: Optional[str] = None
-
-        log_message(f"[HOOK-INIT] Loaded {len(self.events)} trace events")
+        self.current_module_name = None
+        
+        print(f"[HookManager] {len(self.events)} events, device={self.device}")
         self.register_hooks(model)
 
-    # ---------- issued time ----------
     def _increment_issued_time(self) -> int:
         with self.issued_time_lock:
             self.issued_time += 1
@@ -92,40 +81,16 @@ class HookManager:
             self.issued_time = 0
             self.event_index = 0
 
-    # ---------- trace events ----------
     def load_events(self, file_path: str) -> List[TraceEvent]:
-        pattern = re.compile(
-            r"Issued Time: (\d+) Tensor: (\d+) From: (\w+), To: (\w+) tag: (\w+)"
-        )
+        pattern = re.compile(r"Issued Time: (\d+) Tensor: (\d+) From: (\w+), To: (\w+) tag: (\w+)")
         events = []
         with open(file_path, "r") as f:
             for line in f:
                 m = pattern.match(line.strip())
                 if m:
-                    events.append(
-                        TraceEvent(
-                            int(m.group(1)),
-                            int(m.group(2)),
-                            m.group(3),
-                            m.group(4),
-                            m.group(5),
-                        )
-                    )
+                    events.append(TraceEvent(int(m.group(1)), int(m.group(2)),
+                                           m.group(3), m.group(4), m.group(5)))
         return events
-
-    # ---------- hooks ----------
-    def _make_forward_hook(self, name):
-        def forward_hook(module, inputs, output):
-            issued_time = self._increment_issued_time()
-            self.current_module_name = name
-            self.process_events(issued_time, inputs, output)
-        return forward_hook
-
-    def _make_backward_hook(self, name):
-        def backward_hook(module, grad_input, grad_output):
-            issued_time = self._increment_issued_time()
-            self.process_events(issued_time)
-        return backward_hook
 
     def register_hooks(self, model: nn.Module):
         for name, module in model.named_modules():
@@ -137,58 +102,81 @@ class HookManager:
         for h in self.hooks:
             h.remove()
         self.hooks.clear()
-        log_message("[HOOK] All hooks removed")
 
-    # =========================
-    # 核心调度逻辑
-    # =========================
-    def process_events(self, current_time: int, inputs=None, output=None):
-        compute_stream = torch_npu.npu.current_stream()
+    def _make_forward_hook(self, name):
+        def forward_hook(module, inputs, output):
+            issued_time = self._increment_issued_time()
+            self.current_module_name = name
+            self.process_events(issued_time, inputs, output)
+        return forward_hook
+
+    def _make_backward_hook(self, name):
+        def backward_hook(module, grad_input, grad_output):
+            issued_time = self._increment_issued_time()
+            self.process_events(issued_time, None, None)
+        return backward_hook
+
+    # ========================= 核心：简化的事件处理 =========================
+    
+    def process_events(self, current_time: int, inputs, output):
+        """
+        简化的事件处理：
+        - 每个事件独立处理，不依赖层状态
+        - 直接映射到 SwapManager 的同步接口
+        """
+        with torch.npu.device(self.device):
+            _ = torch_npu.npu.current_stream()
 
         while self.event_index < len(self.events) and self.events[self.event_index].issued_time == current_time:
             ev = self.events[self.event_index]
             tid = ev.tensor_id
 
-            # ---------- Extract tensor ----------
+            # Extract & Wrap
             if ev.from_location == "Not_Known" and ev.to_location == "In_gpu":
-                tensor = None
-                if ev.tag == "input":
-                    tensor = inputs[0] if isinstance(inputs, (list, tuple)) else inputs
-                elif ev.tag == "output":
-                    tensor = output
-                elif ev.tag == "weight":
-                    module = self.model.get_submodule(self.current_module_name)
-                    tensor = self._get_module_weights(module)
-
+                tensor = self._extract_tensor(ev.tag, inputs, output)
                 if tensor is not None:
-                    self.swap_manager.add_swap_tensor(tid, tensor)
-                    log_lifecycle("extract", tid, current_time)
+                    wrapped = self.swap_manager.wrap_tensor(tid, tensor)
+                    log_lifecycle("wrap", tid, current_time)
+                    print(f"[{current_time}] wrap {tid}")
 
-            # ---------- Device to Host ----------
+            # D2H（同步）
             elif ev.from_location == "In_gpu" and ev.to_location == "In_cpu":
-                self.swap_manager.launch_d2h(tid, compute_stream)
-                log_lifecycle("d2h", tid, current_time)
+                # 如果 trace 设计是立即执行，可以直接调用 execute_d2h
+                success = self.swap_manager.execute_d2h(tid)
+                log_lifecycle("execute_d2h", tid, current_time)
+                print(f"[{current_time}] execute_d2h {tid}, success={success}")
 
-            # ---------- Wait D2H ----------
+            # Execute D2H（同步）
             elif ev.from_location == "In_cpu" and ev.to_location == "In_cpu":
-                self.swap_manager.wait_d2h_finished(tid, compute_stream)
-                log_lifecycle("wait_d2h", tid, current_time)
+                log_lifecycle("host check", tid, current_time)
+                print(f"[{current_time}] host check {tid}")
 
-            # ---------- Host to Device ----------
+            # Execute H2D（同步）
             elif ev.from_location == "In_cpu" and ev.to_location == "In_gpu":
-                self.swap_manager.launch_h2d(tid, compute_stream)
-                log_lifecycle("h2d", tid, current_time)
+                success = self.swap_manager.execute_h2d(tid)
+                log_lifecycle("execute_h2d", tid, current_time)
+                print(f"[{current_time}] execute_h2d {tid}, success={success}")
 
-            # ---------- Wait H2D ----------
+            # Check on device
             elif ev.from_location == "In_gpu" and ev.to_location == "In_gpu":
-                self.swap_manager.wait_h2d_finished(tid, compute_stream)
-                log_lifecycle("wait_h2d", tid, current_time)
-                if self.swap_manager.is_h2d_finished(tid):
-                    log_message(f"[HOOK] H2D finished for Tensor {tid} at time {current_time}")
+                success = self.swap_manager.check_on_device(tid)
+                log_lifecycle("check_device", tid, current_time)
+                print(f"[{current_time}] check_device {tid}, success={success}")
 
             self.event_index += 1
 
-    # ---------- utils ----------
+    def _extract_tensor(self, tag: str, inputs, output) -> Optional[torch.Tensor]:
+        if tag == "input":
+            if isinstance(inputs, (list, tuple)) and len(inputs) > 0:
+                return inputs[0]
+            return inputs
+        elif tag == "output":
+            return output
+        elif tag == "weight":
+            module = self.model.get_submodule(self.current_module_name)
+            return self._get_module_weights(module)
+        return None
+
     def _get_module_weights(self, module: nn.Module) -> Optional[torch.Tensor]:
         if module is None:
             return None
