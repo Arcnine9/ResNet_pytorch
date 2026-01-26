@@ -12,7 +12,7 @@ class EventPool:
     - 不做引用计数
     - 假设调用方保证：同一个 event 不会在未完成时被复用
     """
-    def __init__(self, num_events=128, device=None):
+    def __init__(self, num_events=32, device=None):
         self.device = device
         self.pool = []
         with torch.npu.device(device):
@@ -72,7 +72,7 @@ class SwapTensor:
 # SwapManager：唯一调度者
 # =========================
 class SwapManager:
-    def __init__(self, num_events: int = 128):
+    def __init__(self, num_events: int = 32):
         self.swap_tensors: Dict[int, SwapTensor] = {}
         self.device = torch_npu.npu.current_device()
         self.event_pool = EventPool(num_events=num_events, device=self.device)
@@ -176,13 +176,20 @@ class SwapManager:
 
     # -------- batch / epoch 结束清理 --------
     def clear(self):
-
-        # 清理 CPU buffer 和事件
         for st in self.swap_tensors.values():
+            # # 1. 强制同步，确保事件已完成
+            # if st.d2h_event is not None:
+            #     st.d2h_event.synchronize()
+            #     self.event_pool.release(st.d2h_event)
+            # if st.h2d_event is not None:
+            #     st.h2d_event.synchronize()
+            #     self.event_pool.release(st.h2d_event)
+
+            # 2. 打印池剩余句柄（调试用）
+            # print(f"[EventLeak] pool remaining = {len([e for e in self.event_pool.pool if not e.query()])}")
             st.tensor_cpu = None
             st.d2h_event = None
             st.h2d_event = None
-
         self.swap_tensors.clear()
 
     def is_h2d_finished(self, tensor_id: int):

@@ -27,9 +27,9 @@ optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
 
 # ---------- 只跑 2 个 batch ----------
 BATCH_SIZE = 128        # 配置中的 batch_size
-NUM_BATCH = 20           # 模拟前两个 batch
-IMG_HEIGHT = 75         # 配置中的 height
-IMG_WIDTH = 75          # 配置中的 width
+NUM_BATCH = 200          # 模拟前两个 batch
+IMG_HEIGHT = 299         # 配置中的 height
+IMG_WIDTH = 299          # 配置中的 width
 NUM_CLASSES = 1000      # InceptionV3 默认类数，和真实数据保持一致
 
 swap_manager = swap_manager_mod.SwapManager()   # ★ 不再覆盖模块名
