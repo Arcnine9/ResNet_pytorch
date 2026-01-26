@@ -24,7 +24,7 @@ with open('./config.yaml', 'r', encoding='utf-8') as f_config:
     config = yaml.load(f_config.read(), Loader=yaml.FullLoader)
 
 device = torch.device(
-    "npu:1" if torch.npu.is_available()
+    "npu:0" if torch.npu.is_available()
     else "cuda" if torch.cuda.is_available()
     else "cpu"
 )
@@ -106,7 +106,7 @@ elif config["net"] == "ResNet101":
 elif config["net"] == "ResNet152":
     net = ResNet.resnet152(num_classes=len(classes))
 elif config["net"] == "InceptionV3":
-    net = inception_v3(num_classes=len(classes), aux_logits=False)
+    net = inception_v3(aux_logits=False, init_weights=True)
     net = module_transfer.replace_functional(net, verbose=False)
 else:
     raise Exception("Unknown network")
@@ -145,10 +145,8 @@ if __name__ == "__main__":
 
         for i, (inputs, labels) in enumerate(trainloader):
 
-            # ★ 再 reset issued_time
-            torch.npu.synchronize()
             hook_manager.reset_issued_time()
-            torch.npu.synchronize()
+
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -159,15 +157,10 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
 
-            # ★ 保证上一个 batch 的 swap 已完全结束
-            torch.npu.synchronize()
-            # swap_manager.clear()
-            torch.npu.synchronize()
+            swap_manager.clear()
             # # 打印
             _, predicted = torch.max(outputs.data, 1)
-            torch.npu.synchronize()
             acc = (predicted == labels).float().mean() * 100
-            torch.npu.synchronize()
             print(
                 f"[epoch:{epoch+1}, iter:{i+1}/{len(trainloader)}] "
                 f"Loss: {loss.item():.4f} | Acc: {acc:.2f}%"
