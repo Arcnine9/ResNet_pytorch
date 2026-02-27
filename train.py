@@ -59,15 +59,18 @@ class CNNNetworkDataset(Dataset):
 
 
 # 准备数据集并预处理
+# 准备数据集并预处理 - 添加 Normalize
 transform_train = transforms.Compose([
     transforms.Resize((config["width"], config["height"])),
-    transforms.RandomHorizontalFlip(0.5 if config["train"]["rotating"] else 0),  # 0.5=>图像一半的概率翻转，一半的概率不翻转
-    transforms.ToTensor(),  # 维度转化
+    transforms.RandomHorizontalFlip(0.5 if config["train"]["rotating"] else 0),
+    transforms.ToTensor(),
+    # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # 添加这行
 ])
 
 transform_test = transforms.Compose([
     transforms.Resize((config["width"], config["height"])),
     transforms.ToTensor(),
+    # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # 添加这行
 ])
 
 training_dir = config["train"]["train_data"]
@@ -135,7 +138,7 @@ def start_npu_profiler(epoch, pre_epoch=0):
     仅在 epoch == pre_epoch + 1 或 pre_epoch + 2 开启
     返回 prof 对象，训练循环中调用 prof.step()
     """
-    if epoch == pre_epoch + 10:
+    if epoch == pre_epoch + 5 or epoch == pre_epoch + 10:
         experimental_config = torch_npu.profiler._ExperimentalConfig(
             export_type=torch_npu.profiler.ExportType.Text,
             profiler_level=torch_npu.profiler.ProfilerLevel.Level2,
