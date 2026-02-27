@@ -118,7 +118,8 @@ elif config["net"] == "ResNet101":
 elif config["net"] == "ResNet152":
     net = ResNet.resnet152(num_classes=classes.__len__()).to(device)
 elif config["net"] == "InceptionV3":
-    net = inception_v3(num_classes=classes.__len__(), aux_logits=False).to(device)
+    net = inception_v3(aux_logits=False, init_weights=True)
+    net = net.to(device)
 else:
     raise Exception("网络模型配置存在问题，请确认配置文件")
 
@@ -132,21 +133,43 @@ optimizer = optim.SGD(net.parameters(), lr=config["train"]["lr"], momentum=0.9,
                       weight_decay=5e-4)  # 优化方式为mini-batch momentum-SGD，并采用L2正则化（权重衰减）
 
 # ================== PROFILER 逻辑封装 ==================
-def start_npu_profiler(epoch, pre_epoch=0):
+# ================== PROFILER 逻辑封装 ==================
+def start_npu_profiler(epoch, pre_epoch=0, output_dir="/models/train7_data/DNN_data/prof"):
     """
     启动 NPU profiler
-    仅在 epoch == pre_epoch + 1 或 pre_epoch + 2 开启
+    仅在 epoch == pre_epoch + 5 或 pre_epoch + 10 开启
     返回 prof 对象，训练循环中调用 prof.step()
+    
+    Args:
+        epoch: 当前 epoch
+        pre_epoch: 预训练 epoch 数
+        output_dir: prof 结果输出目录
     """
     if epoch == pre_epoch + 5 or epoch == pre_epoch + 10:
+        # 创建 epoch 专属子目录
+        epoch_output_dir = os.path.join(output_dir, f"epoch_{epoch+1}")
+        os.makedirs(epoch_output_dir, exist_ok=True)
+        
         experimental_config = torch_npu.profiler._ExperimentalConfig(
             export_type=torch_npu.profiler.ExportType.Text,
             profiler_level=torch_npu.profiler.ProfilerLevel.Level2,
             msprof_tx=False,
             aic_metrics=torch_npu.profiler.AiCMetrics.AiCoreNone,
-            l2_cache=False, op_attr=False,
-            data_simplification=False, record_op_args=False
+            l2_cache=False, 
+            op_attr=False,
+            data_simplification=False, 
+            record_op_args=False,
+            # 关键：指定输出路径（某些版本支持）
+            # export_path=epoch_output_dir  
         )
+        
+        # 定义 trace 导出回调
+        def on_trace_ready(prof):
+            # 导出 chrome trace 到指定目录
+            prof.export_chrome_trace(os.path.join(epoch_output_dir, f"chrome_trace_{epoch+1}.json"))
+            # 导出堆栈信息
+            prof.export_stacks(os.path.join(epoch_output_dir, f"stacks_{epoch+1}.txt"), "self_npu_time_total")
+        
         prof = torch_npu.profiler.profile(
             activities=[
                 torch_npu.profiler.ProfilerActivity.CPU,
@@ -156,13 +179,13 @@ def start_npu_profiler(epoch, pre_epoch=0):
             record_shapes=True,
             profile_memory=True,
             with_stack=True,
-            experimental_config=experimental_config
+            experimental_config=experimental_config,
+            on_trace_ready=on_trace_ready  # 添加回调
         )
         prof.start()
-        return prof
+        return prof, epoch_output_dir  # 返回输出目录供后续使用
     else:
-        return None
-
+        return None, None
 
 
 # 训练
@@ -171,7 +194,7 @@ if __name__ == "__main__":
     print("Start Training, %s !" % config["net"])  # 定义遍历数据集的次数
     for epoch in range(config["train"]["pre_epoch"], config["train"]["epoch"]):  # 从先前次数开始训练
 
-        prof = start_npu_profiler(epoch, config["train"]["pre_epoch"])
+        prof, prof_path = start_npu_profiler(epoch, config["train"]["pre_epoch"], config["train"]["prof_path"])  # 启动 profiler（如果满足条件）
 
         print('\nEpoch: %d' % (epoch + 1))  # 输出当前次数
         net.train()  # 这两个函数只要适用于Dropout与BatchNormalization的网络，会影响到训练过程中这两者的参数
