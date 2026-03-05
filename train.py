@@ -2,6 +2,9 @@
 # -*- encoding: utf-8 -*-
 
 import os
+
+# os.environ["HOOK_VERBOSE"] = "1"
+
 import PIL
 import torch
 import torch.nn as nn
@@ -113,23 +116,27 @@ else:
 
 net = net.to(device)
 
+hook_verbose = config["train"].get("hook_verbose", False)
 
 # ================= Swap / Hook =================
-swap_manager = swap_manager_mod.SwapManager()   # ★ 不再覆盖模块名
-hook_manager = hook.HookManager(
-    swap_manager,
-    "prefetch.config",
-    net
-)
+# ★ 新增：从配置读取是否启用向量迁移
+enable_vector_transfer = config["train"].get("enable_vector_transfer", True)
 
+swap_manager = swap_manager_mod.SwapManager()
+hook_manager = None  # 初始化为 None
 
-# criterion = nn.CrossEntropyLoss()
-# optimizer = optim.SGD(
-#     net.parameters(),
-#     lr=config["train"]["lr"],
-#     momentum=0.9,
-#     weight_decay=5e-4
-# )
+# ★ 条件性创建 HookManager：仅在启用向量迁移时插入 hook
+if enable_vector_transfer:
+    hook_manager = hook.HookManager(
+        swap_manager,
+        "prefetch.config",
+        net,
+        verbose=hook_verbose
+    )
+    print(f"向量迁移功能已启用 (enable_vector_transfer={enable_vector_transfer})")
+else:
+    print(f"向量迁移功能已禁用 (enable_vector_transfer={enable_vector_transfer})")
+
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
@@ -145,7 +152,9 @@ if __name__ == "__main__":
 
         for i, (inputs, labels) in enumerate(trainloader):
 
-            hook_manager.reset_issued_time()
+            # ★ 条件性调用：仅在 hook_manager 存在时重置时间
+            if hook_manager is not None:
+                hook_manager.reset_issued_time()
 
             inputs = inputs.to(device)
             labels = labels.to(device)
@@ -187,5 +196,8 @@ if __name__ == "__main__":
             f"{config['train']['out_model_path']}/net_{epoch+1}_{acc:.3f}.pth"
         )
 
-    # hook_manager.remove_hooks()
+    # ★ 条件性移除 hook：仅在 hook_manager 存在时调用
+    if hook_manager is not None:
+        hook_manager.remove_hooks()
+    
     print("Training Finished")

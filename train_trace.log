@@ -1,0 +1,541 @@
+[HOOK-INIT] Loaded 30 trace events
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625
+[SWAP-LIFE] extract    | Tensor:    1 | Issued:    2
+[SWAP-LIFE] extract    | Tensor:    5 | Issued:    3
+[SWAP-LIFE] d2h        | Tensor:    1 | Issued:    4
+[SWAP-LIFE] d2h        | Tensor:    5 | Issued:    6
+[SWAP-LIFE] wait_d2h   | Tensor:    1 | Issued:    7
+[SWAP-LIFE] extract    | Tensor:   39 | Issued:    8
+[SWAP-LIFE] extract    | Tensor:   43 | Issued:    9
+[SWAP-LIFE] d2h        | Tensor:   39 | Issued:   10
+[SWAP-LIFE] d2h        | Tensor:   43 | Issued:   12
+[SWAP-LIFE] wait_d2h   | Tensor:   39 | Issued:   14
+[SWAP-LIFE] extract    | Tensor:   79 | Issued:   15
+[SWAP-LIFE] extract    | Tensor:   83 | Issued:   16
+[SWAP-LIFE] d2h        | Tensor:   79 | Issued:   17
+[SWAP-LIFE] d2h        | Tensor:   83 | Issued:   19
+[SWAP-LIFE] wait_d2h   | Tensor:   43 | Issued:   33
+[SWAP-LIFE] wait_d2h   | Tensor:   79 | Issued:   59
+[SWAP-LIFE] wait_d2h   | Tensor:   83 | Issued:   83
+[SWAP-LIFE] h2d        | Tensor:   83 | Issued:   83
+[SWAP-LIFE] wait_d2h   | Tensor:    5 | Issued:   86
+[SWAP-LIFE] h2d        | Tensor:   79 | Issued:  348
+[SWAP-LIFE] h2d        | Tensor:   43 | Issued:  385
+[SWAP-LIFE] h2d        | Tensor:   39 | Issued:  407
+[SWAP-LIFE] h2d        | Tensor:    5 | Issued:  431
+[SWAP-LIFE] h2d        | Tensor:    1 | Issued:  439
+[SWAP-LIFE] wait_h2d   | Tensor:   83 | Issued:  610
+[HOOK] H2D finished for Tensor 83 at time 610
+[SWAP-LIFE] wait_h2d   | Tensor:   79 | Issued:  612
+[HOOK] H2D finished for Tensor 79 at time 612
+[SWAP-LIFE] wait_h2d   | Tensor:   43 | Issued:  617
+[HOOK] H2D finished for Tensor 43 at time 617
+[SWAP-LIFE] wait_h2d   | Tensor:   39 | Issued:  619
+[HOOK] H2D finished for Tensor 39 at time 619
+[SWAP-LIFE] wait_h2d   | Tensor:    5 | Issued:  623
+[HOOK] H2D finished for Tensor 5 at time 623
+[SWAP-LIFE] wait_h2d   | Tensor:    1 | Issued:  625
+[HOOK] H2D finished for Tensor 1 at time 625

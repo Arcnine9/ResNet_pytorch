@@ -4,17 +4,20 @@ class_path: /models/train7_data/DNN_data/classes.txt  # 标签文件路径
 width: 299
 height: 299
 train:
-  epoch: 10  # 遍历数据集次数
+  epoch: 5  # 遍历数据集次数
   pre_epoch: 0  # 定义已经遍历数据集的次数
   batch_size: 128  # 批处理尺寸(batch_size)
   lr: 0.001  # 学习率
   train_data: /models/train7_data/DNN_data  # 训练集路径
   test_data: /models/train7_data/DNN_data  # 训练集路径
   is_gpu: True  # 是否使用gpu
-  num_workers: 32  # 并行处理数据进程数，根据显存大小自定义，显存越小work数越小
+  num_workers: 128  # 并行处理数据进程数，根据显存大小自定义，显存越小work数越小
   out_model_path: /models/train7_data/DNN_data/model  #  网络模型保存地址
   rotating: False # 训练过程是否进行图片随机旋转
   prof_path: /models/train7_data/DNN_data/prof  # 训练过程性能分析数据保存地址
+  hook_verbose: False  # 是否打印性能分析数据
+  enable_vector_transfer: False  # 是否启用向量传输
+  
 test:
   model_path: /models/train7_data/DNN_data/model  # 测试所用的模型路径
   is_gpu: True  # 是否使用gpu
