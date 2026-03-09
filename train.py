@@ -153,7 +153,7 @@ if enable_vector_transfer:
         verbose=hook_verbose
     )
     
-    # ★ 关键修改：获取样本输入和标签用于探测
+    # 获取样本输入和标签用于探测
     sample_inputs, sample_labels = next(iter(trainloader))
     sample_inputs = sample_inputs.to(device)
     sample_labels = sample_labels.to(device)
@@ -187,8 +187,9 @@ if __name__ == "__main__":
 
         for i, (inputs, labels) in enumerate(trainloader):
 
-            if hook_manager is not None:
-                hook_manager.reset_issued_time()
+            # ★ 删除：新设计不需要reset_issued_time
+            # if hook_manager is not None:
+            #     hook_manager.reset_issued_time()
 
             inputs = inputs.to(device)
             labels = labels.to(device)
