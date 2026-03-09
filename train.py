@@ -27,7 +27,7 @@ with open('./config.yaml', 'r', encoding='utf-8') as f_config:
     config = yaml.load(f_config.read(), Loader=yaml.FullLoader)
 
 device = torch.device(
-    "npu:0" if torch.npu.is_available()
+    "npu:7" if torch.npu.is_available()
     else "cuda" if torch.cuda.is_available()
     else "cpu"
 )
