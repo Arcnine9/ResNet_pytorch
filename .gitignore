@@ -1,0 +1,6 @@
+
+# Ascend NPU debug files
+extra-info/
+*.dump
+exception_info.*
+*.core
