@@ -10,18 +10,16 @@ import sys
 # =========================
 def signal_handler(signum, frame):
     print(f"\n[Signal] 捕获信号 {signum}，正在清理并退出...")
-    # 强制清理 NPU 上下文
     try:
         import torch_npu
-        torch_npu.npu.synchronize()  # 尝试同步
+        torch_npu.npu.synchronize()
         torch_npu.npu.empty_cache()
     except:
         pass
     sys.exit(1)
 
-# 注册信号处理器
-signal.signal(signal.SIGINT, signal_handler)   # Ctrl+C
-signal.signal(signal.SIGTERM, signal_handler)  # kill -15
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 import PIL
 import torch
@@ -44,11 +42,11 @@ with open('./config.yaml', 'r', encoding='utf-8') as f_config:
     config = yaml.load(f_config.read(), Loader=yaml.FullLoader)
 
 # =========================
-# ★ 关键修改：显式设置 device 并确保上下文正确
+# 显式设置 device 并确保上下文正确
 # =========================
 if torch.npu.is_available():
-    device_id = 7  # 或者从配置读取：config.get("device_id", 0)
-    torch.npu.set_device(device_id)  # 立即设置当前线程的默认 device
+    device_id = 7
+    torch.npu.set_device(device_id)
     device = torch.device(f"npu:{device_id}")
 else:
     device = torch.device("cpu")
@@ -137,7 +135,6 @@ elif config["net"] == "InceptionV3":
 else:
     raise Exception("Unknown network")
 
-# ★ 确保模型在正确的 device 上
 net = net.to(device)
 
 hook_verbose = config["train"].get("hook_verbose", False)
@@ -145,9 +142,7 @@ hook_verbose = config["train"].get("hook_verbose", False)
 # ================= Swap / Hook =================
 enable_vector_transfer = config["train"].get("enable_vector_transfer", True)
 
-# ★ 关键修改：显式传递 device 给 SwapManager
 if enable_vector_transfer:
-    # 确保在正确的 device 上下文中创建 SwapManager
     with torch.npu.device(device.index):
         swap_manager = swap_manager_mod.SwapManager(device=device.index)
     
@@ -157,6 +152,20 @@ if enable_vector_transfer:
         net,
         verbose=hook_verbose
     )
+    
+    # ★ 关键修改：获取样本输入和标签用于探测
+    sample_inputs, sample_labels = next(iter(trainloader))
+    sample_inputs = sample_inputs.to(device)
+    sample_labels = sample_labels.to(device)
+    
+    # 使用setup进行探测和注册（传递criterion用于反向传播探测）
+    criterion_temp = nn.CrossEntropyLoss()
+    hook_manager.setup(sample_inputs, sample_labels, criterion_temp)
+    
+    # 清理临时变量
+    del sample_inputs, sample_labels, criterion_temp
+    torch_npu.npu.empty_cache()
+    
     print(f"向量迁移功能已启用 (enable_vector_transfer={enable_vector_transfer}, device={device})")
 else:
     swap_manager = None
@@ -181,7 +190,6 @@ if __name__ == "__main__":
             if hook_manager is not None:
                 hook_manager.reset_issued_time()
 
-            # ★ 确保数据在正确的 device 上
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -192,12 +200,10 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
 
-            # ★ 关键修改：确保 clear 在正确的 device 上下文中执行
             if swap_manager is not None:
                 with torch.npu.device(device.index):
                     swap_manager.clear()
             
-            # 打印
             _, predicted = torch.max(outputs.data, 1)
             acc = (predicted == labels).float().mean() * 100
             print(

@@ -4,7 +4,7 @@ import threading
 import torch
 import torch.nn as nn
 import re
-from typing import List, Optional
+from typing import List, Optional, Set, Dict, Tuple
 from functools import wraps
 
 import torch_npu
@@ -152,11 +152,16 @@ class HookManager:
         self.events: List[TraceEvent] = self.load_events(event_file)
         self.event_index = 0
 
+        # 分别记录前向和反向需要hook的模块
+        self.forward_target_modules: Set[str] = set()
+        self.backward_target_modules: Set[str] = set()
+        self.time_to_module: Dict[int, str] = {}
+        
         self.hooks = []
         self.current_module_name: Optional[str] = None
+        self._probe_finished = False
 
         self._conditional_log_init()
-        self.register_hooks(model)
 
     def _conditional_log_init(self):
         """条件初始化日志"""
@@ -213,6 +218,162 @@ class HookManager:
                     )
         return events
 
+    def probe_modules(self, sample_input: torch.Tensor, sample_target: Optional[torch.Tensor] = None, criterion: Optional[nn.Module] = None) -> Tuple[Set[str], Set[str]]:
+        """
+        探测阶段：运行一个完整的前向+反向传播，记录每个issued_time对应的模块名称
+        
+        Args:
+            sample_input: 用于探测的样本输入（一个batch的数据），必须在正确的device上
+            sample_target: 用于计算损失的标签，如果为None则使用随机生成的target
+            criterion: 损失函数，如果为None则使用CrossEntropyLoss
+        
+        Returns:
+            (forward_target_modules, backward_target_modules): 需要hook的前向和反向模块集合
+        """
+        if self._probe_finished:
+            if self._local_verbose:
+                log_message("[HOOK-PROBE] Probe already finished, skipping")
+            return self.forward_target_modules, self.backward_target_modules
+
+        # 确保输入在正确的device上
+        if sample_input.device.index != self.device:
+            raise RuntimeError(
+                f"Sample input device {sample_input.device} != HookManager device {self.device}"
+            )
+
+        # 如果没有提供target和criterion，创建临时的
+        if sample_target is None:
+            # ★ 修复：使用CPU创建tensor，然后转移到NPU，避免CUDA依赖
+            sample_target = torch.randint(0, 10, (sample_input.size(0),))
+            sample_target = sample_target.to(f"npu:{self.device}")
+        else:
+            sample_target = sample_target.to(f"npu:{self.device}")
+            
+        if criterion is None:
+            criterion = nn.CrossEntropyLoss()
+
+        # 临时注册全模块hook用于探测
+        forward_probe_hooks = []
+        backward_probe_hooks = []
+        
+        forward_time_to_module: Dict[int, str] = {}
+        backward_time_to_module: Dict[int, str] = {}
+
+        def make_forward_probe_hook(name):
+            def probe_hook(module, inputs, output):
+                issued_time = self._increment_issued_time()
+                forward_time_to_module[issued_time] = name
+            return probe_hook
+
+        def make_backward_probe_hook(name):
+            def probe_hook(module, grad_input, grad_output):
+                issued_time = self._increment_issued_time()
+                backward_time_to_module[issued_time] = name
+            return probe_hook
+
+        # 在正确的device上下文中注册临时探测hook
+        with torch.npu.device(self.device):
+            for name, module in self.model.named_modules():
+                if isinstance(module, OP_MAP):
+                    forward_probe_hooks.append(module.register_forward_hook(make_forward_probe_hook(name)))
+                    backward_probe_hooks.append(module.register_full_backward_hook(make_backward_probe_hook(name)))
+
+        if self._local_verbose:
+            log_message(f"[HOOK-PROBE] Registered {len(forward_probe_hooks)} forward probe hooks")
+            log_message(f"[HOOK-PROBE] Registered {len(backward_probe_hooks)} backward probe hooks")
+
+        try:
+            # 重置时间戳
+            self.reset_issued_time()
+            
+            # 运行完整的前向+反向传播
+            output = self.model(sample_input)
+            loss = criterion(output, sample_target)
+            loss.backward()
+            
+            # 分析哪些时间戳有事件
+            event_times = {ev.issued_time for ev in self.events}
+            
+            # 找到需要前向hook的模块
+            for time in event_times:
+                if time in forward_time_to_module:
+                    module_name = forward_time_to_module[time]
+                    self.forward_target_modules.add(module_name)
+                    self.time_to_module[time] = module_name
+            
+            # 找到需要反向hook的模块
+            for time in event_times:
+                if time in backward_time_to_module:
+                    module_name = backward_time_to_module[time]
+                    self.backward_target_modules.add(module_name)
+                    self.time_to_module[time] = module_name
+
+            if self._local_verbose:
+                log_message(f"[HOOK-PROBE] Found {len(self.forward_target_modules)} modules for forward hook")
+                log_message(f"[HOOK-PROBE] Found {len(self.backward_target_modules)} modules for backward hook")
+
+        finally:
+            # 清理临时hook
+            for h in forward_probe_hooks:
+                h.remove()
+            for h in backward_probe_hooks:
+                h.remove()
+            
+            # 重置状态
+            self.reset_issued_time()
+            self._probe_finished = True
+
+        return self.forward_target_modules, self.backward_target_modules
+
+    def register_hooks(self, model: nn.Module = None):
+        """
+        在探测完成后，只在需要的模块上注册对应的hook
+        必须在probe_modules之后调用
+        
+        Args:
+            model: 目标模型，默认为self.model
+        """
+        if not self._probe_finished:
+            raise RuntimeError("Must call probe_modules() before register_hooks()")
+        
+        if model is None:
+            model = self.model
+            
+        # 清理已有的hook（如果有）
+        self.remove_hooks()
+        
+        # 只在目标模块上注册对应的hook（前向和反向分开处理）
+        registered_forward = 0
+        registered_backward = 0
+        
+        with torch.npu.device(self.device):
+            for name, module in model.named_modules():
+                # 注册前向hook
+                if name in self.forward_target_modules:
+                    self.hooks.append(module.register_forward_hook(self._make_forward_hook(name)))
+                    registered_forward += 1
+                
+                # 注册反向hook
+                if name in self.backward_target_modules:
+                    self.hooks.append(module.register_full_backward_hook(self._make_backward_hook(name)))
+                    registered_backward += 1
+
+        if self._local_verbose:
+            log_message(f"[HOOK-REG] Registered {registered_forward} forward hooks")
+            log_message(f"[HOOK-REG] Registered {registered_backward} backward hooks")
+
+    def setup(self, sample_input: torch.Tensor, sample_target: Optional[torch.Tensor] = None, criterion: Optional[nn.Module] = None):
+        """
+        便捷方法：一键完成探测和注册
+        
+        Args:
+            sample_input: 用于探测的样本输入，必须在正确的device上
+            sample_target: 用于计算损失的标签，可选
+            criterion: 损失函数，可选
+        """
+        self.probe_modules(sample_input, sample_target, criterion)
+        self.register_hooks()
+
     def _make_forward_hook(self, name):
         def forward_hook(module, inputs, output):
             issued_time = self._increment_issued_time()
@@ -230,12 +391,6 @@ class HookManager:
             self.process_events(issued_time)
         return backward_hook
 
-    def register_hooks(self, model: nn.Module):
-        for name, module in model.named_modules():
-            if isinstance(module, OP_MAP):
-                self.hooks.append(module.register_forward_hook(self._make_forward_hook(name)))
-                self.hooks.append(module.register_full_backward_hook(self._make_backward_hook(name)))
-
     def remove_hooks(self):
         for h in self.hooks:
             h.remove()
@@ -244,15 +399,10 @@ class HookManager:
         if self._local_verbose:
             log_message("[HOOK] All hooks removed")
 
-    # =========================
-    # 核心调度逻辑（关键修改：确保 Stream 在正确 Device 上）
-    # =========================
     def process_events(self, current_time: int, inputs=None, output=None):
-        # ★ 关键修改：在正确的 device 上下文中获取 stream
         with torch.npu.device(self.device):
             compute_stream = torch_npu.npu.current_stream()
         
-        # 验证 stream 的 device
         if hasattr(compute_stream, 'device') and compute_stream.device.index != self.device:
             raise RuntimeError(
                 f"Stream device {compute_stream.device} != HookManager device {self.device}"
@@ -264,7 +414,6 @@ class HookManager:
             ev = self.events[self.event_index]
             tid = ev.tensor_id
 
-            # ---------- Extract tensor ----------
             if ev.from_location == "Not_Known" and ev.to_location == "In_gpu":
                 tensor = None
                 if ev.tag == "input":
@@ -276,7 +425,6 @@ class HookManager:
                     tensor = self._get_module_weights(module)
 
                 if tensor is not None:
-                    # 验证 tensor device 匹配
                     if tensor.device.index != self.device:
                         raise RuntimeError(
                             f"Tensor device {tensor.device} != HookManager device {self.device}"
@@ -286,25 +434,21 @@ class HookManager:
                     if verbose:
                         log_lifecycle("extract", tid, current_time)
 
-            # ---------- Device to Host ----------
             elif ev.from_location == "In_gpu" and ev.to_location == "In_cpu":
                 self.swap_manager.launch_d2h(tid, compute_stream)
                 if verbose:
                     log_lifecycle("d2h", tid, current_time)
 
-            # ---------- Wait D2H ----------
             elif ev.from_location == "In_cpu" and ev.to_location == "In_cpu":
                 self.swap_manager.wait_d2h_finished(tid, compute_stream)
                 if verbose:
                     log_lifecycle("wait_d2h", tid, current_time)
 
-            # ---------- Host to Device ----------
             elif ev.from_location == "In_cpu" and ev.to_location == "In_gpu":
                 self.swap_manager.launch_h2d(tid, compute_stream)
                 if verbose:
                     log_lifecycle("h2d", tid, current_time)
 
-            # ---------- Wait H2D ----------
             elif ev.from_location == "In_gpu" and ev.to_location == "In_gpu":
                 self.swap_manager.wait_h2d_finished(tid, compute_stream)
                 if verbose:
@@ -326,15 +470,12 @@ class HookManager:
 
 
 def enable_hook_logging():
-    """全局启用 Hook 日志"""
     LogController.enable()
 
 
 def disable_hook_logging():
-    """全局禁用 Hook 日志"""
     LogController.disable()
 
 
 def is_hook_logging_enabled() -> bool:
-    """查询全局日志状态"""
     return LogController.is_enabled()

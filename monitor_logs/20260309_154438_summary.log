@@ -1,0 +1,28 @@
+[2026-03-09 15:44:40] 启动训练: python train.py
+========== 监控汇总 ==========
+状态: COMPLETED
+开始时间: 2026-03-09 15:44:40
+结束时间: 2026-03-09 15:45:17
+持续时间: 37 秒
+训练退出码: 1
+
+--- CPU 内存统计 ---
+采样点数: 17
+平均使用率: 2.9%
+峰值使用率: 3.6%
+平均使用: 59766 MiB
+峰值使用: 74766 MiB
+
+--- NPU HBM显存统计 ---
+采样点数: 17
+平均使用率: 89.9%
+峰值使用率: 89.9%
+平均使用: 58931 MB
+峰值使用: 58931 MB
+
+日志文件:
+  CPU 内存% : ./monitor_logs/20260309_154438_cpu_mem_pct.log
+  CPU 内存MiB: ./monitor_logs/20260309_154438_cpu_mem_abs.log
+  NPU HBM% : ./monitor_logs/20260309_154438_gpu_mem_pct.log
+  NPU HBM MB: ./monitor_logs/20260309_154438_gpu_mem_abs.log
+  汇总报告  : ./monitor_logs/20260309_154438_summary.log
