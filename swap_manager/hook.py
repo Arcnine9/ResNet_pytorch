@@ -4,8 +4,9 @@ import threading
 import torch
 import torch.nn as nn
 import re
-from typing import List, Optional, Set, Dict, Tuple
+from typing import List, Optional, Set, Dict, Callable
 from functools import wraps
+from dataclasses import dataclass
 
 import torch_npu
 
@@ -66,11 +67,11 @@ def log_message(message: str) -> None:
 
 
 @_conditional_log
-def log_lifecycle(action: str, tensor_id: int, time: int = 0) -> None:
+def log_lifecycle(action: str, tensor_id: int, module_name: str = "") -> None:
     """记录生命周期事件"""
     with _LOG_F_LOCK:
         print(
-            f"[SWAP-LIFE] {action:10} | Tensor: {tensor_id:4} | Issued: {time:4}",
+            f"[SWAP-LIFE] {action:10} | Tensor: {tensor_id:4} | Module: {module_name}",
             file=_get_log_f()
         )
 
@@ -96,30 +97,35 @@ class LogController:
     @classmethod
     def is_enabled(cls) -> bool:
         return cls._enabled
+
+
+# =========================
+# 事件类型定义
+# =========================
+@dataclass
+class TensorEvent:
+    """单个tensor迁移事件"""
+    tensor_id: int
+    event_type: str  # "extract", "d2h", "wait_d2h", "h2d", "wait_h2d"
+    tag: str  # "input", "output", "weight" (仅用于extract)
     
-    @classmethod
-    def toggle(cls) -> bool:
-        if not cls._lock:
-            cls._lock = threading.Lock()
-        with cls._lock:
-            cls._enabled = not cls._enabled
-            return cls._enabled
+    def __repr__(self):
+        return f"TensorEvent({self.tensor_id}, {self.event_type}, {self.tag})"
 
 
-def _fast_log_check() -> bool:
-    """快速日志检查"""
-    return LogController._enabled
-
-
-class TraceEvent:
-    __slots__ = ('issued_time', 'tensor_id', 'from_location', 'to_location', 'tag')
+class ModuleEvents:
+    """一个模块的所有事件（按执行顺序）"""
+    def __init__(self, module_name: str, is_forward: bool):
+        self.module_name = module_name
+        self.is_forward = is_forward  # True=前向, False=反向
+        self.events: List[TensorEvent] = []
     
-    def __init__(self, issued_time: int, tensor_id: int, from_location: str, to_location: str, tag: str):
-        self.issued_time = issued_time
-        self.tensor_id = tensor_id
-        self.from_location = from_location
-        self.to_location = to_location
-        self.tag = tag
+    def add_event(self, event: TensorEvent):
+        self.events.append(event)
+    
+    def __repr__(self):
+        direction = "FWD" if self.is_forward else "BWD"
+        return f"ModuleEvents({self.module_name}, {direction}, {len(self.events)} events)"
 
 
 class HookManager:
@@ -133,72 +139,37 @@ class HookManager:
         """
         self.swap_manager = swap_manager
         self.model = model
-        
-        # 从 swap_manager 获取 device，确保一致性
         self.device = swap_manager.device
         
+        # 日志控制
         self._verbose_override = verbose
         if verbose is not None:
             if verbose:
                 LogController.enable()
             else:
                 LogController.disable()
-        
         self._local_verbose = LogController.is_enabled()
 
-        self.issued_time = 0
-        self.issued_time_lock = threading.Lock()
-
-        self.events: List[TraceEvent] = self.load_events(event_file)
-        self.event_index = 0
-
-        # 分别记录前向和反向需要hook的模块
-        self.forward_target_modules: Set[str] = set()
-        self.backward_target_modules: Set[str] = set()
-        self.time_to_module: Dict[int, str] = {}
+        # 加载原始事件
+        self.raw_events = self._load_raw_events(event_file)
         
+        # 模块事件映射：module_name -> ModuleEvents
+        self.forward_events: Dict[str, ModuleEvents] = {}
+        self.backward_events: Dict[str, ModuleEvents] = {}
+        
+        # hook句柄
         self.hooks = []
-        self.current_module_name: Optional[str] = None
         self._probe_finished = False
-
+        
         self._conditional_log_init()
 
     def _conditional_log_init(self):
-        """条件初始化日志"""
         if self._local_verbose:
-            log_message(f"[HOOK-INIT] Loaded {len(self.events)} trace events")
+            log_message(f"[HOOK-INIT] Loaded {len(self.raw_events)} raw events")
             log_message(f"[HOOK-INIT] Bound to device: {self.device}")
 
-    def enable_logging(self):
-        """为此实例启用日志"""
-        self._local_verbose = True
-        if self._verbose_override is not None:
-            self._verbose_override = True
-
-    def disable_logging(self):
-        """为此实例禁用日志"""
-        self._local_verbose = False
-        if self._verbose_override is not None:
-            self._verbose_override = False
-
-    @property
-    def is_logging_enabled(self) -> bool:
-        """检查当前实例的日志状态"""
-        if self._verbose_override is not None:
-            return self._verbose_override
-        return LogController._enabled
-
-    def _increment_issued_time(self) -> int:
-        with self.issued_time_lock:
-            self.issued_time += 1
-            return self.issued_time
-
-    def reset_issued_time(self):
-        with self.issued_time_lock:
-            self.issued_time = 0
-            self.event_index = 0
-
-    def load_events(self, file_path: str) -> List[TraceEvent]:
+    def _load_raw_events(self, file_path: str) -> List[Dict]:
+        """加载原始事件文件"""
         pattern = re.compile(
             r"Issued Time: (\d+) Tensor: (\d+) From: (\w+), To: (\w+) tag: (\w+)"
         )
@@ -207,43 +178,28 @@ class HookManager:
             for line in f:
                 m = pattern.match(line.strip())
                 if m:
-                    events.append(
-                        TraceEvent(
-                            int(m.group(1)),
-                            int(m.group(2)),
-                            m.group(3),
-                            m.group(4),
-                            m.group(5),
-                        )
-                    )
+                    events.append({
+                        'issued_time': int(m.group(1)),
+                        'tensor_id': int(m.group(2)),
+                        'from': m.group(3),
+                        'to': m.group(4),
+                        'tag': m.group(5),
+                    })
         return events
 
-    def probe_modules(self, sample_input: torch.Tensor, sample_target: Optional[torch.Tensor] = None, criterion: Optional[nn.Module] = None) -> Tuple[Set[str], Set[str]]:
+    # =========================
+    # 探测阶段：建立模块->事件映射
+    # =========================
+    def probe_modules(self, sample_input: torch.Tensor, sample_target: Optional[torch.Tensor] = None, criterion: Optional[nn.Module] = None):
         """
-        探测阶段：运行一个完整的前向+反向传播，记录每个issued_time对应的模块名称
-        
-        Args:
-            sample_input: 用于探测的样本输入（一个batch的数据），必须在正确的device上
-            sample_target: 用于计算损失的标签，如果为None则使用随机生成的target
-            criterion: 损失函数，如果为None则使用CrossEntropyLoss
-        
-        Returns:
-            (forward_target_modules, backward_target_modules): 需要hook的前向和反向模块集合
+        探测阶段：运行完整前向+反向，记录每个issued_time对应的模块，
+        然后建立模块->事件列表的映射
         """
         if self._probe_finished:
-            if self._local_verbose:
-                log_message("[HOOK-PROBE] Probe already finished, skipping")
-            return self.forward_target_modules, self.backward_target_modules
+            return
 
-        # 确保输入在正确的device上
-        if sample_input.device.index != self.device:
-            raise RuntimeError(
-                f"Sample input device {sample_input.device} != HookManager device {self.device}"
-            )
-
-        # 如果没有提供target和criterion，创建临时的
+        # 准备输入
         if sample_target is None:
-            # ★ 修复：使用CPU创建tensor，然后转移到NPU，避免CUDA依赖
             sample_target = torch.randint(0, 10, (sample_input.size(0),))
             sample_target = sample_target.to(f"npu:{self.device}")
         else:
@@ -252,213 +208,239 @@ class HookManager:
         if criterion is None:
             criterion = nn.CrossEntropyLoss()
 
-        # 临时注册全模块hook用于探测
-        forward_probe_hooks = []
-        backward_probe_hooks = []
+        # 探测用的临时hook
+        forward_times: Dict[int, str] = {}  # issued_time -> module_name
+        backward_times: Dict[int, str] = {}  # issued_time -> module_name
         
-        forward_time_to_module: Dict[int, str] = {}
-        backward_time_to_module: Dict[int, str] = {}
+        forward_hooks = []
+        backward_hooks = []
 
-        def make_forward_probe_hook(name):
-            def probe_hook(module, inputs, output):
-                issued_time = self._increment_issued_time()
-                forward_time_to_module[issued_time] = name
-            return probe_hook
+        def make_forward_probe(name):
+            def hook_fn(m, inp, out):
+                # 使用简单计数器代替issued_time
+                t = len(forward_times) + 1
+                forward_times[t] = name
+            return hook_fn
 
-        def make_backward_probe_hook(name):
-            def probe_hook(module, grad_input, grad_output):
-                issued_time = self._increment_issued_time()
-                backward_time_to_module[issued_time] = name
-            return probe_hook
+        def make_backward_probe(name):
+            def hook_fn(m, grad_in, grad_out):
+                t = len(backward_times) + 1
+                backward_times[t] = name
+            return hook_fn
 
-        # 在正确的device上下文中注册临时探测hook
+        # 注册探测hook
         with torch.npu.device(self.device):
             for name, module in self.model.named_modules():
                 if isinstance(module, OP_MAP):
-                    forward_probe_hooks.append(module.register_forward_hook(make_forward_probe_hook(name)))
-                    backward_probe_hooks.append(module.register_full_backward_hook(make_backward_probe_hook(name)))
-
-        if self._local_verbose:
-            log_message(f"[HOOK-PROBE] Registered {len(forward_probe_hooks)} forward probe hooks")
-            log_message(f"[HOOK-PROBE] Registered {len(backward_probe_hooks)} backward probe hooks")
+                    forward_hooks.append(module.register_forward_hook(make_forward_probe(name)))
+                    backward_hooks.append(module.register_full_backward_hook(make_backward_probe(name)))
 
         try:
-            # 重置时间戳
-            self.reset_issued_time()
-            
-            # 运行完整的前向+反向传播
+            # 运行前向+反向
             output = self.model(sample_input)
             loss = criterion(output, sample_target)
             loss.backward()
             
-            # 分析哪些时间戳有事件
-            event_times = {ev.issued_time for ev in self.events}
+            # 建立事件映射
+            self._build_event_mapping(forward_times, backward_times)
             
-            # 找到需要前向hook的模块
-            for time in event_times:
-                if time in forward_time_to_module:
-                    module_name = forward_time_to_module[time]
-                    self.forward_target_modules.add(module_name)
-                    self.time_to_module[time] = module_name
-            
-            # 找到需要反向hook的模块
-            for time in event_times:
-                if time in backward_time_to_module:
-                    module_name = backward_time_to_module[time]
-                    self.backward_target_modules.add(module_name)
-                    self.time_to_module[time] = module_name
-
             if self._local_verbose:
-                log_message(f"[HOOK-PROBE] Found {len(self.forward_target_modules)} modules for forward hook")
-                log_message(f"[HOOK-PROBE] Found {len(self.backward_target_modules)} modules for backward hook")
-
+                total_fwd = sum(len(me.events) for me in self.forward_events.values())
+                total_bwd = sum(len(me.events) for me in self.backward_events.values())
+                log_message(f"[HOOK-PROBE] Forward: {len(self.forward_events)} modules, {total_fwd} events")
+                log_message(f"[HOOK-PROBE] Backward: {len(self.backward_events)} modules, {total_bwd} events")
+                
         finally:
-            # 清理临时hook
-            for h in forward_probe_hooks:
+            for h in forward_hooks:
                 h.remove()
-            for h in backward_probe_hooks:
+            for h in backward_hooks:
                 h.remove()
             
-            # 重置状态
-            self.reset_issued_time()
             self._probe_finished = True
 
-        return self.forward_target_modules, self.backward_target_modules
+    def _build_event_mapping(self, forward_times: Dict[int, str], backward_times: Dict[int, str]):
+        """
+        根据探测到的时间-模块映射，将原始事件分配到对应模块
+        """
+        # 处理前向事件
+        for raw_ev in self.raw_events:
+            t = raw_ev['issued_time']
+            if t in forward_times:
+                module_name = forward_times[t]
+                
+                if module_name not in self.forward_events:
+                    self.forward_events[module_name] = ModuleEvents(module_name, is_forward=True)
+                
+                # 确定事件类型
+                event_type = self._determine_event_type(raw_ev['from'], raw_ev['to'])
+                tensor_ev = TensorEvent(
+                    tensor_id=raw_ev['tensor_id'],
+                    event_type=event_type,
+                    tag=raw_ev['tag']
+                )
+                self.forward_events[module_name].add_event(tensor_ev)
+                
+            elif t in backward_times:
+                module_name = backward_times[t]
+                
+                if module_name not in self.backward_events:
+                    self.backward_events[module_name] = ModuleEvents(module_name, is_forward=False)
+                
+                event_type = self._determine_event_type(raw_ev['from'], raw_ev['to'])
+                tensor_ev = TensorEvent(
+                    tensor_id=raw_ev['tensor_id'],
+                    event_type=event_type,
+                    tag=raw_ev['tag']
+                )
+                self.backward_events[module_name].add_event(tensor_ev)
 
-    def register_hooks(self, model: nn.Module = None):
-        """
-        在探测完成后，只在需要的模块上注册对应的hook
-        必须在probe_modules之后调用
-        
-        Args:
-            model: 目标模型，默认为self.model
-        """
+    def _determine_event_type(self, from_loc: str, to_loc: str) -> str:
+        """根据from/to位置确定事件类型"""
+        if from_loc == "Not_Known" and to_loc == "In_gpu":
+            return "extract"
+        elif from_loc == "In_gpu" and to_loc == "In_cpu":
+            return "d2h"
+        elif from_loc == "In_cpu" and to_loc == "In_cpu":
+            return "wait_d2h"
+        elif from_loc == "In_cpu" and to_loc == "In_gpu":
+            return "h2d"
+        elif from_loc == "In_gpu" and to_loc == "In_gpu":
+            return "wait_h2d"
+        else:
+            raise ValueError(f"Unknown transition: {from_loc} -> {to_loc}")
+
+    def register_hooks(self):
+        """根据探测结果，在需要的模块上注册hook"""
         if not self._probe_finished:
-            raise RuntimeError("Must call probe_modules() before register_hooks()")
-        
-        if model is None:
-            model = self.model
-            
-        # 清理已有的hook（如果有）
+            raise RuntimeError("Must call probe_modules() first")
+
         self.remove_hooks()
         
-        # 只在目标模块上注册对应的hook（前向和反向分开处理）
-        registered_forward = 0
-        registered_backward = 0
-        
         with torch.npu.device(self.device):
-            for name, module in model.named_modules():
+            for name, module in self.model.named_modules():
                 # 注册前向hook
-                if name in self.forward_target_modules:
-                    self.hooks.append(module.register_forward_hook(self._make_forward_hook(name)))
-                    registered_forward += 1
+                if name in self.forward_events:
+                    events = self.forward_events[name]
+                    hook_fn = self._make_forward_hook(name, events)
+                    self.hooks.append(module.register_forward_hook(hook_fn))
                 
                 # 注册反向hook
-                if name in self.backward_target_modules:
-                    self.hooks.append(module.register_full_backward_hook(self._make_backward_hook(name)))
-                    registered_backward += 1
+                if name in self.backward_events:
+                    events = self.backward_events[name]
+                    hook_fn = self._make_backward_hook(name, events)
+                    self.hooks.append(module.register_full_backward_hook(hook_fn))
 
         if self._local_verbose:
-            log_message(f"[HOOK-REG] Registered {registered_forward} forward hooks")
-            log_message(f"[HOOK-REG] Registered {registered_backward} backward hooks")
+            log_message(f"[HOOK-REG] Registered {len(self.hooks)} hooks total")
 
     def setup(self, sample_input: torch.Tensor, sample_target: Optional[torch.Tensor] = None, criterion: Optional[nn.Module] = None):
-        """
-        便捷方法：一键完成探测和注册
-        
-        Args:
-            sample_input: 用于探测的样本输入，必须在正确的device上
-            sample_target: 用于计算损失的标签，可选
-            criterion: 损失函数，可选
-        """
+        """一键完成探测和注册"""
         self.probe_modules(sample_input, sample_target, criterion)
         self.register_hooks()
 
-    def _make_forward_hook(self, name):
+    # =========================
+    # 核心：创建带预绑定事件的hook函数
+    # =========================
+    def _make_forward_hook(self, module_name: str, module_events: ModuleEvents):
+        """
+        创建前向hook，事件列表已预绑定，无需issued_time判断
+        """
+        events = module_events.events
+        swap_mgr = self.swap_manager
+        device = self.device
+        verbose = self._local_verbose
+        model = self.model
+
         def forward_hook(module, inputs, output):
-            issued_time = self._increment_issued_time()
-            self.current_module_name = name
+            # 直接在正确的device上下文中获取stream
+            with torch.npu.device(device):
+                compute_stream = torch_npu.npu.current_stream()
             
-            if self._local_verbose:
-                pass
-            
-            self.process_events(issued_time, inputs, output)
+            # 按顺序处理所有预绑定的事件
+            for ev in events:
+                tid = ev.tensor_id
+                
+                if ev.event_type == "extract":
+                    # 提取tensor
+                    tensor = None
+                    if ev.tag == "input":
+                        tensor = inputs[0] if isinstance(inputs, (list, tuple)) else inputs
+                    elif ev.tag == "output":
+                        tensor = output
+                    elif ev.tag == "weight":
+                        mod = model.get_submodule(module_name)
+                        tensor = self._get_module_weights(mod)
+                    
+                    if tensor is not None:
+                        swap_mgr.add_swap_tensor(tid, tensor)
+                        if verbose:
+                            log_lifecycle("extract", tid, module_name)
+                
+                elif ev.event_type == "d2h":
+                    swap_mgr.launch_d2h(tid, compute_stream)
+                    if verbose:
+                        log_lifecycle("d2h", tid, module_name)
+                
+                elif ev.event_type == "wait_d2h":
+                    swap_mgr.wait_d2h_finished(tid, compute_stream)
+                    if verbose:
+                        log_lifecycle("wait_d2h", tid, module_name)
+                
+                elif ev.event_type == "h2d":
+                    swap_mgr.launch_h2d(tid, compute_stream)
+                    if verbose:
+                        log_lifecycle("h2d", tid, module_name)
+                
+                elif ev.event_type == "wait_h2d":
+                    swap_mgr.wait_h2d_finished(tid, compute_stream)
+                    if verbose:
+                        log_lifecycle("wait_h2d", tid, module_name)
+
         return forward_hook
 
-    def _make_backward_hook(self, name):
-        def backward_hook(module, grad_input, grad_output):
-            issued_time = self._increment_issued_time()
-            self.process_events(issued_time)
-        return backward_hook
-
-    def remove_hooks(self):
-        for h in self.hooks:
-            h.remove()
-        self.hooks.clear()
-        
-        if self._local_verbose:
-            log_message("[HOOK] All hooks removed")
-
-    def process_events(self, current_time: int, inputs=None, output=None):
-        with torch.npu.device(self.device):
-            compute_stream = torch_npu.npu.current_stream()
-        
-        if hasattr(compute_stream, 'device') and compute_stream.device.index != self.device:
-            raise RuntimeError(
-                f"Stream device {compute_stream.device} != HookManager device {self.device}"
-            )
-        
+    def _make_backward_hook(self, module_name: str, module_events: ModuleEvents):
+        """
+        创建反向hook，事件列表已预绑定
+        """
+        events = module_events.events
+        swap_mgr = self.swap_manager
+        device = self.device
         verbose = self._local_verbose
 
-        while self.event_index < len(self.events) and self.events[self.event_index].issued_time == current_time:
-            ev = self.events[self.event_index]
-            tid = ev.tensor_id
-
-            if ev.from_location == "Not_Known" and ev.to_location == "In_gpu":
-                tensor = None
-                if ev.tag == "input":
-                    tensor = inputs[0] if isinstance(inputs, (list, tuple)) else inputs
-                elif ev.tag == "output":
-                    tensor = output
-                elif ev.tag == "weight":
-                    module = self.model.get_submodule(self.current_module_name)
-                    tensor = self._get_module_weights(module)
-
-                if tensor is not None:
-                    if tensor.device.index != self.device:
-                        raise RuntimeError(
-                            f"Tensor device {tensor.device} != HookManager device {self.device}"
-                        )
-                    
-                    self.swap_manager.add_swap_tensor(tid, tensor)
+        def backward_hook(module, grad_input, grad_output):
+            with torch.npu.device(device):
+                compute_stream = torch_npu.npu.current_stream()
+            
+            # 按顺序处理所有预绑定的事件
+            for ev in events:
+                tid = ev.tensor_id
+                
+                if ev.event_type == "d2h":
+                    swap_mgr.launch_d2h(tid, compute_stream)
                     if verbose:
-                        log_lifecycle("extract", tid, current_time)
+                        log_lifecycle("d2h", tid, module_name)
+                
+                elif ev.event_type == "wait_d2h":
+                    swap_mgr.wait_d2h_finished(tid, compute_stream)
+                    if verbose:
+                        log_lifecycle("wait_d2h", tid, module_name)
+                
+                elif ev.event_type == "h2d":
+                    swap_mgr.launch_h2d(tid, compute_stream)
+                    if verbose:
+                        log_lifecycle("h2d", tid, module_name)
+                
+                elif ev.event_type == "wait_h2d":
+                    swap_mgr.wait_h2d_finished(tid, compute_stream)
+                    if verbose:
+                        log_lifecycle("wait_h2d", tid, module_name)
+                
+                # 注意：反向一般不需要extract，因为tensor已在之前注册
 
-            elif ev.from_location == "In_gpu" and ev.to_location == "In_cpu":
-                self.swap_manager.launch_d2h(tid, compute_stream)
-                if verbose:
-                    log_lifecycle("d2h", tid, current_time)
-
-            elif ev.from_location == "In_cpu" and ev.to_location == "In_cpu":
-                self.swap_manager.wait_d2h_finished(tid, compute_stream)
-                if verbose:
-                    log_lifecycle("wait_d2h", tid, current_time)
-
-            elif ev.from_location == "In_cpu" and ev.to_location == "In_gpu":
-                self.swap_manager.launch_h2d(tid, compute_stream)
-                if verbose:
-                    log_lifecycle("h2d", tid, current_time)
-
-            elif ev.from_location == "In_gpu" and ev.to_location == "In_gpu":
-                self.swap_manager.wait_h2d_finished(tid, compute_stream)
-                if verbose:
-                    log_lifecycle("wait_h2d", tid, current_time)
-                    if self.swap_manager.is_h2d_finished(tid):
-                        log_message(f"[HOOK] H2D finished for Tensor {tid} at time {current_time}")
-
-            self.event_index += 1
+        return backward_hook
 
     def _get_module_weights(self, module: nn.Module) -> Optional[torch.Tensor]:
+        """获取模块的weight和bias"""
         if module is None:
             return None
         weights = []
@@ -468,7 +450,24 @@ class HookManager:
                 weights.append(p.view(-1))
         return torch.cat(weights) if weights else None
 
+    def remove_hooks(self):
+        """移除所有hook"""
+        for h in self.hooks:
+            h.remove()
+        self.hooks.clear()
+        
+        if self._local_verbose:
+            log_message("[HOOK] All hooks removed")
 
+    def reset(self):
+        """重置状态（每个batch开始时调用）"""
+        # 新设计不需要issued_time，此方法保留用于兼容性
+        pass
+
+
+# =========================
+# 便捷的模块级接口
+# =========================
 def enable_hook_logging():
     LogController.enable()
 
