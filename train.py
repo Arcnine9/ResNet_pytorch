@@ -2,8 +2,26 @@
 # -*- encoding: utf-8 -*-
 
 import os
+import signal
+import sys
 
-# os.environ["HOOK_VERBOSE"] = "1"
+# =========================
+# 信号处理：确保 Ctrl+C 能终止程序
+# =========================
+def signal_handler(signum, frame):
+    print(f"\n[Signal] 捕获信号 {signum}，正在清理并退出...")
+    # 强制清理 NPU 上下文
+    try:
+        import torch_npu
+        torch_npu.npu.synchronize()  # 尝试同步
+        torch_npu.npu.empty_cache()
+    except:
+        pass
+    sys.exit(1)
+
+# 注册信号处理器
+signal.signal(signal.SIGINT, signal_handler)   # Ctrl+C
+signal.signal(signal.SIGTERM, signal_handler)  # kill -15
 
 import PIL
 import torch
@@ -20,17 +38,22 @@ from swap_manager import swapManager as swap_manager_mod
 from swap_manager import hook, module_transfer
 
 import torch_npu
-from torch_npu.contrib import transfer_to_npu
 
 
 with open('./config.yaml', 'r', encoding='utf-8') as f_config:
     config = yaml.load(f_config.read(), Loader=yaml.FullLoader)
 
-device = torch.device(
-    "npu:7" if torch.npu.is_available()
-    else "cuda" if torch.cuda.is_available()
-    else "cpu"
-)
+# =========================
+# ★ 关键修改：显式设置 device 并确保上下文正确
+# =========================
+if torch.npu.is_available():
+    device_id = 7  # 或者从配置读取：config.get("device_id", 0)
+    torch.npu.set_device(device_id)  # 立即设置当前线程的默认 device
+    device = torch.device(f"npu:{device_id}")
+else:
+    device = torch.device("cpu")
+
+print(f"[INIT] Using device: {device}")
 
 if not os.path.exists(config["train"]["out_model_path"]):
     raise Exception("模型保存路径不存在")
@@ -114,27 +137,30 @@ elif config["net"] == "InceptionV3":
 else:
     raise Exception("Unknown network")
 
+# ★ 确保模型在正确的 device 上
 net = net.to(device)
 
 hook_verbose = config["train"].get("hook_verbose", False)
 
 # ================= Swap / Hook =================
-# ★ 新增：从配置读取是否启用向量迁移
 enable_vector_transfer = config["train"].get("enable_vector_transfer", True)
 
-swap_manager = swap_manager_mod.SwapManager()
-hook_manager = None  # 初始化为 None
-
-# ★ 条件性创建 HookManager：仅在启用向量迁移时插入 hook
+# ★ 关键修改：显式传递 device 给 SwapManager
 if enable_vector_transfer:
+    # 确保在正确的 device 上下文中创建 SwapManager
+    with torch.npu.device(device.index):
+        swap_manager = swap_manager_mod.SwapManager(device=device.index)
+    
     hook_manager = hook.HookManager(
         swap_manager,
         "prefetch.config",
         net,
         verbose=hook_verbose
     )
-    print(f"向量迁移功能已启用 (enable_vector_transfer={enable_vector_transfer})")
+    print(f"向量迁移功能已启用 (enable_vector_transfer={enable_vector_transfer}, device={device})")
 else:
+    swap_manager = None
+    hook_manager = None
     print(f"向量迁移功能已禁用 (enable_vector_transfer={enable_vector_transfer})")
 
 
@@ -152,10 +178,10 @@ if __name__ == "__main__":
 
         for i, (inputs, labels) in enumerate(trainloader):
 
-            # ★ 条件性调用：仅在 hook_manager 存在时重置时间
             if hook_manager is not None:
                 hook_manager.reset_issued_time()
 
+            # ★ 确保数据在正确的 device 上
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -166,8 +192,12 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
 
-            swap_manager.clear()
-            # # 打印
+            # ★ 关键修改：确保 clear 在正确的 device 上下文中执行
+            if swap_manager is not None:
+                with torch.npu.device(device.index):
+                    swap_manager.clear()
+            
+            # 打印
             _, predicted = torch.max(outputs.data, 1)
             acc = (predicted == labels).float().mean() * 100
             print(
@@ -196,7 +226,6 @@ if __name__ == "__main__":
             f"{config['train']['out_model_path']}/net_{epoch+1}_{acc:.3f}.pth"
         )
 
-    # ★ 条件性移除 hook：仅在 hook_manager 存在时调用
     if hook_manager is not None:
         hook_manager.remove_hooks()
     
