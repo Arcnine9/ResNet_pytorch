@@ -10,6 +10,7 @@ SAMPLE_INTERVAL=1
 OUTPUT_DIR="./monitor_logs"
 PREFIX=$(date +%Y%m%d_%H%M%S)
 TIMEOUT=0  # 超时时间（秒），0表示不超时
+TARGET_NPU=7  # 要监控的NPU编号，默认为0，可以根据需要修改
 
 # 全局变量用于信号处理
 TRAIN_PID=""
@@ -68,16 +69,16 @@ cleanup_npu_processes() {
     # 终止AI CPU进程
     pkill -9 -u $USER_ID -f "aicpu" 2>/dev/null
     
-    # 4. 使用npu-smi查找并终止NPU上的进程
+    # 4. 使用npu-smi查找并终止NPU上的进程（仅终止目标NPU上的进程）
     if command -v npu-smi &> /dev/null; then
-        echo "检查NPU上运行的进程..."
+        echo "检查NPU $TARGET_NPU上运行的进程..."
         
-        # 获取所有NPU上运行的进程ID
-        npu-smi info 2>/dev/null | grep -E "^[|][[:space:]]*[0-7][[:space:]]+[|]" | while read line; do
+        # 获取目标NPU上运行的进程ID
+        npu-smi info 2>/dev/null | grep "^| $TARGET_NPU[[:space:]]\+0" | while read line; do
             # 提取进程ID
             proc_pid=$(echo "$line" | grep -o '[0-9]\+' | head -2 | tail -1)
             if [ -n "$proc_pid" ] && [ "$proc_pid" -gt 0 ]; then
-                echo "终止NPU上的进程: $proc_pid"
+                echo "终止NPU $TARGET_NPU上的进程: $proc_pid"
                 kill -9 $proc_pid 2>/dev/null
             fi
         done
@@ -166,7 +167,7 @@ generate_summary() {
         
         # NPU统计
         if [ -s "$GPU_PCT" ]; then
-            echo "--- NPU HBM显存统计 ---"
+            echo "--- NPU $TARGET_NPU HBM显存统计 ---"
             awk '{sum+=$1; count++; max=($1>max?$1:max)} END {
                 if(count>0) {
                     printf "采样点数: %d\n", count;
@@ -187,8 +188,8 @@ generate_summary() {
         echo "日志文件:"
         echo "  CPU 内存% : $CPU_PCT"
         echo "  CPU 内存MiB: $CPU_ABS"
-        echo "  NPU HBM% : $GPU_PCT"
-        echo "  NPU HBM MB: $GPU_ABS"
+        echo "  NPU $TARGET_NPU HBM% : $GPU_PCT"
+        echo "  NPU $TARGET_NPU HBM MB: $GPU_ABS"
         echo "  汇总报告  : $SUMMARY"
     } >> "$SUMMARY"
     
@@ -196,11 +197,12 @@ generate_summary() {
 }
 
 # ============================================
-# 获取NPU 0上python进程的HBM使用量
+# 获取指定NPU上python进程的HBM使用量
 # ============================================
-get_npu0_process_memory() {
-    # 直接从npu-smi info输出中提取包含"python"的行，并获取最后一列的数字
-    npu-smi info 2>/dev/null | grep "python" | grep "^| 0       0" | while read line; do
+get_npu_process_memory() {
+    local npu_id=$1
+    # 直接从npu-smi info输出中提取指定NPU上包含"python"的行，并获取最后一列的数字
+    npu-smi info 2>/dev/null | grep "python" | grep "^| $npu_id[[:space:]]\+0" | while read line; do
         # 提取最后一列的数字（进程内存）
         for field in $(echo "$line" | tr '|' ' ' | tr -s ' '); do
             if [[ "$field" =~ ^[0-9]+$ ]]; then
@@ -229,10 +231,10 @@ sample_resources() {
     head -1 /tmp/cpu_sample.tmp >> "$CPU_PCT"
     tail -1 /tmp/cpu_sample.tmp >> "$CPU_ABS"
     
-    # NPU HBM显存 - 从进程表中获取python进程的内存使用
+    # NPU HBM显存 - 从进程表中获取指定NPU上python进程的内存使用
     if command -v npu-smi &> /dev/null; then
-        # 获取NPU 0上python进程的HBM使用量
-        process_mem=$(get_npu0_process_memory)
+        # 获取指定NPU上python进程的HBM使用量
+        process_mem=$(get_npu_process_memory $TARGET_NPU)
         
         if [ -n "$process_mem" ] && [ "$process_mem" -gt 0 ]; then
             # 总HBM为65536 MB
@@ -242,10 +244,11 @@ sample_resources() {
             
             echo "$pct" >> "$GPU_PCT"
             echo "$used" >> "$GPU_ABS"
-            echo "NPU HBM: ${used}/${total} MB (${pct}%)"
+            echo "NPU $TARGET_NPU HBM: ${used}/${total} MB (${pct}%)"
         else
             echo "0.0" >> "$GPU_PCT"
             echo "0" >> "$GPU_ABS"
+            echo "NPU $TARGET_NPU HBM: 0 MB (未找到进程)"
         fi
     else
         echo "0.0" >> "$GPU_PCT"
@@ -263,6 +266,7 @@ echo "========================================"
 echo "输出目录: $OUTPUT_DIR"
 echo "时间戳: $PREFIX"
 echo "采样间隔: ${SAMPLE_INTERVAL}秒"
+echo "目标NPU: $TARGET_NPU"
 echo ""
 
 # 检查NPU环境
@@ -271,9 +275,9 @@ if command -v npu-smi &> /dev/null; then
     npu_version=$(npu-smi info | head -1 | grep -o "Version:[^,]*" || echo "未知")
     echo "NPU版本: $npu_version"
     
-    # 显示当前NPU 0的状态
-    echo "当前NPU 0状态:"
-    npu-smi info | grep -A 1 "^| 0" | head -2
+    # 显示当前目标NPU的状态
+    echo "当前NPU $TARGET_NPU 状态:"
+    npu-smi info | grep -A 1 "^| $TARGET_NPU" | head -2
     echo ""
 else
     echo "警告: 未检测到 npu-smi 命令"

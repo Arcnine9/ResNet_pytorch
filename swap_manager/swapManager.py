@@ -1,3 +1,4 @@
+# swapManager.py：SwapManager 实现
 import torch
 import torch_npu
 from typing import Dict
