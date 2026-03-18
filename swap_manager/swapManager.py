@@ -1,4 +1,4 @@
-# swapManager.py：SwapManager 实现
+# swapManager.py：SwapManager 实现（修复版 - 独立传输流）
 import torch
 import torch_npu
 from typing import Dict
@@ -16,7 +16,7 @@ class EventPool:
             device = torch_npu.npu.current_device()
         self.device = device
         self.pool = []
-        
+
         # 必须在指定 device 上下文中创建 Event
         with torch.npu.device(device):
             for _ in range(num_events):
@@ -87,12 +87,16 @@ class SwapManager:
             self.device = torch_npu.npu.current_device()
         else:
             self.device = device if isinstance(device, int) else device.index
-        
+
         self.swap_tensors: Dict[int, SwapTensor] = {}
-        
+
         # 在指定 device 上创建 EventPool
         with torch.npu.device(self.device):
             self.event_pool = EventPool(num_events=num_events, device=self.device)
+
+            # ★★★ 关键修复：创建独立的 D2H 和 H2D 传输流 ★★★
+            self.d2h_stream = torch_npu.npu.Stream(device=self.device)
+            self.h2d_stream = torch_npu.npu.Stream(device=self.device)
 
     def _ensure_device_context(self):
         """确保当前线程在正确的 device 上下文中"""
@@ -108,7 +112,7 @@ class SwapManager:
                 f"Tensor device {tensor.device} mismatch with "
                 f"SwapManager device {self.device}"
             )
-        
+
         # 确保在正确的 device 上下文中操作
         self._ensure_device_context()
         self.swap_tensors[tensor_id] = SwapTensor(tensor)
@@ -117,42 +121,54 @@ class SwapManager:
         return self.swap_tensors.get(tensor_id, None)
 
     # -------- D2H --------
-    def launch_d2h(self, tensor_id: int, stream):
+    def launch_d2h(self, tensor_id: int, compute_stream):
+        """
+        在独立的 d2h_stream 上启动异步传输，与 compute_stream 并行。
+        compute_stream 可以继续执行后续计算，无需等待拷贝完成。
+        """
         st = self.swap_tensors[tensor_id]
         if st.stat != "device":
             print(f"[DEBUG] Tensor {tensor_id} not in device state for D2H!")
             return
 
         # 验证 stream 的 device 匹配
-        if hasattr(stream, 'device') and stream.device.index != self.device:
+        if hasattr(compute_stream, 'device') and compute_stream.device.index != self.device:
             raise RuntimeError(
-                f"Stream device {stream.device} != manager device {self.device}"
+                f"Stream device {compute_stream.device} != manager device {self.device}"
             )
 
         self._ensure_device_context()
-        
+
+        # ★★★ 关键：创建 event 记录 compute_stream 当前状态（数据生产完成点）
+        ready_event = torch.npu.Event()
+        ready_event.record(compute_stream)
+
+        # ★★★ 关键：d2h_stream 等待 compute_stream 到达 ready_event
+        # 确保 tensor 数据已完全生产完成，才能开始传输
+        self.d2h_stream.wait_event(ready_event)
+
+        # 在独立的 d2h_stream 上执行拷贝，compute_stream 可继续执行
         evt = self.event_pool.acquire()
         st.d2h_event = evt
 
         with torch.no_grad():
-            # 确保在正确的 device 和 stream 上下文中
             with torch.npu.device(self.device):
-                with torch_npu.npu.stream(stream):
+                with torch_npu.npu.stream(self.d2h_stream):
                     if st.is_slice_tensor:
                         st.tensor_cpu.copy_(st.tensor, non_blocking=True)
                     else:
                         st.tensor_cpu.storage().copy_(
                             st.tensor.storage(), non_blocking=True
                         )
-                    evt.record(stream)
+                    # 记录传输完成 event
+                    evt.record(self.d2h_stream)
 
         st.stat = "d2h_inflight"
 
     def wait_d2h_finished(self, tensor_id: int, compute_stream=None):
         """
-        D2H 是 host 侧关心的问题：
-        - 必须确保 CPU buffer 写完
-        - 之后才能 resize device storage
+        等待 D2H 传输完成，并释放 device storage。
+        如果提供了 compute_stream，会先让 compute_stream 等待 D2H 完成（如果需要）。
         """
         st = self.swap_tensors[tensor_id]
         if st.stat != "d2h_inflight":
@@ -161,57 +177,72 @@ class SwapManager:
 
         self._ensure_device_context()
 
-        # 关键修正点：host-side 同步
+        # ★★★ 关键：如果后续操作需要访问 CPU 数据或在 device 上继续，
+        # 让 compute_stream 等待 D2H 完成
         if compute_stream is not None and st.d2h_event is not None:
             compute_stream.wait_event(st.d2h_event)
+
         if st.d2h_event is not None:
             self.event_pool.release(st.d2h_event)
             st.d2h_event = None
 
-        # 释放 device storage（危险但受控）
+        # 释放 device storage（现在 D2H 已完成，可以安全释放）
         with torch.npu.device(self.device):
             st.tensor.storage().resize_(0)
 
         st.stat = "host"
 
     # -------- H2D --------
-    def launch_h2d(self, tensor_id: int, stream):
+    def launch_h2d(self, tensor_id: int, compute_stream):
+        """
+        在独立的 h2d_stream 上启动异步传输。
+        注意：H2D 前必须先恢复 storage size（同步操作）。
+        """
         st = self.swap_tensors[tensor_id]
         if st.stat != "host":
             print(f"[DEBUG] Tensor {tensor_id} not in host state for H2D!")
             return
 
         # 验证 stream 的 device 匹配
-        if hasattr(stream, 'device') and stream.device.index != self.device:
+        if hasattr(compute_stream, 'device') and compute_stream.device.index != self.device:
             raise RuntimeError(
-                f"Stream device {stream.device} != manager device {self.device}"
+                f"Stream device {compute_stream.device} != manager device {self.device}"
             )
 
         self._ensure_device_context()
 
-        # 先恢复 storage
+        # 先恢复 storage（同步操作，必须在拷贝前完成）
         with torch.npu.device(self.device):
             st.tensor.storage().resize_(st.storage_size)
 
+        # ★★★ 关键：创建 event 记录 compute_stream 当前状态
+        ready_event = torch.npu.Event()
+        ready_event.record(compute_stream)
+
+        # ★★★ 关键：h2d_stream 等待 compute_stream 到达 ready_event
+        self.h2d_stream.wait_event(ready_event)
+
+        # 在独立的 h2d_stream 上执行拷贝
         evt = self.event_pool.acquire()
         st.h2d_event = evt
 
         with torch.no_grad():
             with torch.npu.device(self.device):
-                with torch_npu.npu.stream(stream):
+                with torch_npu.npu.stream(self.h2d_stream):
                     if st.is_slice_tensor:
                         st.tensor.copy_(st.tensor_cpu, non_blocking=True)
                     else:
                         st.tensor.storage().copy_(
                             st.tensor_cpu.storage(), non_blocking=True
                         )
-                    evt.record(stream)
+                    evt.record(self.h2d_stream)
 
         st.stat = "h2d_inflight"
 
     def wait_h2d_finished(self, tensor_id: int, compute_stream):
         """
-        H2D 的 wait 必须发生在消费该 tensor 的 compute stream 上
+        H2D 的 wait 必须发生在消费该 tensor 的 compute_stream 上，
+        确保数据已经回到 device 才能被计算使用。
         """
         st = self.swap_tensors[tensor_id]
         if st.stat != "h2d_inflight":
@@ -226,6 +257,8 @@ class SwapManager:
 
         self._ensure_device_context()
 
+        # ★★★ 关键：让 compute_stream 等待 H2D 传输完成
+        # 这是必须的，因为后续计算需要用到 tensor 数据
         if st.h2d_event is not None:
             with torch.npu.device(self.device):
                 compute_stream.wait_event(st.h2d_event)
@@ -237,7 +270,7 @@ class SwapManager:
     # -------- batch / epoch 结束清理 --------
     def clear(self):
         self._ensure_device_context()
-        
+
         for st in self.swap_tensors.values():
             st.tensor_cpu = None
             st.d2h_event = None
