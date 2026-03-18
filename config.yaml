@@ -11,7 +11,7 @@ train:
   train_data: /models/train7_data/DNN_data  # 训练集路径
   test_data: /models/train7_data/DNN_data  # 训练集路径
   is_gpu: True  # 是否使用gpu
-  num_workers: 8  # 并行处理数据进程数，根据显存大小自定义，显存越小work数越小
+  num_workers: 128  # 并行处理数据进程数，根据显存大小自定义，显存越小work数越小
   out_model_path: /models/train7_data/DNN_data/model  #  网络模型保存地址
   rotating: False # 训练过程是否进行图片随机旋转
   prof_path: /models/train7_data/DNN_data/prof  # 训练过程性能分析数据保存地址
