@@ -4,7 +4,7 @@ class_path: /models/train7_data/DNN_data/classes.txt  # 标签文件路径
 width: 299
 height: 299
 train:
-  epoch: 1  # 遍历数据集次数
+  epoch: 5  # 遍历数据集次数
   pre_epoch: 0  # 定义已经遍历数据集的次数
   batch_size: 128  # 批处理尺寸(batch_size)
   lr: 0.001  # 学习率

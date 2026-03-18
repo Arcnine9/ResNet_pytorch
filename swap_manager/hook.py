@@ -130,6 +130,9 @@ class ModuleEvents:
         direction = "FWD" if self.is_forward else "BWD"
         return f"ModuleEvents({self.module_name}, {direction}, {len(self.events)} events)"
 
+    def __len__(self) -> int:
+        return len(self.events)
+
 
 class HookManager:
     def __init__(self, swap_manager: SwapManager, event_file: str, model: nn.Module, verbose: bool = None):
