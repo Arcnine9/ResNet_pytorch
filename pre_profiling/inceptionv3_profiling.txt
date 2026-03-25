@@ -1,0 +1,630 @@
+# Module Profiling Results (NPU:7)
+# Total modules: 313
+====================================================================================================
+
+Hook:2 | Conv2d_1a_3x3.bn | Type:BatchNorm2d | FWD:1414.31±19.12us | BWD:12497.22±106.56us | In:(128, 32, 149, 149) | Out:(128, 32, 149, 149) | Params:64
+
+Hook:1 | Conv2d_1a_3x3.conv | Type:Conv2d | FWD:1810.27±108.37us | BWD:16721.42±97.73us | In:(128, 3, 299, 299) | Out:(128, 32, 149, 149) | Params:864
+
+Hook:5 | Conv2d_2a_3x3.bn | Type:BatchNorm2d | FWD:1441.24±8.76us | BWD:12229.26±11.71us | In:(128, 32, 147, 147) | Out:(128, 32, 147, 147) | Params:64
+
+Hook:4 | Conv2d_2a_3x3.conv | Type:Conv2d | FWD:2198.13±5.53us | BWD:15092.38±8.99us | In:(128, 32, 149, 149) | Out:(128, 32, 147, 147) | Params:9216
+
+Hook:8 | Conv2d_2b_3x3.bn | Type:BatchNorm2d | FWD:2306.12±253.68us | BWD:23789.83±191.82us | In:(128, 64, 147, 147) | Out:(128, 64, 147, 147) | Params:128
+
+Hook:7 | Conv2d_2b_3x3.conv | Type:Conv2d | FWD:3204.03±196.52us | BWD:26514.84±209.73us | In:(128, 32, 147, 147) | Out:(128, 64, 147, 147) | Params:18432
+
+Hook:12 | Conv2d_3b_1x1.bn | Type:BatchNorm2d | FWD:990.80±11.60us | BWD:7812.69±25.98us | In:(128, 80, 73, 73) | Out:(128, 80, 73, 73) | Params:160
+
+Hook:11 | Conv2d_3b_1x1.conv | Type:Conv2d | FWD:1109.25±19.74us | BWD:8384.42±9.22us | In:(128, 64, 73, 73) | Out:(128, 80, 73, 73) | Params:5120
+
+Hook:15 | Conv2d_4a_3x3.bn | Type:BatchNorm2d | FWD:2019.17±19.95us | BWD:17601.00±34.29us | In:(128, 192, 71, 71) | Out:(128, 192, 71, 71) | Params:384
+
+Hook:14 | Conv2d_4a_3x3.conv | Type:Conv2d | FWD:2973.88±7.74us | BWD:20973.75±13.70us | In:(128, 80, 73, 73) | Out:(128, 192, 71, 71) | Params:138240
+
+Hook:19 | Mixed_5b.branch1x1.bn | Type:BatchNorm2d | FWD:423.44±14.07us | BWD:1752.73±11.79us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:18 | Mixed_5b.branch1x1.conv | Type:Conv2d | FWD:485.86±3.32us | BWD:2167.10±26.32us | In:(128, 192, 35, 35) | Out:(128, 64, 35, 35) | Params:12288
+
+Hook:28 | Mixed_5b.branch3x3dbl_1.bn | Type:BatchNorm2d | FWD:464.22±8.10us | BWD:1806.65±4.10us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:27 | Mixed_5b.branch3x3dbl_1.conv | Type:Conv2d | FWD:503.58±7.66us | BWD:2164.46±7.44us | In:(128, 192, 35, 35) | Out:(128, 64, 35, 35) | Params:12288
+
+Hook:31 | Mixed_5b.branch3x3dbl_2.bn | Type:BatchNorm2d | FWD:548.86±16.29us | BWD:2581.80±6.99us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:192
+
+Hook:30 | Mixed_5b.branch3x3dbl_2.conv | Type:Conv2d | FWD:423.96±25.16us | BWD:2612.38±9.17us | In:(128, 64, 35, 35) | Out:(128, 96, 35, 35) | Params:55296
+
+Hook:34 | Mixed_5b.branch3x3dbl_3.bn | Type:BatchNorm2d | FWD:551.11±25.00us | BWD:2582.05±10.57us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:192
+
+Hook:33 | Mixed_5b.branch3x3dbl_3.conv | Type:Conv2d | FWD:562.70±4.96us | BWD:3004.67±17.28us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:82944
+
+Hook:22 | Mixed_5b.branch5x5_1.bn | Type:BatchNorm2d | FWD:432.50±8.42us | BWD:1448.94±8.08us | In:(128, 48, 35, 35) | Out:(128, 48, 35, 35) | Params:96
+
+Hook:21 | Mixed_5b.branch5x5_1.conv | Type:Conv2d | FWD:489.81±6.05us | BWD:1846.85±10.29us | In:(128, 192, 35, 35) | Out:(128, 48, 35, 35) | Params:9216
+
+Hook:25 | Mixed_5b.branch5x5_2.bn | Type:BatchNorm2d | FWD:463.41±9.05us | BWD:1809.24±13.14us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:24 | Mixed_5b.branch5x5_2.conv | Type:Conv2d | FWD:515.41±11.86us | BWD:2389.66±6.31us | In:(128, 48, 35, 35) | Out:(128, 64, 35, 35) | Params:76800
+
+Hook:38 | Mixed_5b.branch_pool.bn | Type:BatchNorm2d | FWD:400.82±12.07us | BWD:1118.29±8.37us | In:(128, 32, 35, 35) | Out:(128, 32, 35, 35) | Params:64
+
+Hook:37 | Mixed_5b.branch_pool.conv | Type:Conv2d | FWD:472.34±9.26us | BWD:1532.59±10.62us | In:(128, 192, 35, 35) | Out:(128, 32, 35, 35) | Params:6144
+
+Hook:42 | Mixed_5c.branch1x1.bn | Type:BatchNorm2d | FWD:464.18±12.84us | BWD:1792.42±8.22us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:41 | Mixed_5c.branch1x1.conv | Type:Conv2d | FWD:671.92±5.32us | BWD:2629.53±12.46us | In:(128, 256, 35, 35) | Out:(128, 64, 35, 35) | Params:16384
+
+Hook:51 | Mixed_5c.branch3x3dbl_1.bn | Type:BatchNorm2d | FWD:459.94±12.56us | BWD:1793.30±9.51us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:50 | Mixed_5c.branch3x3dbl_1.conv | Type:Conv2d | FWD:661.23±5.02us | BWD:2611.71±13.88us | In:(128, 256, 35, 35) | Out:(128, 64, 35, 35) | Params:16384
+
+Hook:54 | Mixed_5c.branch3x3dbl_2.bn | Type:BatchNorm2d | FWD:528.68±21.82us | BWD:2632.33±118.08us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:192
+
+Hook:53 | Mixed_5c.branch3x3dbl_2.conv | Type:Conv2d | FWD:420.13±23.34us | BWD:2604.95±5.72us | In:(128, 64, 35, 35) | Out:(128, 96, 35, 35) | Params:55296
+
+Hook:57 | Mixed_5c.branch3x3dbl_3.bn | Type:BatchNorm2d | FWD:514.59±13.14us | BWD:2627.03±105.86us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:192
+
+Hook:56 | Mixed_5c.branch3x3dbl_3.conv | Type:Conv2d | FWD:572.46±9.00us | BWD:2974.90±9.35us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:82944
+
+Hook:45 | Mixed_5c.branch5x5_1.bn | Type:BatchNorm2d | FWD:431.30±7.41us | BWD:1450.27±5.82us | In:(128, 48, 35, 35) | Out:(128, 48, 35, 35) | Params:96
+
+Hook:44 | Mixed_5c.branch5x5_1.conv | Type:Conv2d | FWD:614.64±4.41us | BWD:2268.71±4.81us | In:(128, 256, 35, 35) | Out:(128, 48, 35, 35) | Params:12288
+
+Hook:48 | Mixed_5c.branch5x5_2.bn | Type:BatchNorm2d | FWD:465.56±21.73us | BWD:1797.00±10.44us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:47 | Mixed_5c.branch5x5_2.conv | Type:Conv2d | FWD:510.46±14.50us | BWD:2374.86±5.46us | In:(128, 48, 35, 35) | Out:(128, 64, 35, 35) | Params:76800
+
+Hook:61 | Mixed_5c.branch_pool.bn | Type:BatchNorm2d | FWD:462.95±9.27us | BWD:1794.65±7.26us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:60 | Mixed_5c.branch_pool.conv | Type:Conv2d | FWD:670.76±1.92us | BWD:2622.74±8.77us | In:(128, 256, 35, 35) | Out:(128, 64, 35, 35) | Params:16384
+
+Hook:65 | Mixed_5d.branch1x1.bn | Type:BatchNorm2d | FWD:420.81±17.84us | BWD:1741.37±10.70us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:64 | Mixed_5d.branch1x1.conv | Type:Conv2d | FWD:695.25±7.34us | BWD:2796.04±8.99us | In:(128, 288, 35, 35) | Out:(128, 64, 35, 35) | Params:18432
+
+Hook:74 | Mixed_5d.branch3x3dbl_1.bn | Type:BatchNorm2d | FWD:416.20±8.40us | BWD:1737.00±14.13us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:73 | Mixed_5d.branch3x3dbl_1.conv | Type:Conv2d | FWD:685.30±11.35us | BWD:2785.20±6.96us | In:(128, 288, 35, 35) | Out:(128, 64, 35, 35) | Params:18432
+
+Hook:77 | Mixed_5d.branch3x3dbl_2.bn | Type:BatchNorm2d | FWD:497.80±14.51us | BWD:2515.84±9.01us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:192
+
+Hook:76 | Mixed_5d.branch3x3dbl_2.conv | Type:Conv2d | FWD:394.73±27.07us | BWD:2585.25±31.45us | In:(128, 64, 35, 35) | Out:(128, 96, 35, 35) | Params:55296
+
+Hook:80 | Mixed_5d.branch3x3dbl_3.bn | Type:BatchNorm2d | FWD:491.13±12.21us | BWD:2515.94±12.13us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:192
+
+Hook:79 | Mixed_5d.branch3x3dbl_3.conv | Type:Conv2d | FWD:556.41±20.00us | BWD:2938.95±18.17us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:82944
+
+Hook:68 | Mixed_5d.branch5x5_1.bn | Type:BatchNorm2d | FWD:391.32±13.26us | BWD:1398.76±5.82us | In:(128, 48, 35, 35) | Out:(128, 48, 35, 35) | Params:96
+
+Hook:67 | Mixed_5d.branch5x5_1.conv | Type:Conv2d | FWD:654.92±8.92us | BWD:2461.50±8.50us | In:(128, 288, 35, 35) | Out:(128, 48, 35, 35) | Params:13824
+
+Hook:71 | Mixed_5d.branch5x5_2.bn | Type:BatchNorm2d | FWD:418.59±16.41us | BWD:1737.01±7.88us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:70 | Mixed_5d.branch5x5_2.conv | Type:Conv2d | FWD:482.28±13.00us | BWD:2342.12±7.67us | In:(128, 48, 35, 35) | Out:(128, 64, 35, 35) | Params:76800
+
+Hook:84 | Mixed_5d.branch_pool.bn | Type:BatchNorm2d | FWD:445.30±47.76us | BWD:1742.43±11.82us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:83 | Mixed_5d.branch_pool.conv | Type:Conv2d | FWD:680.53±4.72us | BWD:2784.84±10.94us | In:(128, 288, 35, 35) | Out:(128, 64, 35, 35) | Params:18432
+
+Hook:88 | Mixed_6a.branch3x3.bn | Type:BatchNorm2d | FWD:523.88±22.73us | BWD:2402.22±15.63us | In:(128, 384, 17, 17) | Out:(128, 384, 17, 17) | Params:768
+
+Hook:87 | Mixed_6a.branch3x3.conv | Type:Conv2d | FWD:1583.72±9.33us | BWD:8126.46±10.68us | In:(128, 288, 35, 35) | Out:(128, 384, 17, 17) | Params:995328
+
+Hook:91 | Mixed_6a.branch3x3dbl_1.bn | Type:BatchNorm2d | FWD:432.70±16.17us | BWD:1753.30±21.38us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:128
+
+Hook:90 | Mixed_6a.branch3x3dbl_1.conv | Type:Conv2d | FWD:693.42±12.02us | BWD:2790.54±2.66us | In:(128, 288, 35, 35) | Out:(128, 64, 35, 35) | Params:18432
+
+Hook:94 | Mixed_6a.branch3x3dbl_2.bn | Type:BatchNorm2d | FWD:513.26±16.96us | BWD:2525.58±14.90us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:192
+
+Hook:93 | Mixed_6a.branch3x3dbl_2.conv | Type:Conv2d | FWD:408.68±27.28us | BWD:2580.96±13.11us | In:(128, 64, 35, 35) | Out:(128, 96, 35, 35) | Params:55296
+
+Hook:97 | Mixed_6a.branch3x3dbl_3.bn | Type:BatchNorm2d | FWD:374.71±13.03us | BWD:889.38±6.99us | In:(128, 96, 17, 17) | Out:(128, 96, 17, 17) | Params:192
+
+Hook:96 | Mixed_6a.branch3x3dbl_3.conv | Type:Conv2d | FWD:285.98±27.22us | BWD:1267.98±13.65us | In:(128, 96, 35, 35) | Out:(128, 96, 17, 17) | Params:82944
+
+Hook:102 | Mixed_6b.branch1x1.bn | Type:BatchNorm2d | FWD:448.39±21.49us | BWD:1433.01±28.24us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:101 | Mixed_6b.branch1x1.conv | Type:Conv2d | FWD:753.72±21.52us | BWD:2378.40±28.35us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:105 | Mixed_6b.branch7x7_1.bn | Type:BatchNorm2d | FWD:380.54±9.96us | BWD:1080.42±15.44us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:256
+
+Hook:104 | Mixed_6b.branch7x7_1.conv | Type:Conv2d | FWD:532.73±8.83us | BWD:1771.84±13.82us | In:(128, 768, 17, 17) | Out:(128, 128, 17, 17) | Params:98304
+
+Hook:108 | Mixed_6b.branch7x7_2.bn | Type:BatchNorm2d | FWD:374.10±3.98us | BWD:1070.42±3.11us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:256
+
+Hook:107 | Mixed_6b.branch7x7_2.conv | Type:Conv2d | FWD:291.45±5.96us | BWD:1140.01±7.50us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:114688
+
+Hook:111 | Mixed_6b.branch7x7_3.bn | Type:BatchNorm2d | FWD:409.73±2.05us | BWD:1404.49±8.02us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:110 | Mixed_6b.branch7x7_3.conv | Type:Conv2d | FWD:354.62±8.62us | BWD:1576.74±8.08us | In:(128, 128, 17, 17) | Out:(128, 192, 17, 17) | Params:172032
+
+Hook:114 | Mixed_6b.branch7x7dbl_1.bn | Type:BatchNorm2d | FWD:379.15±13.88us | BWD:1084.49±8.77us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:256
+
+Hook:113 | Mixed_6b.branch7x7dbl_1.conv | Type:Conv2d | FWD:515.04±5.74us | BWD:1764.82±9.62us | In:(128, 768, 17, 17) | Out:(128, 128, 17, 17) | Params:98304
+
+Hook:117 | Mixed_6b.branch7x7dbl_2.bn | Type:BatchNorm2d | FWD:380.59±8.91us | BWD:1094.19±24.70us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:256
+
+Hook:116 | Mixed_6b.branch7x7dbl_2.conv | Type:Conv2d | FWD:300.49±10.50us | BWD:1143.79±10.35us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:114688
+
+Hook:120 | Mixed_6b.branch7x7dbl_3.bn | Type:BatchNorm2d | FWD:374.63±12.28us | BWD:1070.91±2.40us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:256
+
+Hook:119 | Mixed_6b.branch7x7dbl_3.conv | Type:Conv2d | FWD:295.05±3.81us | BWD:1134.58±3.93us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:114688
+
+Hook:123 | Mixed_6b.branch7x7dbl_4.bn | Type:BatchNorm2d | FWD:372.30±5.55us | BWD:1069.24±1.72us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:256
+
+Hook:122 | Mixed_6b.branch7x7dbl_4.conv | Type:Conv2d | FWD:294.50±5.79us | BWD:1135.21±3.39us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:114688
+
+Hook:126 | Mixed_6b.branch7x7dbl_5.bn | Type:BatchNorm2d | FWD:419.09±10.01us | BWD:1403.42±7.31us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:125 | Mixed_6b.branch7x7dbl_5.conv | Type:Conv2d | FWD:353.64±8.50us | BWD:1582.24±11.87us | In:(128, 128, 17, 17) | Out:(128, 192, 17, 17) | Params:172032
+
+Hook:130 | Mixed_6b.branch_pool.bn | Type:BatchNorm2d | FWD:411.34±4.35us | BWD:1403.50±10.02us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:129 | Mixed_6b.branch_pool.conv | Type:Conv2d | FWD:747.54±12.80us | BWD:2354.05±18.57us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:134 | Mixed_6c.branch1x1.bn | Type:BatchNorm2d | FWD:418.49±10.12us | BWD:1407.45±10.53us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:133 | Mixed_6c.branch1x1.conv | Type:Conv2d | FWD:755.51±13.40us | BWD:2353.58±6.56us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:137 | Mixed_6c.branch7x7_1.bn | Type:BatchNorm2d | FWD:395.04±10.31us | BWD:1225.27±7.68us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:136 | Mixed_6c.branch7x7_1.conv | Type:Conv2d | FWD:928.20±5.26us | BWD:2348.07±12.48us | In:(128, 768, 17, 17) | Out:(128, 160, 17, 17) | Params:122880
+
+Hook:140 | Mixed_6c.branch7x7_2.bn | Type:BatchNorm2d | FWD:396.43±13.26us | BWD:1212.51±2.44us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:139 | Mixed_6c.branch7x7_2.conv | Type:Conv2d | FWD:373.82±10.96us | BWD:1569.91±8.53us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:143 | Mixed_6c.branch7x7_3.bn | Type:BatchNorm2d | FWD:426.45±24.91us | BWD:1415.89±11.75us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:142 | Mixed_6c.branch7x7_3.conv | Type:Conv2d | FWD:406.62±10.36us | BWD:1780.84±13.01us | In:(128, 160, 17, 17) | Out:(128, 192, 17, 17) | Params:215040
+
+Hook:146 | Mixed_6c.branch7x7dbl_1.bn | Type:BatchNorm2d | FWD:405.36±15.32us | BWD:1223.18±9.87us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:145 | Mixed_6c.branch7x7dbl_1.conv | Type:Conv2d | FWD:941.60±19.04us | BWD:2339.16±7.08us | In:(128, 768, 17, 17) | Out:(128, 160, 17, 17) | Params:122880
+
+Hook:149 | Mixed_6c.branch7x7dbl_2.bn | Type:BatchNorm2d | FWD:381.68±4.64us | BWD:1221.25±11.47us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:148 | Mixed_6c.branch7x7dbl_2.conv | Type:Conv2d | FWD:389.95±31.46us | BWD:1576.94±6.87us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:152 | Mixed_6c.branch7x7dbl_3.bn | Type:BatchNorm2d | FWD:393.35±12.13us | BWD:1220.67±6.57us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:151 | Mixed_6c.branch7x7dbl_3.conv | Type:Conv2d | FWD:366.88±3.40us | BWD:1568.61±8.95us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:155 | Mixed_6c.branch7x7dbl_4.bn | Type:BatchNorm2d | FWD:388.98±2.06us | BWD:1221.50±10.52us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:154 | Mixed_6c.branch7x7dbl_4.conv | Type:Conv2d | FWD:376.29±7.75us | BWD:1576.31±6.36us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:158 | Mixed_6c.branch7x7dbl_5.bn | Type:BatchNorm2d | FWD:415.22±10.91us | BWD:1399.79±3.17us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:157 | Mixed_6c.branch7x7dbl_5.conv | Type:Conv2d | FWD:401.11±8.01us | BWD:1777.47±4.03us | In:(128, 160, 17, 17) | Out:(128, 192, 17, 17) | Params:215040
+
+Hook:162 | Mixed_6c.branch_pool.bn | Type:BatchNorm2d | FWD:418.38±11.95us | BWD:1411.92±12.44us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:161 | Mixed_6c.branch_pool.conv | Type:Conv2d | FWD:756.87±14.12us | BWD:2357.29±15.13us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:166 | Mixed_6d.branch1x1.bn | Type:BatchNorm2d | FWD:415.89±6.41us | BWD:1414.68±12.82us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:165 | Mixed_6d.branch1x1.conv | Type:Conv2d | FWD:751.21±15.55us | BWD:2349.99±15.63us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:169 | Mixed_6d.branch7x7_1.bn | Type:BatchNorm2d | FWD:397.28±9.69us | BWD:1222.63±11.21us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:168 | Mixed_6d.branch7x7_1.conv | Type:Conv2d | FWD:937.03±8.25us | BWD:2338.84±12.47us | In:(128, 768, 17, 17) | Out:(128, 160, 17, 17) | Params:122880
+
+Hook:172 | Mixed_6d.branch7x7_2.bn | Type:BatchNorm2d | FWD:397.73±15.24us | BWD:1219.19±13.54us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:171 | Mixed_6d.branch7x7_2.conv | Type:Conv2d | FWD:371.88±5.41us | BWD:1564.60±4.94us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:175 | Mixed_6d.branch7x7_3.bn | Type:BatchNorm2d | FWD:419.70±10.06us | BWD:1403.86±1.60us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:174 | Mixed_6d.branch7x7_3.conv | Type:Conv2d | FWD:403.88±11.50us | BWD:1772.60±8.66us | In:(128, 160, 17, 17) | Out:(128, 192, 17, 17) | Params:215040
+
+Hook:178 | Mixed_6d.branch7x7dbl_1.bn | Type:BatchNorm2d | FWD:408.32±45.65us | BWD:1246.58±56.33us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:177 | Mixed_6d.branch7x7dbl_1.conv | Type:Conv2d | FWD:1016.79±44.38us | BWD:2341.72±11.43us | In:(128, 768, 17, 17) | Out:(128, 160, 17, 17) | Params:122880
+
+Hook:181 | Mixed_6d.branch7x7dbl_2.bn | Type:BatchNorm2d | FWD:389.06±10.62us | BWD:1217.30±5.88us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:180 | Mixed_6d.branch7x7dbl_2.conv | Type:Conv2d | FWD:371.23±2.77us | BWD:1568.52±4.81us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:184 | Mixed_6d.branch7x7dbl_3.bn | Type:BatchNorm2d | FWD:390.89±2.68us | BWD:1220.98±6.47us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:183 | Mixed_6d.branch7x7dbl_3.conv | Type:Conv2d | FWD:370.63±5.47us | BWD:1569.02±4.14us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:187 | Mixed_6d.branch7x7dbl_4.bn | Type:BatchNorm2d | FWD:390.36±6.61us | BWD:1213.37±1.05us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:320
+
+Hook:186 | Mixed_6d.branch7x7dbl_4.conv | Type:Conv2d | FWD:375.87±3.88us | BWD:1587.88±40.14us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:179200
+
+Hook:190 | Mixed_6d.branch7x7dbl_5.bn | Type:BatchNorm2d | FWD:412.12±5.67us | BWD:1396.83±4.09us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:189 | Mixed_6d.branch7x7dbl_5.conv | Type:Conv2d | FWD:392.27±5.45us | BWD:1775.39±8.11us | In:(128, 160, 17, 17) | Out:(128, 192, 17, 17) | Params:215040
+
+Hook:194 | Mixed_6d.branch_pool.bn | Type:BatchNorm2d | FWD:430.86±34.87us | BWD:1407.44±11.76us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:193 | Mixed_6d.branch_pool.conv | Type:Conv2d | FWD:742.28±6.62us | BWD:2354.16±12.43us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:198 | Mixed_6e.branch1x1.bn | Type:BatchNorm2d | FWD:416.42±6.79us | BWD:1413.46±11.25us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:197 | Mixed_6e.branch1x1.conv | Type:Conv2d | FWD:743.35±7.21us | BWD:2346.40±7.80us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:201 | Mixed_6e.branch7x7_1.bn | Type:BatchNorm2d | FWD:426.35±18.81us | BWD:1416.23±17.74us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:200 | Mixed_6e.branch7x7_1.conv | Type:Conv2d | FWD:745.74±4.73us | BWD:2342.88±10.35us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:204 | Mixed_6e.branch7x7_2.bn | Type:BatchNorm2d | FWD:415.80±4.94us | BWD:1404.97±7.97us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:203 | Mixed_6e.branch7x7_2.conv | Type:Conv2d | FWD:444.72±5.55us | BWD:1877.73±7.50us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:207 | Mixed_6e.branch7x7_3.bn | Type:BatchNorm2d | FWD:417.10±14.93us | BWD:1401.04±10.70us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:206 | Mixed_6e.branch7x7_3.conv | Type:Conv2d | FWD:452.01±3.89us | BWD:1893.82±8.98us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:210 | Mixed_6e.branch7x7dbl_1.bn | Type:BatchNorm2d | FWD:431.91±14.11us | BWD:1418.57±13.20us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:209 | Mixed_6e.branch7x7dbl_1.conv | Type:Conv2d | FWD:746.21±9.59us | BWD:2356.21±16.40us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:213 | Mixed_6e.branch7x7dbl_2.bn | Type:BatchNorm2d | FWD:420.90±12.18us | BWD:1416.89±12.22us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:212 | Mixed_6e.branch7x7dbl_2.conv | Type:Conv2d | FWD:456.30±10.08us | BWD:1889.64±11.43us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:216 | Mixed_6e.branch7x7dbl_3.bn | Type:BatchNorm2d | FWD:418.31±9.64us | BWD:1413.47±15.67us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:215 | Mixed_6e.branch7x7dbl_3.conv | Type:Conv2d | FWD:456.29±22.48us | BWD:1888.89±14.76us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:219 | Mixed_6e.branch7x7dbl_4.bn | Type:BatchNorm2d | FWD:419.01±11.47us | BWD:1406.18±9.12us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:218 | Mixed_6e.branch7x7dbl_4.conv | Type:Conv2d | FWD:460.81±25.14us | BWD:1885.52±5.22us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:222 | Mixed_6e.branch7x7dbl_5.bn | Type:BatchNorm2d | FWD:417.44±12.97us | BWD:1401.81±4.93us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:221 | Mixed_6e.branch7x7dbl_5.conv | Type:Conv2d | FWD:442.41±4.92us | BWD:1885.13±12.93us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:226 | Mixed_6e.branch_pool.bn | Type:BatchNorm2d | FWD:419.01±11.75us | BWD:1400.85±2.53us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:225 | Mixed_6e.branch_pool.conv | Type:Conv2d | FWD:747.29±9.52us | BWD:2354.50±6.45us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:230 | Mixed_7a.branch3x3_1.bn | Type:BatchNorm2d | FWD:415.68±7.04us | BWD:1417.15±16.23us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:229 | Mixed_7a.branch3x3_1.conv | Type:Conv2d | FWD:750.48±16.12us | BWD:2351.45±8.26us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:233 | Mixed_7a.branch3x3_2.bn | Type:BatchNorm2d | FWD:374.98±41.66us | BWD:757.98±4.92us | In:(128, 320, 8, 8) | Out:(128, 320, 8, 8) | Params:640
+
+Hook:232 | Mixed_7a.branch3x3_2.conv | Type:Conv2d | FWD:333.73±7.64us | BWD:1339.13±11.74us | In:(128, 192, 17, 17) | Out:(128, 320, 8, 8) | Params:552960
+
+Hook:236 | Mixed_7a.branch7x7x3_1.bn | Type:BatchNorm2d | FWD:407.98±3.11us | BWD:1400.23±3.02us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:235 | Mixed_7a.branch7x7x3_1.conv | Type:Conv2d | FWD:750.57±14.53us | BWD:2347.59±8.66us | In:(128, 768, 17, 17) | Out:(128, 192, 17, 17) | Params:147456
+
+Hook:239 | Mixed_7a.branch7x7x3_2.bn | Type:BatchNorm2d | FWD:415.30±4.41us | BWD:1404.57±6.98us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:238 | Mixed_7a.branch7x7x3_2.conv | Type:Conv2d | FWD:447.36±12.95us | BWD:1878.37±5.64us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:242 | Mixed_7a.branch7x7x3_3.bn | Type:BatchNorm2d | FWD:413.38±10.20us | BWD:1397.56±2.68us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:384
+
+Hook:241 | Mixed_7a.branch7x7x3_3.conv | Type:Conv2d | FWD:447.25±4.95us | BWD:1887.76±4.56us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:258048
+
+Hook:245 | Mixed_7a.branch7x7x3_4.bn | Type:BatchNorm2d | FWD:331.95±8.60us | BWD:637.30±11.22us | In:(128, 192, 8, 8) | Out:(128, 192, 8, 8) | Params:384
+
+Hook:244 | Mixed_7a.branch7x7x3_4.conv | Type:Conv2d | FWD:287.34±3.45us | BWD:965.84±6.81us | In:(128, 192, 17, 17) | Out:(128, 192, 8, 8) | Params:331776
+
+Hook:250 | Mixed_7b.branch1x1.bn | Type:BatchNorm2d | FWD:385.25±59.88us | BWD:757.66±6.72us | In:(128, 320, 8, 8) | Out:(128, 320, 8, 8) | Params:640
+
+Hook:249 | Mixed_7b.branch1x1.conv | Type:Conv2d | FWD:289.33±7.93us | BWD:899.93±7.09us | In:(128, 1280, 8, 8) | Out:(128, 320, 8, 8) | Params:409600
+
+Hook:253 | Mixed_7b.branch3x3_1.bn | Type:BatchNorm2d | FWD:366.41±3.31us | BWD:839.13±4.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:252 | Mixed_7b.branch3x3_1.conv | Type:Conv2d | FWD:305.02±15.45us | BWD:994.53±23.46us | In:(128, 1280, 8, 8) | Out:(128, 384, 8, 8) | Params:491520
+
+Hook:256 | Mixed_7b.branch3x3_2a.bn | Type:BatchNorm2d | FWD:376.18±11.35us | BWD:841.90±5.26us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:255 | Mixed_7b.branch3x3_2a.conv | Type:Conv2d | FWD:291.83±2.99us | BWD:1004.58±8.15us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:259 | Mixed_7b.branch3x3_2b.bn | Type:BatchNorm2d | FWD:369.94±5.70us | BWD:843.13±3.01us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:258 | Mixed_7b.branch3x3_2b.conv | Type:Conv2d | FWD:290.94±3.15us | BWD:1002.00±4.01us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:263 | Mixed_7b.branch3x3dbl_1.bn | Type:BatchNorm2d | FWD:374.18±3.03us | BWD:924.17±6.22us | In:(128, 448, 8, 8) | Out:(128, 448, 8, 8) | Params:896
+
+Hook:262 | Mixed_7b.branch3x3dbl_1.conv | Type:Conv2d | FWD:314.97±5.77us | BWD:1106.76±5.61us | In:(128, 1280, 8, 8) | Out:(128, 448, 8, 8) | Params:573440
+
+Hook:266 | Mixed_7b.branch3x3dbl_2.bn | Type:BatchNorm2d | FWD:368.59±4.49us | BWD:849.95±8.74us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:265 | Mixed_7b.branch3x3dbl_2.conv | Type:Conv2d | FWD:580.55±2.90us | BWD:1851.57±6.28us | In:(128, 448, 8, 8) | Out:(128, 384, 8, 8) | Params:1548288
+
+Hook:269 | Mixed_7b.branch3x3dbl_3a.bn | Type:BatchNorm2d | FWD:370.67±2.15us | BWD:848.74±5.45us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:268 | Mixed_7b.branch3x3dbl_3a.conv | Type:Conv2d | FWD:303.11±3.59us | BWD:1001.41±2.41us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:272 | Mixed_7b.branch3x3dbl_3b.bn | Type:BatchNorm2d | FWD:369.66±3.99us | BWD:846.58±5.63us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:271 | Mixed_7b.branch3x3dbl_3b.conv | Type:Conv2d | FWD:292.45±6.31us | BWD:1002.83±5.71us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:277 | Mixed_7b.branch_pool.bn | Type:BatchNorm2d | FWD:327.69±3.92us | BWD:627.40±7.86us | In:(128, 192, 8, 8) | Out:(128, 192, 8, 8) | Params:384
+
+Hook:276 | Mixed_7b.branch_pool.conv | Type:Conv2d | FWD:231.16±3.68us | BWD:681.85±28.65us | In:(128, 1280, 8, 8) | Out:(128, 192, 8, 8) | Params:245760
+
+Hook:281 | Mixed_7c.branch1x1.bn | Type:BatchNorm2d | FWD:356.36±4.73us | BWD:752.21±3.26us | In:(128, 320, 8, 8) | Out:(128, 320, 8, 8) | Params:640
+
+Hook:280 | Mixed_7c.branch1x1.conv | Type:Conv2d | FWD:370.66±1.90us | BWD:1289.54±4.84us | In:(128, 2048, 8, 8) | Out:(128, 320, 8, 8) | Params:655360
+
+Hook:284 | Mixed_7c.branch3x3_1.bn | Type:BatchNorm2d | FWD:375.09±10.73us | BWD:845.46±8.56us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:283 | Mixed_7c.branch3x3_1.conv | Type:Conv2d | FWD:395.88±2.12us | BWD:1386.55±8.26us | In:(128, 2048, 8, 8) | Out:(128, 384, 8, 8) | Params:786432
+
+Hook:287 | Mixed_7c.branch3x3_2a.bn | Type:BatchNorm2d | FWD:365.90±2.36us | BWD:845.73±6.06us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:286 | Mixed_7c.branch3x3_2a.conv | Type:Conv2d | FWD:296.26±10.29us | BWD:1007.71±9.26us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:290 | Mixed_7c.branch3x3_2b.bn | Type:BatchNorm2d | FWD:369.43±8.10us | BWD:844.06±4.09us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:289 | Mixed_7c.branch3x3_2b.conv | Type:Conv2d | FWD:293.11±5.65us | BWD:1000.88±4.31us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:294 | Mixed_7c.branch3x3dbl_1.bn | Type:BatchNorm2d | FWD:378.10±5.13us | BWD:928.79±11.63us | In:(128, 448, 8, 8) | Out:(128, 448, 8, 8) | Params:896
+
+Hook:293 | Mixed_7c.branch3x3dbl_1.conv | Type:Conv2d | FWD:422.29±8.65us | BWD:1542.38±6.75us | In:(128, 2048, 8, 8) | Out:(128, 448, 8, 8) | Params:917504
+
+Hook:297 | Mixed_7c.branch3x3dbl_2.bn | Type:BatchNorm2d | FWD:367.76±7.38us | BWD:840.76±2.49us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:296 | Mixed_7c.branch3x3dbl_2.conv | Type:Conv2d | FWD:581.59±3.91us | BWD:1848.42±0.48us | In:(128, 448, 8, 8) | Out:(128, 384, 8, 8) | Params:1548288
+
+Hook:300 | Mixed_7c.branch3x3dbl_3a.bn | Type:BatchNorm2d | FWD:373.08±9.66us | BWD:841.49±5.76us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:299 | Mixed_7c.branch3x3dbl_3a.conv | Type:Conv2d | FWD:293.94±5.12us | BWD:1002.02±4.05us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:303 | Mixed_7c.branch3x3dbl_3b.bn | Type:BatchNorm2d | FWD:365.87±2.69us | BWD:839.90±3.52us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:768
+
+Hook:302 | Mixed_7c.branch3x3dbl_3b.conv | Type:Conv2d | FWD:288.08±4.47us | BWD:1001.10±2.90us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:442368
+
+Hook:308 | Mixed_7c.branch_pool.bn | Type:BatchNorm2d | FWD:342.89±32.62us | BWD:627.70±5.18us | In:(128, 192, 8, 8) | Out:(128, 192, 8, 8) | Params:384
+
+Hook:307 | Mixed_7c.branch_pool.conv | Type:Conv2d | FWD:309.46±22.28us | BWD:902.81±6.81us | In:(128, 2048, 8, 8) | Out:(128, 192, 8, 8) | Params:393216
+
+Hook:311 | avgpool | Type:AdaptiveAvgPool2d | FWD:133.71±3.66us | BWD:0.00±0.00us | In:(128, 2048, 8, 8) | Out:(128, 2048, 1, 1) | Params:0
+
+Hook:36 | avgpool_avg_pool2d.avgpool | Type:AvgPool2d | FWD:1133.43±8.17us | BWD:0.00±0.00us | In:(128, 192, 35, 35) | Out:(128, 192, 35, 35) | Params:0
+
+Hook:59 | avgpool_avg_pool2d_1.avgpool | Type:AvgPool2d | FWD:1476.14±15.83us | BWD:0.00±0.00us | In:(128, 256, 35, 35) | Out:(128, 256, 35, 35) | Params:0
+
+Hook:82 | avgpool_avg_pool2d_2.avgpool | Type:AvgPool2d | FWD:1595.69±14.01us | BWD:0.00±0.00us | In:(128, 288, 35, 35) | Out:(128, 288, 35, 35) | Params:0
+
+Hook:128 | avgpool_avg_pool2d_3.avgpool | Type:AvgPool2d | FWD:994.12±7.56us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:160 | avgpool_avg_pool2d_4.avgpool | Type:AvgPool2d | FWD:998.18±7.81us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:192 | avgpool_avg_pool2d_5.avgpool | Type:AvgPool2d | FWD:991.63±3.62us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:224 | avgpool_avg_pool2d_6.avgpool | Type:AvgPool2d | FWD:1141.07±254.28us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:275 | avgpool_avg_pool2d_7.avgpool | Type:AvgPool2d | FWD:612.03±15.23us | BWD:0.00±0.00us | In:(128, 1280, 8, 8) | Out:(128, 1280, 8, 8) | Params:0
+
+Hook:306 | avgpool_avg_pool2d_8.avgpool | Type:AvgPool2d | FWD:921.97±19.80us | BWD:0.00±0.00us | In:(128, 2048, 8, 8) | Out:(128, 2048, 8, 8) | Params:0
+
+Hook:40 | cat_cat | Type:Concat | FWD:344.01±5.29us | BWD:0.00±0.00us | In:(128, 256, 35, 35) | Out:(128, 256, 35, 35) | Params:0
+
+Hook:63 | cat_cat_1 | Type:Concat | FWD:360.82±8.05us | BWD:0.00±0.00us | In:(128, 288, 35, 35) | Out:(128, 288, 35, 35) | Params:0
+
+Hook:274 | cat_cat_10 | Type:Concat | FWD:104.89±13.19us | BWD:0.00±0.00us | In:(128, 768, 8, 8) | Out:(128, 768, 8, 8) | Params:0
+
+Hook:279 | cat_cat_11 | Type:Concat | FWD:125.21±15.90us | BWD:0.00±0.00us | In:(128, 2048, 8, 8) | Out:(128, 2048, 8, 8) | Params:0
+
+Hook:292 | cat_cat_12 | Type:Concat | FWD:110.50±11.95us | BWD:0.00±0.00us | In:(128, 768, 8, 8) | Out:(128, 768, 8, 8) | Params:0
+
+Hook:305 | cat_cat_13 | Type:Concat | FWD:108.04±22.16us | BWD:0.00±0.00us | In:(128, 768, 8, 8) | Out:(128, 768, 8, 8) | Params:0
+
+Hook:310 | cat_cat_14 | Type:Concat | FWD:132.16±19.32us | BWD:0.00±0.00us | In:(128, 2048, 8, 8) | Out:(128, 2048, 8, 8) | Params:0
+
+Hook:86 | cat_cat_2 | Type:Concat | FWD:353.85±3.07us | BWD:0.00±0.00us | In:(128, 288, 35, 35) | Out:(128, 288, 35, 35) | Params:0
+
+Hook:100 | cat_cat_3 | Type:Concat | FWD:232.70±16.83us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:132 | cat_cat_4 | Type:Concat | FWD:235.61±7.74us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:164 | cat_cat_5 | Type:Concat | FWD:218.17±3.42us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:196 | cat_cat_6 | Type:Concat | FWD:217.93±3.19us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:228 | cat_cat_7 | Type:Concat | FWD:239.76±10.67us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 17, 17) | Params:0
+
+Hook:248 | cat_cat_8 | Type:Concat | FWD:98.90±4.21us | BWD:0.00±0.00us | In:(128, 1280, 8, 8) | Out:(128, 1280, 8, 8) | Params:0
+
+Hook:261 | cat_cat_9 | Type:Concat | FWD:99.18±4.89us | BWD:0.00±0.00us | In:(128, 768, 8, 8) | Out:(128, 768, 8, 8) | Params:0
+
+Hook:312 | dropout | Type:Dropout | FWD:191.37±8.40us | BWD:0.00±0.00us | In:(128, 2048, 1, 1) | Out:(128, 2048, 1, 1) | Params:0
+
+Hook:313 | fc | Type:Linear | FWD:133.57±13.78us | BWD:492.57±61.66us | In:(128, 2048) | Out:(128, 1000) | Params:2049000
+
+Hook:10 | maxpool1 | Type:MaxPool2d | FWD:6057.04±19.12us | BWD:0.00±0.00us | In:(128, 64, 147, 147) | Out:(128, 64, 73, 73) | Params:0
+
+Hook:17 | maxpool2 | Type:MaxPool2d | FWD:4472.52±7.38us | BWD:0.00±0.00us | In:(128, 192, 71, 71) | Out:(128, 192, 35, 35) | Params:0
+
+Hook:99 | maxpool_max_pool2d | Type:MaxPool2d | FWD:2120.59±5.92us | BWD:0.00±0.00us | In:(128, 288, 35, 35) | Out:(128, 288, 17, 17) | Params:0
+
+Hook:247 | maxpool_max_pool2d_1 | Type:MaxPool2d | FWD:1457.69±3.46us | BWD:0.00±0.00us | In:(128, 768, 17, 17) | Out:(128, 768, 8, 8) | Params:0
+
+Hook:3 | relu_relu | Type:ReLU | FWD:632.76±2.57us | BWD:0.00±0.00us | In:(128, 32, 149, 149) | Out:(128, 32, 149, 149) | Params:0
+
+Hook:6 | relu_relu_1 | Type:ReLU | FWD:650.31±9.51us | BWD:0.00±0.00us | In:(128, 32, 147, 147) | Out:(128, 32, 147, 147) | Params:0
+
+Hook:35 | relu_relu_10 | Type:ReLU | FWD:120.23±20.18us | BWD:0.00±0.00us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:0
+
+Hook:39 | relu_relu_11 | Type:ReLU | FWD:98.26±5.79us | BWD:0.00±0.00us | In:(128, 32, 35, 35) | Out:(128, 32, 35, 35) | Params:0
+
+Hook:43 | relu_relu_12 | Type:ReLU | FWD:100.43±6.48us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:46 | relu_relu_13 | Type:ReLU | FWD:100.15±7.16us | BWD:0.00±0.00us | In:(128, 48, 35, 35) | Out:(128, 48, 35, 35) | Params:0
+
+Hook:49 | relu_relu_14 | Type:ReLU | FWD:93.45±0.86us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:52 | relu_relu_15 | Type:ReLU | FWD:98.35±8.67us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:55 | relu_relu_16 | Type:ReLU | FWD:105.78±12.39us | BWD:0.00±0.00us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:0
+
+Hook:58 | relu_relu_17 | Type:ReLU | FWD:138.38±54.44us | BWD:0.00±0.00us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:0
+
+Hook:62 | relu_relu_18 | Type:ReLU | FWD:99.67±9.35us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:66 | relu_relu_19 | Type:ReLU | FWD:82.02±2.88us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:9 | relu_relu_2 | Type:ReLU | FWD:1195.74±13.27us | BWD:0.00±0.00us | In:(128, 64, 147, 147) | Out:(128, 64, 147, 147) | Params:0
+
+Hook:69 | relu_relu_20 | Type:ReLU | FWD:90.62±14.87us | BWD:0.00±0.00us | In:(128, 48, 35, 35) | Out:(128, 48, 35, 35) | Params:0
+
+Hook:72 | relu_relu_21 | Type:ReLU | FWD:88.01±15.94us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:75 | relu_relu_22 | Type:ReLU | FWD:84.28±8.56us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:78 | relu_relu_23 | Type:ReLU | FWD:97.34±18.92us | BWD:0.00±0.00us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:0
+
+Hook:81 | relu_relu_24 | Type:ReLU | FWD:95.24±8.74us | BWD:0.00±0.00us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:0
+
+Hook:85 | relu_relu_25 | Type:ReLU | FWD:86.54±6.34us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:89 | relu_relu_26 | Type:ReLU | FWD:95.36±14.51us | BWD:0.00±0.00us | In:(128, 384, 17, 17) | Out:(128, 384, 17, 17) | Params:0
+
+Hook:92 | relu_relu_27 | Type:ReLU | FWD:90.35±10.55us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:95 | relu_relu_28 | Type:ReLU | FWD:120.48±11.82us | BWD:0.00±0.00us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:0
+
+Hook:98 | relu_relu_29 | Type:ReLU | FWD:107.89±8.96us | BWD:0.00±0.00us | In:(128, 96, 17, 17) | Out:(128, 96, 17, 17) | Params:0
+
+Hook:13 | relu_relu_3 | Type:ReLU | FWD:408.62±7.36us | BWD:0.00±0.00us | In:(128, 80, 73, 73) | Out:(128, 80, 73, 73) | Params:0
+
+Hook:103 | relu_relu_30 | Type:ReLU | FWD:82.21±0.86us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:106 | relu_relu_31 | Type:ReLU | FWD:85.89±6.00us | BWD:0.00±0.00us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:0
+
+Hook:109 | relu_relu_32 | Type:ReLU | FWD:87.30±8.71us | BWD:0.00±0.00us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:0
+
+Hook:112 | relu_relu_33 | Type:ReLU | FWD:89.63±8.03us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:115 | relu_relu_34 | Type:ReLU | FWD:97.35±20.29us | BWD:0.00±0.00us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:0
+
+Hook:118 | relu_relu_35 | Type:ReLU | FWD:90.00±8.72us | BWD:0.00±0.00us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:0
+
+Hook:121 | relu_relu_36 | Type:ReLU | FWD:86.24±8.36us | BWD:0.00±0.00us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:0
+
+Hook:124 | relu_relu_37 | Type:ReLU | FWD:97.13±23.20us | BWD:0.00±0.00us | In:(128, 128, 17, 17) | Out:(128, 128, 17, 17) | Params:0
+
+Hook:127 | relu_relu_38 | Type:ReLU | FWD:89.85±9.11us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:131 | relu_relu_39 | Type:ReLU | FWD:84.84±4.29us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:16 | relu_relu_4 | Type:ReLU | FWD:854.54±10.01us | BWD:0.00±0.00us | In:(128, 192, 71, 71) | Out:(128, 192, 71, 71) | Params:0
+
+Hook:135 | relu_relu_40 | Type:ReLU | FWD:81.81±2.66us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:138 | relu_relu_41 | Type:ReLU | FWD:82.06±4.48us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:141 | relu_relu_42 | Type:ReLU | FWD:91.82±20.67us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:144 | relu_relu_43 | Type:ReLU | FWD:102.66±23.47us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:147 | relu_relu_44 | Type:ReLU | FWD:83.05±4.61us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:150 | relu_relu_45 | Type:ReLU | FWD:92.00±20.08us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:153 | relu_relu_46 | Type:ReLU | FWD:82.31±2.79us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:156 | relu_relu_47 | Type:ReLU | FWD:86.97±3.59us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:159 | relu_relu_48 | Type:ReLU | FWD:95.78±26.93us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:163 | relu_relu_49 | Type:ReLU | FWD:94.00±6.78us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:20 | relu_relu_5 | Type:ReLU | FWD:95.19±4.17us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:167 | relu_relu_50 | Type:ReLU | FWD:89.96±5.78us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:170 | relu_relu_51 | Type:ReLU | FWD:83.65±5.32us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:173 | relu_relu_52 | Type:ReLU | FWD:85.16±2.58us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:176 | relu_relu_53 | Type:ReLU | FWD:87.58±3.09us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:179 | relu_relu_54 | Type:ReLU | FWD:88.51±5.89us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:182 | relu_relu_55 | Type:ReLU | FWD:85.44±7.41us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:185 | relu_relu_56 | Type:ReLU | FWD:81.35±2.21us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:188 | relu_relu_57 | Type:ReLU | FWD:80.93±1.62us | BWD:0.00±0.00us | In:(128, 160, 17, 17) | Out:(128, 160, 17, 17) | Params:0
+
+Hook:191 | relu_relu_58 | Type:ReLU | FWD:79.42±1.68us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:195 | relu_relu_59 | Type:ReLU | FWD:86.66±4.32us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:23 | relu_relu_6 | Type:ReLU | FWD:98.50±5.46us | BWD:0.00±0.00us | In:(128, 48, 35, 35) | Out:(128, 48, 35, 35) | Params:0
+
+Hook:199 | relu_relu_60 | Type:ReLU | FWD:87.46±10.74us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:202 | relu_relu_61 | Type:ReLU | FWD:84.46±2.67us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:205 | relu_relu_62 | Type:ReLU | FWD:92.03±12.77us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:208 | relu_relu_63 | Type:ReLU | FWD:90.25±12.44us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:211 | relu_relu_64 | Type:ReLU | FWD:98.02±19.05us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:214 | relu_relu_65 | Type:ReLU | FWD:101.74±20.18us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:217 | relu_relu_66 | Type:ReLU | FWD:94.12±19.93us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:220 | relu_relu_67 | Type:ReLU | FWD:86.24±4.44us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:223 | relu_relu_68 | Type:ReLU | FWD:83.39±2.69us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:227 | relu_relu_69 | Type:ReLU | FWD:86.30±5.37us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:26 | relu_relu_7 | Type:ReLU | FWD:101.22±8.80us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:231 | relu_relu_70 | Type:ReLU | FWD:92.44±15.16us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:234 | relu_relu_71 | Type:ReLU | FWD:84.76±3.12us | BWD:0.00±0.00us | In:(128, 320, 8, 8) | Out:(128, 320, 8, 8) | Params:0
+
+Hook:237 | relu_relu_72 | Type:ReLU | FWD:85.36±3.24us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:240 | relu_relu_73 | Type:ReLU | FWD:82.27±3.12us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:243 | relu_relu_74 | Type:ReLU | FWD:82.46±2.38us | BWD:0.00±0.00us | In:(128, 192, 17, 17) | Out:(128, 192, 17, 17) | Params:0
+
+Hook:246 | relu_relu_75 | Type:ReLU | FWD:86.18±3.86us | BWD:0.00±0.00us | In:(128, 192, 8, 8) | Out:(128, 192, 8, 8) | Params:0
+
+Hook:251 | relu_relu_76 | Type:ReLU | FWD:85.07±2.87us | BWD:0.00±0.00us | In:(128, 320, 8, 8) | Out:(128, 320, 8, 8) | Params:0
+
+Hook:254 | relu_relu_77 | Type:ReLU | FWD:98.42±25.41us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:257 | relu_relu_78 | Type:ReLU | FWD:88.11±3.26us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:260 | relu_relu_79 | Type:ReLU | FWD:84.46±2.72us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:29 | relu_relu_8 | Type:ReLU | FWD:102.24±8.76us | BWD:0.00±0.00us | In:(128, 64, 35, 35) | Out:(128, 64, 35, 35) | Params:0
+
+Hook:264 | relu_relu_80 | Type:ReLU | FWD:90.47±9.48us | BWD:0.00±0.00us | In:(128, 448, 8, 8) | Out:(128, 448, 8, 8) | Params:0
+
+Hook:267 | relu_relu_81 | Type:ReLU | FWD:84.79±3.77us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:270 | relu_relu_82 | Type:ReLU | FWD:86.22±3.69us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:273 | relu_relu_83 | Type:ReLU | FWD:82.05±1.50us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:278 | relu_relu_84 | Type:ReLU | FWD:85.04±4.51us | BWD:0.00±0.00us | In:(128, 192, 8, 8) | Out:(128, 192, 8, 8) | Params:0
+
+Hook:282 | relu_relu_85 | Type:ReLU | FWD:93.78±8.89us | BWD:0.00±0.00us | In:(128, 320, 8, 8) | Out:(128, 320, 8, 8) | Params:0
+
+Hook:285 | relu_relu_86 | Type:ReLU | FWD:87.02±3.63us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:288 | relu_relu_87 | Type:ReLU | FWD:88.13±6.35us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:291 | relu_relu_88 | Type:ReLU | FWD:84.43±2.13us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:295 | relu_relu_89 | Type:ReLU | FWD:90.16±6.52us | BWD:0.00±0.00us | In:(128, 448, 8, 8) | Out:(128, 448, 8, 8) | Params:0
+
+Hook:32 | relu_relu_9 | Type:ReLU | FWD:110.84±17.25us | BWD:0.00±0.00us | In:(128, 96, 35, 35) | Out:(128, 96, 35, 35) | Params:0
+
+Hook:298 | relu_relu_90 | Type:ReLU | FWD:87.74±5.31us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:301 | relu_relu_91 | Type:ReLU | FWD:88.06±4.57us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:304 | relu_relu_92 | Type:ReLU | FWD:84.23±2.49us | BWD:0.00±0.00us | In:(128, 384, 8, 8) | Out:(128, 384, 8, 8) | Params:0
+
+Hook:309 | relu_relu_93 | Type:ReLU | FWD:82.07±1.51us | BWD:0.00±0.00us | In:(128, 192, 8, 8) | Out:(128, 192, 8, 8) | Params:0
+
