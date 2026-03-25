@@ -37,152 +37,264 @@ class LayerInfo:
         """从shape_info或input_tensors推断输入shape"""
         if self.shape_info:
             return self.shape_info
-        return None
-    
-    def infer_output_shape(self, input_shape: Tuple[int, ...]) -> Optional[Tuple[int, ...]]:
-        """根据layer_type和input_shape推断输出shape（简化版）"""
-        if not input_shape:
-            return None
-            
-        # 从name中解析shape（如果存在）
-        match = re.search(r'\(([^)]+)\)', self.name)
-        if match:
-            try:
-                dims = [int(x.strip()) for x in match.group(1).split(',')]
-                return tuple(dims)
-            except:
+        # 从输入张量推断
+        if self.input_tensors:
+            # 尝试从第一个输入张量获取
+            first = self.input_tensors[0]
+            if 'size' in first and first['size'] > 0:
+                # 这需要知道dtype大小来反推shape，暂时返回None
                 pass
         return None
+    
+    def infer_output_shape(self, input_shape: Optional[Tuple[int, ...]] = None) -> Optional[Tuple[int, ...]]:
+        """
+        根据layer_type和输入shape推断输出shape
+        这是PreProfiler构造输入数据的关键方法
+        """
+        # 如果有明确的shape_info（从config解析的），优先使用
+        if self.shape_info:
+            # 但如果是动态层（如Linear, Flatten等），可能需要根据输入调整
+            return self.shape_info
+        
+        if not input_shape:
+            return None
+        
+        # 根据层类型计算输出shape
+        layer_type_lower = self.layer_type.lower()
+        
+        # 卷积层 - 简化计算，假设stride=1, padding=0或根据config中的shape
+        if 'conv2d' in layer_type_lower:
+            # 如果有weight_tensors，可以从权重推断输出channel
+            out_channels = None
+            if self.weight_tensors:
+                # 权重格式通常是 [out_ch, in_ch, kH, kW]
+                weight_size = self.weight_tensors[0].get('size', 0)
+                # 这里简化处理，假设已知out_channels
+                pass
+            # 如果config中有shape信息，使用它
+            if self.shape_info:
+                return self.shape_info
+            return input_shape  # 保守返回，实际应该计算
+            
+        # 池化层 - 通常H,W减半，C不变
+        elif 'maxpool' in layer_type_lower or 'avgpool' in layer_type_lower or 'adaptiveavgpool' in layer_type_lower:
+            # 从name中解析目标shape，如 AdaptiveAvgPool2d (128,2048,1,1)
+            if self.shape_info:
+                return self.shape_info
+            # 默认池化后H,W减半
+            if len(input_shape) >= 3:
+                return input_shape[:-2] + (input_shape[-2]//2, input_shape[-1]//2)
+            return input_shape
+            
+        # BatchNorm - shape不变
+        elif 'batchnorm' in layer_type_lower:
+            return input_shape
+            
+        # ReLU - shape不变
+        elif 'relu' in layer_type_lower:
+            return input_shape
+            
+        # Dropout - shape不变
+        elif 'dropout' in layer_type_lower:
+            return input_shape
+            
+        # Linear/全连接层 - 从name中解析，如 Linear (128,1000)
+        elif 'linear' in layer_type_lower:
+            if self.shape_info:
+                return self.shape_info
+            # Linear通常将特征维度改变，但保持batch
+            if len(input_shape) >= 1:
+                return (input_shape[0],)  # 简化，实际需要知道out_features
+            
+        # Concat - 在指定维度合并，shape会改变
+        elif 'concat' in layer_type_lower:
+            if self.shape_info:
+                return self.shape_info
+            return input_shape  # 保守返回
+            
+        # 默认：返回输入shape（假设大部分层保持shape不变）
+        return input_shape
 
 
 class LayerConfigParser:
     """解析layer.config文件"""
     
-    # 支持的分隔符模式
     SEPARATORS = [
-        '_' * 80,  # 80个下划线
-        '_' * 20,  # 20个下划线（你的格式）
-        '---' * 20,
-        '===' * 20,
+        '_' * 80,
+        '_' * 78,
+        '_' * 76,
+        '_' * 82,
     ]
     
     @staticmethod
     def parse(layer_config_path: str) -> Dict[int, LayerInfo]:
-        """
-        解析layer.config文件，返回hook_id到LayerInfo的映射
-        
-        期望的输入格式（基于Hook ID文件）：
-        Hook ID:0; Name:Conv2d (128,3,299,299)
-        Next Layers:
-        Next Layer 0 Hook ID:0; Name:BatchNorm2d (128,32,149,149)
-        Input Tensor: tensor0 Is weight (global)?: 0, Size in byte: 137322496, Range:0--137322496
-        ...
-        ______________________________________________________________________________
-        """
+        """解析layer.config文件"""
         if not os.path.exists(layer_config_path):
             raise FileNotFoundError(f"Layer config not found: {layer_config_path}")
             
-        with open(layer_config_path, 'r') as f:
+        with open(layer_config_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        # 尝试不同的分隔符
+        content = content.replace('\r\n', '\n').replace('\r', '\n')
+        
         blocks = []
         for sep in LayerConfigParser.SEPARATORS:
             if sep in content:
-                blocks = [b.strip() for b in content.split(sep) if b.strip()]
-                if len(blocks) > 1:
+                potential_blocks = [b.strip() for b in content.split(sep) if b.strip()]
+                if len(potential_blocks) > 1:
+                    blocks = potential_blocks
                     break
         
-        # 如果没有找到分隔符，尝试按"Hook ID:"分割
         if not blocks:
-            lines = content.split('\n')
-            current_block = []
-            for line in lines:
-                if line.startswith('Hook ID:') and current_block:
-                    blocks.append('\n'.join(current_block))
-                    current_block = [line]
-                else:
-                    current_block.append(line)
-            if current_block:
-                blocks.append('\n'.join(current_block))
+            blocks = LayerConfigParser._split_by_hook_id(content)
+        
+        # 清理块
+        cleaned_blocks = []
+        for block in blocks:
+            cleaned = block.lstrip('_ \n\r\t')
+            if cleaned and 'Hook ID' in cleaned:
+                cleaned_blocks.append(cleaned)
         
         layers = {}
-        for block in blocks:
+        for block in cleaned_blocks:
             layer_info = LayerConfigParser._parse_layer_block(block)
             if layer_info:
                 layers[layer_info.hook_id] = layer_info
         
-        print(f"[LayerConfigParser] Parsed {len(layers)} layers from {layer_config_path}")
         return layers
     
     @staticmethod
+    def _split_by_hook_id(content: str) -> List[str]:
+        """按Hook ID分割"""
+        lines = content.split('\n')
+        blocks = []
+        current_block = []
+        
+        for line in lines:
+            if re.match(r'^\s*Hook ID\s*:\s*\d+', line, re.IGNORECASE):
+                if current_block:
+                    blocks.append('\n'.join(current_block))
+                    current_block = []
+                current_block.append(line)
+            else:
+                if current_block:
+                    current_block.append(line)
+        
+        if current_block:
+            blocks.append('\n'.join(current_block))
+        
+        return blocks
+    
+    @staticmethod
     def _parse_layer_block(block: str) -> Optional[LayerInfo]:
-        """解析单个层的信息块"""
-        lines = [l.strip() for l in block.split('\n') if l.strip()]
+        """解析单个层"""
+        lines = block.split('\n')
         if not lines:
             return None
+        
+        # 找到第一个非空行
+        first_line = ""
+        for line in lines:
+            stripped = line.strip()
+            if stripped:
+                first_line = stripped
+                break
+        
+        if not first_line:
+            return None
             
-        # 解析第一行：Hook ID和Name
-        first_line = lines[0]
-        
-        # 支持多种格式：
-        # "Hook ID:0; Name:Conv2d (128,3,299,299)"
-        # "Layer 0: Conv2d (128,3,299,299)"
-        hook_match = re.search(r'Hook ID[:\s]*(\d+)', first_line, re.IGNORECASE)
-        if not hook_match:
-            # 尝试其他格式
-            hook_match = re.search(r'Layer\s*(\d+)', first_line, re.IGNORECASE)
-        
+        # 解析 Hook ID
+        hook_match = re.search(r'Hook ID\s*:\s*(\d+)', first_line, re.IGNORECASE)
         if not hook_match:
             return None
             
         hook_id = int(hook_match.group(1))
         
-        # 提取Name
-        name_match = re.search(r'Name[:\s]*(.+)', first_line)
+        # 提取 Name
+        full_name = ""
+        name_match = re.search(r'Name\s*:\s*(.+)', first_line)
         if name_match:
             full_name = name_match.group(1).strip()
-        else:
-            # 尝试从整行提取
-            full_name = first_line.split(':', 1)[-1].strip() if ':' in first_line else first_line
         
-        # 解析layer_type和shape
+        # 解析 layer_type 和 shape
         layer_type, shape_info = LayerConfigParser._parse_name(full_name)
         
-        # 初始化容器
+        # 初始化
         input_tensors = []
         output_tensors = []
         weight_tensors = []
         prev_layers = []
         next_layers = []
         
-        section = None
-        for line in lines[1:]:
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
             lower_line = line.lower()
             
-            if 'next' in lower_line and 'layer' in lower_line and ':' in line:
-                section = 'next'
+            if not line or line.startswith('_'):
+                i += 1
                 continue
-            elif 'previous' in lower_line and 'layer' in lower_line and ':' in line:
-                section = 'prev'
+            
+            # Next Layers 解析
+            if lower_line.startswith('next layers:'):
+                i += 1
+                while i < len(lines):
+                    sub_line = lines[i].strip()
+                    if not sub_line or sub_line.startswith('_'):
+                        i += 1
+                        continue
+                    
+                    if 'previous' in sub_line.lower() or 'tensor' in sub_line.lower():
+                        break
+                    
+                    if sub_line.lower().startswith('next layer'):
+                        if i + 1 < len(lines):
+                            next_line = lines[i + 1].strip()
+                            hook_id_match = re.search(r'Hook ID\s*:\s*(\d+)', next_line, re.IGNORECASE)
+                            if hook_id_match:
+                                next_layers.append(int(hook_id_match.group(1)))
+                                i += 2
+                                continue
+                    i += 1
                 continue
-            elif line.startswith('Next Layer') or line.startswith('Previous Layer'):
-                match = re.search(r'Hook ID[:\s]*(\d+)', line)
-                if match:
-                    layer_id = int(match.group(1))
-                    if section == 'next':
-                        next_layers.append(layer_id)
-                    elif section == 'prev':
-                        prev_layers.append(layer_id)
-            elif 'tensor' in lower_line:
-                tensor = LayerConfigParser._parse_tensor(line)
-                if tensor:
-                    if 'input' in lower_line and 'd_' not in line.lower():
-                        input_tensors.append(tensor)
-                    elif 'output' in lower_line and 'd_' not in line.lower():
-                        output_tensors.append(tensor)
-                    elif 'weight' in lower_line:
-                        weight_tensors.append(tensor)
+            
+            # Previous Layers 解析
+            elif lower_line.startswith('previous layers:'):
+                i += 1
+                while i < len(lines):
+                    sub_line = lines[i].strip()
+                    if not sub_line or sub_line.startswith('_'):
+                        i += 1
+                        continue
+                    
+                    if 'tensor' in sub_line.lower() or 'next' in sub_line.lower():
+                        break
+                    
+                    if sub_line.lower().startswith('previous layer'):
+                        if i + 1 < len(lines):
+                            next_line = lines[i + 1].strip()
+                            hook_id_match = re.search(r'Hook ID\s*:\s*(\d+)', next_line, re.IGNORECASE)
+                            if hook_id_match:
+                                prev_layers.append(int(hook_id_match.group(1)))
+                                i += 2
+                                continue
+                    i += 1
+                continue
+            
+            # 张量解析 - 只解析普通张量，跳过梯度(d_)张量
+            elif 'tensor' in lower_line and not line.startswith('d_'):
+                # 只解析 Input, Output, Weight（非梯度）
+                if any(x in lower_line for x in ['input tensor', 'output tensor', 'weight tensor']):
+                    tensor = LayerConfigParser._parse_tensor(line)
+                    if tensor:
+                        if 'input tensor' in lower_line:
+                            input_tensors.append(tensor)
+                        elif 'output tensor' in lower_line:
+                            output_tensors.append(tensor)
+                        elif 'weight tensor' in lower_line:
+                            weight_tensors.append(tensor)
+            
+            i += 1
         
         return LayerInfo(
             hook_id=hook_id,
@@ -192,85 +304,78 @@ class LayerConfigParser:
             input_tensors=input_tensors,
             output_tensors=output_tensors,
             weight_tensors=weight_tensors,
-            prev_layers=prev_layers,
-            next_layers=next_layers
+            prev_layers=list(set(prev_layers)),
+            next_layers=list(set(next_layers))
         )
     
     @staticmethod
     def _parse_name(full_name: str) -> Tuple[str, Optional[Tuple[int, ...]]]:
         """解析名称，提取类型和shape"""
-        # 匹配: Conv2d (128,3,299,299) 或 Conv2d((128,3,299,299))
-        match = re.match(r'(\w+)\s*\(?\s*\(([^)]+)\)\s*\)?', full_name)
+        if not full_name:
+            return "Unknown", None
+            
+        # 匹配: Conv2d (128,3,299,299)
+        match = re.match(r'(\w+)\s*\(([^)]+)\)', full_name)
         if match:
             layer_type = match.group(1)
             shape_str = match.group(2)
             try:
                 shape = tuple(int(x.strip()) for x in shape_str.split(','))
                 return layer_type, shape
-            except:
+            except ValueError:
                 return layer_type, None
         
-        # 如果没有shape，只返回类型
-        return full_name.split()[0] if full_name else "Unknown", None
+        # 备用
+        parts = full_name.split()
+        return parts[0] if parts else "Unknown", None
     
     @staticmethod
     def _parse_tensor(line: str) -> Optional[Dict[str, Any]]:
-        """解析tensor信息行"""
-        # 支持多种格式
-        patterns = [
-            # 标准格式: Input Tensor: tensor0 Is weight (global)?: 0, Size in byte: 137322496
-            r'(\w+)\s*Tensor:\s*(\w+).*?(?:Is weight.*?)?(\d+).*?Size.*?byte:\s*(\d+)',
-            # 简化格式: tensor0: size=137322496
-            r'(\w+):\s*size[=:]\s*(\d+)',
-        ]
+        """解析tensor信息"""
+        # 匹配: Input Tensor: tensor0 Is weight (global)?: 0, Size in byte: 137322496, Range:0--137322496
+        name_match = re.search(r'(\w+)\s*Tensor:\s*(\w+)', line)
+        if not name_match:
+            return None
         
-        for pattern in patterns:
-            match = re.search(pattern, line, re.IGNORECASE)
-            if match:
-                groups = match.groups()
-                if len(groups) >= 4:
-                    return {
-                        'tensor_name': groups[1],
-                        'is_weight': groups[2] == '1' or 'weight' in line.lower(),
-                        'size': int(groups[3])
-                    }
-                elif len(groups) >= 2:
-                    return {
-                        'tensor_name': groups[0],
-                        'is_weight': 'weight' in line.lower(),
-                        'size': int(groups[1])
-                    }
-        return None
+        tensor_name = name_match.group(2)
+        
+        # 提取大小
+        size_match = re.search(r'Size.*?byte:\s*(\d+)', line, re.IGNORECASE)
+        size = int(size_match.group(1)) if size_match else 0
+        
+        # 判断是否为权重
+        is_weight = 'Is weight (global)?: 1' in line or 'Is weight (global)?:1' in line
+        
+        # 提取范围
+        range_match = re.search(r'Range:(\d+)--(\d+)', line)
+        tensor_range = None
+        if range_match:
+            tensor_range = (int(range_match.group(1)), int(range_match.group(2)))
+        
+        return {
+            'tensor_name': tensor_name,
+            'is_weight': is_weight,
+            'size': size,
+            'range': tensor_range
+        }
 
 
 if __name__ == '__main__':
-    # 测试代码
-    import tempfile
+    import sys
     
-    test_config = """Hook ID:0; Name:Conv2d (128,3,299,299)
-Next Layers:
-Next Layer 0 Hook ID:1; Name:BatchNorm2d (128,32,149,149)
-Previous Layers:
-Input Tensor: tensor0 Is weight (global)?: 0, Size in byte: 137322496, Range:0--137322496
-Output Tensor: tensor1 Is weight (global)?: 0, Size in byte: 363741184, Range:137322496--501063680
-______________________________________________________________________________
-Hook ID:1; Name:BatchNorm2d (128,32,149,149)
-Next Layers:
-Previous Layers:
-Previous Layer 0 Hook ID:0; Name:Conv2d (128,3,299,299)
-Input Tensor: tensor1 Is weight (global)?: 0, Size in byte: 363741184, Range:137322496--501063680
-______________________________________________________________________________"""
+    test_file = "./layers.config"
+    if len(sys.argv) > 1:
+        test_file = sys.argv[1]
     
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.config', delete=False) as f:
-        f.write(test_config)
-        temp_path = f.name
-    
-    try:
-        layers = LayerConfigParser.parse(temp_path)
-        print(f"\n测试成功！解析了 {len(layers)} 层")
-        for hook_id, info in layers.items():
-            print(f"  Hook {hook_id}: {info.layer_type}, shape={info.shape_info}")
-            print(f"    Input tensors: {len(info.input_tensors)}")
-            print(f"    Prev layers: {info.prev_layers}")
-    finally:
-        os.unlink(temp_path)
+    if os.path.exists(test_file):
+        parser = LayerConfigParser()
+        layers = parser.parse(test_file)
+        print(f"解析完成！共 {len(layers)} 层")
+        
+        # 验证 infer_output_shape 方法存在
+        for hid in list(layers.keys())[:3]:
+            info = layers[hid]
+            shape = info.infer_output_shape(info.get_input_shape())
+            print(f"Hook {hid}: {info.layer_type} -> shape {shape}")
+    else:
+        print(f"文件 {test_file} 不存在")
